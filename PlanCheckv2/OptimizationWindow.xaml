@@ -1,0 +1,26 @@
+﻿<Window x:Class="VMS.TPS.OptimizationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VMS.TPS"
+        mc:Ignorable="d"
+        Title="Optimization Constraints" SizeToContent="Height" Width="600"
+		KeyDown="KeyPressed"
+		Background="AliceBlue">
+    <Grid>
+		<TextBlock Text="This gives an estimate of which structures were pushed the hardest by estimating the cost of each constraint as a percentage of the total cost of OARs (does not include NTO or target structures in this percentage)" VerticalAlignment="Bottom" Margin="20,20,20,10" TextWrapping="Wrap"/>
+		<DataGrid ItemsSource="{Binding OptiConstraints}" AutoGenerateColumns="False" Height="auto" Width="auto" Margin="20,20,20,45">
+			<DataGrid.Columns>
+				<DataGridTextColumn Visibility="Visible" Binding="{Binding StructureId}" Header="Structure" />
+				<DataGridTextColumn Visibility="Visible" Binding="{Binding ConstraintTypeText}" Header="Constraint Type" />
+				<DataGridTextColumn Visibility="Visible" Binding="{Binding Volume}" Header="Volume (%)" />
+				<DataGridTextColumn Visibility="Visible" Binding="{Binding OperatorText}" Header="Operator" />
+				<DataGridTextColumn Visibility="Visible" Binding="{Binding Dose}" Header="Dose" />
+				<DataGridTextColumn Visibility="Visible" Binding="{Binding ParameterA}" Header="gEUD a" />
+				<DataGridTextColumn Visibility="Visible" Binding="{Binding Priority}" Header="Priority" />
+				<DataGridTextColumn Visibility="Visible" Binding="{Binding CostPercentage}" Header="Cost Estimate (%)" />
+			</DataGrid.Columns>
+		</DataGrid>
+	</Grid>
+</Window>
