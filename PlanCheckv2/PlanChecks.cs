@@ -129,7 +129,7 @@ namespace VMS.TPS
 			{TestNames.Isocenter, new List<string>{ } },
 			{TestNames.SelectedCT, new List<string>{ } },
 			{TestNames.Target, new List<string>{ } },
-			{TestNames.UseGated, new List<string>{ MachineDisplayNames.CENEX, MachineDisplayNames.CLAEX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.LANIX, MachineDisplayNames.LAPIX, MachineDisplayNames.MACIX, MachineDisplayNames.NOREX, MachineDisplayNames.NORIX, MachineDisplayNames.OWOIX } },
+			{TestNames.UseGated, new List<string>{ MachineDisplayNames.CENEX, MachineDisplayNames.CLAEX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.LANIX, MachineDisplayNames.LAPIX, MachineDisplayNames.MACIX, MachineDisplayNames.NOREX, MachineDisplayNames.NORIX, MachineDisplayNames.OWOIX } },
 			{TestNames.CouchValues, new List<string>{ } },
 			{TestNames.Machine, new List<string>{ } },
 			{TestNames.ToleranceTables, new List<string>{ } },
@@ -141,7 +141,7 @@ namespace VMS.TPS
 			{TestNames.CalcShifts, new List<string>{ } },
 			{TestNames.Orientation, new List<string>{ } },
 			{TestNames.Prescription, new List<string>{ } },
-			{TestNames.JawTracking, new List<string>{ MachineDisplayNames.CENEX, MachineDisplayNames.CLAEX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.LANIX, MachineDisplayNames.LAPIX, MachineDisplayNames.MACIX, MachineDisplayNames.NOREX, MachineDisplayNames.NORIX, MachineDisplayNames.OWOIX } },
+			{TestNames.JawTracking, new List<string>{ MachineDisplayNames.CENEX, MachineDisplayNames.CLAEX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.LANIX, MachineDisplayNames.LAPIX, MachineDisplayNames.MACIX, MachineDisplayNames.NOREX, MachineDisplayNames.NORIX, MachineDisplayNames.OWOIX } },
 			{TestNames.Hotspot, new List<string>{ } }
 		};
 	}
@@ -612,9 +612,73 @@ namespace VMS.TPS
 				}
 
 				ResultDetails = ResultDetails.TrimEnd('\n');
-			}
+            }
 
-			else
+            // Detroit group
+            // IMRT & 3D - 400
+            // VMAT      - 600
+            // 10FFF     - 1600
+            // Electron  - 1000
+            else if (_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.DETIX] ||
+                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.DETTB] ||
+                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FARIX])
+            {
+                foreach (Beam field in _context.PlanSetup.Beams)
+                {
+                    //ignore setup fields
+                    if (!field.IsSetupField)
+                    {
+                        string energy = field.EnergyModeDisplayName;
+                        string field_type = field.Technique.ToString();
+
+                        if (energy == "6X" || energy == "10X" || energy == "15X")
+                        {
+                            if ((field.DoseRate < 600) && (field_type.Contains("ARC", StringComparison.CurrentCultureIgnoreCase)))
+                            {
+                                Result = "Warning";
+                                ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
+                                ResultColor = "Gold";
+                            }
+                            else if (field.DoseRate != 400 && field_type.Contains("STATIC", StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                Result = "Warning";
+                                ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
+                                ResultColor = "Gold";
+                            }
+                        }
+                        else if (energy == "10X-FFF")
+                        {
+                            if (field.DoseRate < 1600)
+                            {
+                                Result = "Warning";
+                                ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
+                                ResultColor = "Gold";
+                            }
+                        }
+                        else if (energy.Contains("E", StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            if (field.DoseRate < 1000)
+                            {
+                                Result = "Warning";
+                                ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
+                                ResultColor = "Gold";
+                            }
+                        }
+                    }
+                }
+
+                //no problems found
+                if (ResultDetails == "")
+                {
+                    Result = "";
+                    ResultDetails = _context.PlanSetup.Beams.Where(x => !x.IsSetupField).First().DoseRate.ToString();
+                    ResultColor = "LimeGreen";
+                }
+
+                ResultDetails = ResultDetails.TrimEnd('\n');
+            }
+
+            else
 				ThrowNotImplemented();
 		}
 
@@ -781,9 +845,18 @@ namespace VMS.TPS
 
 				if (numberOfFractions < 10 && (planningImageComment.Contains("AIP", StringComparison.CurrentCultureIgnoreCase) || planningImageComment.Contains("avg", StringComparison.CurrentCultureIgnoreCase) || planningImageId.Contains("AIP", StringComparison.CurrentCultureIgnoreCase) || planningImageId.Contains("avg", StringComparison.CurrentCultureIgnoreCase) || planningImageId.Contains("ave", StringComparison.CurrentCultureIgnoreCase) || planningImageComment.Contains("%")))
 				{
-					Result = "Warning";
-					ResultDetails = "Plan has a low number of fractions and looks to contain a 4D image.  Should the plan \"Use Gated\"?";
-					ResultColor = "Gold";
+                    if (_context.PlanSetup.UseGating)
+                    {
+                        Result = "";
+                        ResultDetails = "\"Use Gating\" is checked";
+                        ResultColor = "LimeGreen";
+                    }
+                    else
+                    {
+                        Result = "Warning";
+                        ResultDetails = "Plan has a low number of fractions and looks to contain a 4D image.  Should \"Use Gated\" be checked?";
+                        ResultColor = "Gold";
+                    }
 				}
 				else
 				{
@@ -993,7 +1066,10 @@ namespace VMS.TPS
 
 			//any couch value
 			if (_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.CLAEX] ||
-				_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.MACIX] ||
+                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.DETTB] ||
+                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.DETIX] ||
+                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FARIX] ||
+                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.MACIX] ||
 				_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.MACTB] ||
 				_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.MPHTB])
 			{
@@ -1289,7 +1365,10 @@ namespace VMS.TPS
 					ResultColor = "LimeGreen";
 				}
 			}
-			else if (_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.LANIX])
+			else if (_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.DETTB] ||
+                     _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.DETIX] ||
+                     _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FARIX] ||
+                     _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.LANIX])
 			{
 				string tolTable = "";
 				string badFields = "";
@@ -1470,7 +1549,11 @@ namespace VMS.TPS
 			{
 				couchStructures = (from s in _context.PlanSetup.StructureSet.Structures where s.DicomType == "SUPPORT" select s);
 				couchStructure = true;
-				couchName = couchStructures.FirstOrDefault().Name;
+                Structure firstCouch = couchStructures.FirstOrDefault();
+                if (firstCouch.Name != "")
+                    couchName = firstCouch.Name;
+                else
+                    couchName = firstCouch.Comment;
 			}
 			else
 				couchStructure = false;
@@ -1597,7 +1680,11 @@ namespace VMS.TPS
 			}
 
 			//Flint
-			else if (_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FLTFTB] ||
+            //Detroit
+			else if (_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.DETTB] ||
+                     _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.DETIX] ||
+                     _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FARIX] ||
+                     _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FLTFTB] ||
 				     _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FLTBTB])
 			{
 				if (couchStructure)
@@ -1801,7 +1888,10 @@ namespace VMS.TPS
 			string shiftFrom = "User Origin";
 
 			// these sites set iso at sim and import in a "MARKER" structure that shifts will be based off (also they don't use gold markers, so there's no need to worry about those "MARKER" structures)
-			if (_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FLTFTB] ||
+			if (_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.DETTB] ||
+                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.DETIX] ||
+                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FARIX] ||
+                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FLTFTB] ||
 				_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FLTBTB] ||
 				_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.LAPIX] ||
 				_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.MPHTB] ||
@@ -1874,23 +1964,28 @@ namespace VMS.TPS
 		}
 
 		/// <summary>
-		/// Checks plan prescription against Aria prescription (eventually)
+		/// Checks plan prescription against Aria prescription
 		/// </summary>
 		public void CheckPrescription()
 		{
-			//v15 Upgrade
-			//will turn into:
-			//planSetup.PlannedDosePerFraction;
-			//planSetup.NumberOfFractions;
-			//planSetup.DosePerFraction;
 
 
 			PlanSetup plan = _context.PlanSetup;
+            RTPrescriptionTarget rx = plan.RTPrescription.Targets.OrderByDescending(x => x.DosePerFraction * x.NumberOfFractions).First();
 
-			Result = "";
-			ResultDetails = $"{plan.DosePerFraction.ToString()} x {plan.NumberOfFractions} Fx = {plan.TotalDose.ToString()}\nPrescribed Percentage: {(plan.TreatmentPercentage*100.0).ToString("0.0")}%\nPlan Normalization: {plan.PlanNormalizationValue.ToString("0.0")}%";
-			ResultColor = "LimeGreen";
-			TestExplanation = "Displays prescription information from plan in Eclipse";
+            if ((plan.NumberOfFractions != rx.NumberOfFractions || plan.DosePerFraction != rx.DosePerFraction))
+            {
+                Result = "Warning";
+                ResultDetails = $"Plan dose does not match prescription\n\nPrescription:\n{rx.DosePerFraction} x {rx.NumberOfFractions} Fx = {rx.DosePerFraction * rx.NumberOfFractions}\n\nPlan:\n{plan.DosePerFraction} x {plan.NumberOfFractions} Fx = {plan.TotalDose.ToString()}\n\nPrescribed Percentage: {(plan.TreatmentPercentage * 100.0).ToString("0.0")}%\nPlan Normalization: {plan.PlanNormalizationValue.ToString("0.0")}%";
+                ResultColor = "Gold";
+            }
+            else
+            {
+                Result = "";
+                ResultDetails = $"{plan.DosePerFraction.ToString()} x {plan.NumberOfFractions} Fx = {plan.TotalDose.ToString()}\nPrescribed Percentage: {(plan.TreatmentPercentage * 100.0).ToString("0.0")}%\nPlan Normalization: {plan.PlanNormalizationValue.ToString("0.0")}%";
+                ResultColor = "LimeGreen";
+            }
+			TestExplanation = "Displays plan dose information from Eclipse and checks it versus the prescription in Aria";
 		}
 
 		public void CheckHotspot()
@@ -1919,12 +2014,12 @@ namespace VMS.TPS
 		public void CheckCollisions()
 		{
 
-		}
+        }
 
-		/// <summary>
-		/// Converts a given gantry or couch angle to Varian Standard scale
-		/// </summary>
-		private double ConvertToVarianStandardScale(double angle)
+        /// <summary>
+        /// Converts a given gantry or couch angle to Varian Standard scale
+        /// </summary>
+        private double ConvertToVarianStandardScale(double angle)
 		{
 			if (angle <= 180)
 				return 180 - angle;
