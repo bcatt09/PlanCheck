@@ -53,5 +53,12 @@ namespace VMS.TPS
 			optiWindow.Show();
 			optiWindow.DataContext = this.DataContext;
 		}
-	}
+
+        private void MROQC_Button_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel vm = DataContext as ViewModel;
+
+            vm.CreateMROQCWindow();
+        }
+    }
 }
