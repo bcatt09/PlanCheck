@@ -187,8 +187,8 @@ namespace VMS.TPS
             List<Tuple<string, List<string>>> tempTemplates = new List<Tuple<string, List<string>>>();
 
             tempTemplates.Add(new Tuple<string, List<string>>("Lung", new List<string> { "PTV", "Lungs-GTV", "Esophagus", "Heart", "SpinalCord" }));
-            tempTemplates.Add(new Tuple<string, List<string>>("Left Breast", new List<string> { "CTVsb", "PTVsb", "PTV_Brst_L", "Breast_R", "Heart", "Lung_L" }));
-            tempTemplates.Add(new Tuple<string, List<string>>("Right Breast", new List<string> { "CTVsb", "PTVsb", "PTV_Brst_R", "Breast_L", "Heart", "Lung_R" }));
+            tempTemplates.Add(new Tuple<string, List<string>>("Left Breast", new List<string> { "CTVsb", "PTVsb", "PTV_Breast_L", "Breast_R", "Heart", "Lung_L" }));
+            tempTemplates.Add(new Tuple<string, List<string>>("Right Breast", new List<string> { "CTVsb", "PTVsb", "PTV_Breast_R", "Breast_L", "Heart", "Lung_R" }));
 
             MROQCTemplates = tempTemplates;
             

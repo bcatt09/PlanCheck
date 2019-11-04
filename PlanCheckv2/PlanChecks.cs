@@ -110,7 +110,7 @@ namespace VMS.TPS
 			{"BAY", "CT99"},
 			{"CEN", "cmchctcon"},
 			{"CLA", "LightSpeed RT16"},
-			{"DET", "Gershenson CT"},
+			{"DET", "DET_ROC CT Sim"},
 			{"FAR", "Farmington CT"},
 			{"FLT", "Philips Big Bore"},
 			{"LAN", "BBCT" },
@@ -121,15 +121,33 @@ namespace VMS.TPS
 			{"OWO", "Philips Big Bore"}
 		};
 
-		//dictionary of exemptions from tests (tests will not be performed/displayed for these linacs)
-		public static Dictionary<string, List<string>> Exemptions = new Dictionary<string, List<string>>
+        //list of allowed rad onc user names for plan approval
+        public static List<Tuple<string, List<string>>> RadOncUserNames = new List<Tuple<string, List<string>>>
+        {
+            new Tuple<string, List<string>> ("BAY", new List<string> { "" }),
+            new Tuple<string, List<string>> ("CEN", new List<string> { "" }),
+            new Tuple<string, List<string>> ("CLA", new List<string> { "afrazier", "sfranklin", "mjohnson5", "nbhatt" }),
+            new Tuple<string, List<string>> ("DET", new List<string> { "" }),
+            new Tuple<string, List<string>> ("FAR", new List<string> { "" }),
+            new Tuple<string, List<string>> ("FLT", new List<string> { "heshamg", "jackn", "kirand", "ogayar" }),
+            new Tuple<string, List<string>> ("LAN", new List<string> { "abhatt1" }),
+            new Tuple<string, List<string>> ("LAP", new List<string> { "heshamg", "jackn", "kirand", "ogayar" }),
+            new Tuple<string, List<string>> ("MAC", new List<string> { "afrazier", "sfranklin", "mjohnson5", "nbhatt" }),
+            new Tuple<string, List<string>> ("MPH", new List<string> { "afrazier", "sfranklin", "mjohnson5", "nbhatt" }),
+            new Tuple<string, List<string>> ("NOR", new List<string> { "" }),
+            new Tuple<string, List<string>> ("OWO", new List<string> { "heshamg", "jackn", "kirand", "ogayar" }),
+
+        };
+
+        //dictionary of exemptions from tests (tests will not be performed/displayed for these linacs)
+        public static Dictionary<string, List<string>> Exemptions = new Dictionary<string, List<string>>
 		{
 			{TestNames.FieldNames, new List<string>{ } },
 			{TestNames.DoseRates, new List<string>{ } },
 			{TestNames.Isocenter, new List<string>{ } },
 			{TestNames.SelectedCT, new List<string>{ } },
 			{TestNames.Target, new List<string>{ } },
-			{TestNames.UseGated, new List<string>{ MachineDisplayNames.CENEX, MachineDisplayNames.CLAEX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.LANIX, MachineDisplayNames.LAPIX, MachineDisplayNames.MACIX, MachineDisplayNames.NOREX, MachineDisplayNames.NORIX, MachineDisplayNames.OWOIX } },
+			{TestNames.UseGated, new List<string>{ MachineDisplayNames.CENEX, MachineDisplayNames.CLAEX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.LANIX, MachineDisplayNames.LAPIX, MachineDisplayNames.MACIX, MachineDisplayNames.NOREX, MachineDisplayNames.NORIX, MachineDisplayNames.OWOIX } },
 			{TestNames.CouchValues, new List<string>{ } },
 			{TestNames.Machine, new List<string>{ } },
 			{TestNames.ToleranceTables, new List<string>{ } },
@@ -141,7 +159,7 @@ namespace VMS.TPS
 			{TestNames.CalcShifts, new List<string>{ } },
 			{TestNames.Orientation, new List<string>{ } },
 			{TestNames.Prescription, new List<string>{ } },
-			{TestNames.JawTracking, new List<string>{ MachineDisplayNames.CENEX, MachineDisplayNames.CLAEX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.LANIX, MachineDisplayNames.LAPIX, MachineDisplayNames.MACIX, MachineDisplayNames.NOREX, MachineDisplayNames.NORIX, MachineDisplayNames.OWOIX } },
+			{TestNames.JawTracking, new List<string>{ MachineDisplayNames.CENEX, MachineDisplayNames.CLAEX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.LANIX, MachineDisplayNames.LAPIX, MachineDisplayNames.MACIX, MachineDisplayNames.NOREX, MachineDisplayNames.NORIX, MachineDisplayNames.OWOIX } },
 			{TestNames.Hotspot, new List<string>{ } }
 		};
 	}
@@ -1764,90 +1782,65 @@ namespace VMS.TPS
 			}
 		}
 
-		/// <summary>
-		/// Displays plan approval information
-		/// </summary>
-		public void PlanApproval()
-		{
-			PlanSetupApprovalStatus approval = _context.PlanSetup.ApprovalStatus;
+        /// <summary>
+        /// Displays plan approval information
+        /// </summary>
+        public void PlanApproval()
+        {
+            PlanSetupApprovalStatus approvalStatus = _context.PlanSetup.ApprovalStatus;
 
-			Result = "";
-			ResultDetails = $"Status: {AddSpacesToSentence(approval.ToString())}";
-			ResultColor = "LimeGreen";
-			TestExplanation = "Displays plan approval\nReviewed timestamp is estimated based on CT image approval";
+            //get plan target for reviewed status
+            Structure planTarget = null;
+            if (_context.StructureSet.Structures.Where(x => x.Id == _context.PlanSetup.TargetVolumeID).Count() > 0)
+                planTarget = _context.StructureSet.Structures.Where(x => x.Id == _context.PlanSetup.TargetVolumeID).First();
+            //get approval of plan target or image set if there is no target
+            string reviewedUserName = planTarget != null ? planTarget.HistoryUserName : _context.StructureSet.Image.HistoryUserName;
+            string reviewedUserNameMinusDomain = reviewedUserName.Substring(reviewedUserName.IndexOf('\\') + 1);
+            //check approval user name against physician list
+            string department = Globals.TreatmentUnits.Where(x => x.Value == _selectedMachineUI).Select(x => x.Key).First().Substring(0, 3);
 
-            // Build out list of physicians who can approve plans in Flint/Lapeer/Owosso
-            List<string> FLORadOncs = new List<string>();
-            FLORadOncs.InsertRange(FLORadOncs.Count, new string[] { "heshamg", "jackn", "kirand", "ogayar" });
+            Result = "";
+            ResultDetails = $"Status: {AddSpacesToSentence(approvalStatus.ToString())}";
+            ResultColor = "LimeGreen";
+            TestExplanation = "Displays plan approval\nReviewed timestamp is estimated based on CT image approval";
 
-            // Switch colour to gold for F/L/O Machines, will turn green if good
-            if (_selectedMachineUI==Globals.TreatmentUnits[Globals.MachineDisplayNames.FLTBTB] ||
-                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FLTFTB] ||
-                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.LAPIX] ||
-                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.OWOIX] 
-                )
+            //check approval user name against physician list
+            if (Globals.RadOncUserNames.Where(x => x.Item1 == department).First().Item2.First() != "")
             {
-                ResultColor = "Gold";
-            }
-
-			if (approval == PlanSetupApprovalStatus.TreatmentApproved)
-			{
-				ResultDetails += $"\nReviewed by: {_context.PlanSetup.StructureSet.Image.HistoryUserName} at {_context.PlanSetup.StructureSet.Image.HistoryDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt")}";
-				ResultDetails += $"\nPlanning Approved by: {_context.PlanSetup.PlanningApprover} at {_context.PlanSetup.PlanningApprovalDate}";
-				ResultDetails += $"\nTreatment Approved by {_context.PlanSetup.TreatmentApprover} at {_context.PlanSetup.TreatmentApprovalDate}";
-                // If it's a F/L/O Machine verify the physician signature is good
-                if (_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FLTBTB] ||
-                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FLTFTB] ||
-                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.LAPIX] ||
-                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.OWOIX]
-                )
+                if (Globals.RadOncUserNames.Where(x => x.Item1 == department).First().Item2.Contains(reviewedUserNameMinusDomain))
                 {
-                    if (FLORadOncs.Contains(_context.PlanSetup.StructureSet.Image.HistoryUserName))
-                    {
-                        ResultColor = "LimeGreen";
-                        Result = "Good";
-                    }
-                    else
-                    {
-                        Result = "Verify that there is a physician approval on the plan";
-                    }
-                    
+                    ResultColor = "LimeGreen";
+                    Result = "Pass";
+                }
+                else
+                {
+                    ResultColor = "Gold";
+                    Result = "Verify that there is a physician approval on the plan";
                 }
             }
-			else if (approval == PlanSetupApprovalStatus.PlanningApproved)
-			{
-				ResultDetails += $"\nReviewed by: {_context.PlanSetup.StructureSet.Image.HistoryUserName} at {_context.PlanSetup.StructureSet.Image.HistoryDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt")}";
-				ResultDetails += $"\nPlanning Approved by: {_context.PlanSetup.PlanningApprover} at {_context.PlanSetup.PlanningApprovalDate}";
-                // If it's a F/L/O Machine verify the physician signature is good
-                if (_selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FLTBTB] ||
-                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.FLTFTB] ||
-                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.LAPIX] ||
-                _selectedMachineUI == Globals.TreatmentUnits[Globals.MachineDisplayNames.OWOIX]
-                )
-                {
-                    if (FLORadOncs.Contains(_context.PlanSetup.StructureSet.Image.HistoryUserName))
-                    {
-                        ResultColor = "LimeGreen";
-                        Result = "Good";
-                    }
-                    else
-                    {
-                        Result = "Verify that there is a physician approval on the plan";
-                    }
 
-                }
-
+            //add approval text
+            if (approvalStatus == PlanSetupApprovalStatus.TreatmentApproved)
+            {
+                ResultDetails += $"\nReviewed by: {reviewedUserName} at {_context.PlanSetup.StructureSet.Image.HistoryDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt")}";
+                ResultDetails += $"\nPlanning Approved by: {_context.PlanSetup.PlanningApprover} at {_context.PlanSetup.PlanningApprovalDate}";
+                ResultDetails += $"\nTreatment Approved by {_context.PlanSetup.TreatmentApprover} at {_context.PlanSetup.TreatmentApprovalDate}";
             }
-            else if (approval == PlanSetupApprovalStatus.Reviewed)
-			{
-				ResultDetails += $"\nReviewed by: {_context.PlanSetup.StructureSet.Image.HistoryUserName} at {_context.PlanSetup.StructureSet.Image.HistoryDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt")}";
-			}
-		}
+            else if (approvalStatus == PlanSetupApprovalStatus.PlanningApproved)
+            {
+                ResultDetails += $"\nReviewed by: {_context.PlanSetup.StructureSet.Image.HistoryUserName} at {_context.PlanSetup.StructureSet.Image.HistoryDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt")}";
+                ResultDetails += $"\nPlanning Approved by: {_context.PlanSetup.PlanningApprover} at {_context.PlanSetup.PlanningApprovalDate}";
+            }
+            else if (approvalStatus == PlanSetupApprovalStatus.Reviewed)
+            {
+                ResultDetails += $"\nReviewed by: {_context.PlanSetup.StructureSet.Image.HistoryUserName} at {_context.PlanSetup.StructureSet.Image.HistoryDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt")}";
+            }
+        }
 
-		/// <summary>
-		/// Checks that DRRs are created and attached to fields as a reference image
-		/// </summary>
-		public void CheckDRRs()
+        /// <summary>
+        /// Checks that DRRs are created and attached to fields as a reference image
+        /// </summary>
+        public void CheckDRRs()
 		{
 			Result = "Pass";
 			ResultDetails = "";
@@ -1988,6 +1981,9 @@ namespace VMS.TPS
 			TestExplanation = "Displays plan dose information from Eclipse and checks it versus the prescription in Aria";
 		}
 
+        /// <summary>
+        /// Checks if the hotspot is inside of the plan target
+        /// </summary>
 		public void CheckHotspot()
 		{
 			PlanSetup plan = _context.PlanSetup;
