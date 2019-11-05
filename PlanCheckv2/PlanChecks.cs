@@ -1802,17 +1802,12 @@ namespace VMS.TPS
             Result = "";
             ResultDetails = $"Status: {AddSpacesToSentence(approvalStatus.ToString())}";
             ResultColor = "LimeGreen";
-            TestExplanation = "Displays plan approval\nReviewed timestamp is estimated based on CT image approval";
+            TestExplanation = "Displays plan approval\nAlso checks that plan has been reviewed by a physician\nReviewed timestamp is estimated based on target structure or CT image approval";
 
             //check approval user name against physician list
             if (Globals.RadOncUserNames.Where(x => x.Item1 == department).First().Item2.First() != "")
             {
-                if (Globals.RadOncUserNames.Where(x => x.Item1 == department).First().Item2.Contains(reviewedUserNameMinusDomain))
-                {
-                    ResultColor = "LimeGreen";
-                    Result = "Pass";
-                }
-                else
+                if (!Globals.RadOncUserNames.Where(x => x.Item1 == department).First().Item2.Contains(reviewedUserNameMinusDomain))
                 {
                     ResultColor = "Gold";
                     Result = "Verify that there is a physician approval on the plan";
