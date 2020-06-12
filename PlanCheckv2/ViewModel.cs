@@ -24,7 +24,9 @@ namespace VMS.TPS
         private string _selectedTreatmentUnit;                                      //treatment unit selected from dropdown (will select which tests are run and settings in each test)
         private string _selectionWarning;                                           //warning if treatment unit is changed in the dropdown
         private Tuple<ReferencePoint, PlanSetup, string> _selecetedReferencePoint;  //reference point selected in dropdown
+        private Visibility _sidePanelVisibility;                                    //should the side panel be displayed
         private Visibility _referencePointVisibility;                               //should the reference point info be displayed
+        private Visibility _qaPlanVisibility;                                       //should the QA plans be displayed
         private List<OptimizationConstraint> _optiConstraints;
         private ObservableCollection<MROQCStructureCheck> _mroqcChecks;                        //list of MROQC structure checks and results to be displayed
         private List<Tuple<string, List<string>>> _mroqcTemplates;                  //list of MROQC structure check templates to be displayed in the dropdown
@@ -40,7 +42,9 @@ namespace VMS.TPS
         public string SelectedTreatmentUnit { get { return _selectedTreatmentUnit; } set { _selectedTreatmentUnit = value; SelectedTreatmentUnitChanged(); OnPropertyChanged("SelectedTreatmentUnit"); } }
         public string SelectionWarning { get { return _selectionWarning; } set { _selectionWarning = value; OnPropertyChanged("SelectionWarning"); } }
         public Tuple<ReferencePoint, PlanSetup, string> SelectedReferencePoint { get { return _selecetedReferencePoint; } set { _selecetedReferencePoint = value; SelectedReferencePointChanged(); OnPropertyChanged("SelecetedReferencePoint"); } }
+        public Visibility SidePanelVisibility { get { return _sidePanelVisibility; } set { _sidePanelVisibility = value; OnPropertyChanged("SidePanelVisibility"); } }
         public Visibility ReferencePointVisibility { get { return _referencePointVisibility; } set { _referencePointVisibility = value; OnPropertyChanged("ReferencePointVisibility"); } }
+        public Visibility QAPlanVisibility { get { return _qaPlanVisibility; } set { _qaPlanVisibility = value; OnPropertyChanged("QAPlanVisibility"); } }
         public List<OptimizationConstraint> OptiConstraints { get { return _optiConstraints; } set { _optiConstraints = value; OnPropertyChanged("OptiConstraints"); } }
         public ObservableCollection<MROQCStructureCheck> MROQCChecks { get { return _mroqcChecks; } set { _mroqcChecks = value; OnPropertyChanged("MROQCChecks"); } }
         public List<Tuple<string, List<string>>> MROQCTemplates { get { return _mroqcTemplates; } set { _mroqcTemplates = value; OnPropertyChanged("MROQCTemplates"); } }
@@ -66,6 +70,9 @@ namespace VMS.TPS
 
             //populate reference points dropdown
             PopulateReferencePoints();
+
+            //find QA plans
+            PopulateQAPlans();
 
             //setup optimization constraints dataset
             //PopulateOptimizationConstraints();
@@ -143,6 +150,56 @@ namespace VMS.TPS
             else
                 ReferencePointVisibility = Visibility.Collapsed;
         }
+
+
+
+
+
+
+
+
+        // Populate reference points in the dropdown list
+        private void PopulateQAPlans()
+        {
+            ReferencePoints = new List<Tuple<ReferencePoint, PlanSetup, string>>();
+
+            //check each plan
+            foreach (PlanSetup plan in _context.PlansInScope)
+            {
+                if (plan.Beams.Where(x => !x.IsSetupField).Count() > 0)
+                {
+                    //find any reference points which have a location and don't check setup fields if there are any
+                    if (plan.Beams.Where(x => !x.IsSetupField).First().FieldReferencePoints.Where(x => !Double.IsNaN(x.RefPointLocation.x)).Count() > 0)
+                    {
+                        foreach (FieldReferencePoint point in plan.Beams.Where(x => !x.IsSetupField).First().FieldReferencePoints.Where(x => !Double.IsNaN(x.RefPointLocation.x)).ToList())
+                        {
+                            //add them to the list
+                            ReferencePoints.Add(new Tuple<ReferencePoint, PlanSetup, string>(point.ReferencePoint, plan, $"{point.ReferencePoint} (Plan: {plan.Id})"));
+                        }
+                    }
+                }
+            }
+
+            //setup table and pick the default point
+            ReferencePointTable = new ObservableCollection<ReferencePointTableEntry>();
+            if (ReferencePoints.Count() > 0)
+                SelectedReferencePoint = ReferencePoints.First();
+
+            //set visibility
+            if (ReferencePoints.Count() > 0)
+                ReferencePointVisibility = Visibility.Visible;
+            else
+                ReferencePointVisibility = Visibility.Collapsed;
+        }
+
+
+
+
+
+
+
+
+
 
         // SelectedReferencePoint changed from dropdown list
         private void SelectedReferencePointChanged()

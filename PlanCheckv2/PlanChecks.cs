@@ -57,15 +57,17 @@ namespace VMS.TPS
 			public static string Orientation = "Patient Orientation";
 			public static string Prescription = "Plan Prescription";
 			public static string Hotspot = "Hotspot";
+            public static String PlanNameLaterality = "Laterality Naming Convention";
 
-			//This is the display order
-			public static List<string> Tests = new List<string>
-			{
-				Machine,
-				DoseRates,
-				SelectedCT,
-				Orientation,
-				Target,
+            //This is the display order
+            public static List<string> Tests = new List<string>
+            {
+                Machine,
+                DoseRates,
+                SelectedCT,
+                Orientation,
+                Target,
+                PlanNameLaterality,
 				Hotspot,
 				PlanApproval,
 				Prescription,
@@ -160,7 +162,8 @@ namespace VMS.TPS
 			{TestNames.Orientation, new List<string>{ } },
 			{TestNames.Prescription, new List<string>{ } },
 			{TestNames.JawTracking, new List<string>{ MachineDisplayNames.CENEX, MachineDisplayNames.CLAEX, MachineDisplayNames.DETIX, MachineDisplayNames.FARIX, MachineDisplayNames.LANIX, MachineDisplayNames.LAPIX, MachineDisplayNames.MACIX, MachineDisplayNames.NOREX, MachineDisplayNames.NORIX, MachineDisplayNames.OWOIX } },
-			{TestNames.Hotspot, new List<string>{ } }
+			{TestNames.Hotspot, new List<string>{ } },
+            {TestNames.PlanNameLaterality, new List<string>{} }
 		};
 	}
 
@@ -210,49 +213,51 @@ namespace VMS.TPS
 
 		private void RunTest(string test)
 		{
-			if (test == Globals.TestNames.FieldNames)
-				CheckFieldNames();
-			else if (test == Globals.TestNames.DoseRates)
-				CheckDoseRates();
-			else if (test == Globals.TestNames.Isocenter)
-				CheckIsocenterPosition();
-			else if (test == Globals.TestNames.SelectedCT)
-				CheckCTSim();
-			else if (test == Globals.TestNames.Target)
-				CheckTargetPieces();
-			else if (test == Globals.TestNames.UseGated)
-				CheckForUseGated();
-			else if (test == Globals.TestNames.CouchValues)
-				CheckForCouchValues();
-			else if (test == Globals.TestNames.Machine)
-				CheckMachine();
-			else if (test == Globals.TestNames.ToleranceTables)
-				CheckToleranceTables();
-			else if (test == Globals.TestNames.Bolus)
-				CheckLinkedBolus();
-			else if (test == Globals.TestNames.CouchStructures)
-				CheckCouchStructures();
-			else if (test == Globals.TestNames.CalculationParameters)
-				CheckCalcParameters();
-			else if (test == Globals.TestNames.DRRs)
-				CheckDRRs();
-			else if (test == Globals.TestNames.PlanApproval)
-				PlanApproval();
-			else if (test == Globals.TestNames.CalcShifts)
-				CalcShifts();
-			else if (test == Globals.TestNames.Orientation)
-				CheckOrientation();
-			else if (test == Globals.TestNames.Prescription)
-				CheckPrescription();
-			else if (test == Globals.TestNames.JawTracking)
-				CheckForJawTracking();
-			else if (test == Globals.TestNames.Hotspot)
-				CheckHotspot();
-			else
-			{
-				ThrowNotImplemented();
-				throw new NotImplementedException($"No \"{test}\" test defined");
-			}
+            if (test == Globals.TestNames.FieldNames)
+                CheckFieldNames();
+            else if (test == Globals.TestNames.DoseRates)
+                CheckDoseRates();
+            else if (test == Globals.TestNames.Isocenter)
+                CheckIsocenterPosition();
+            else if (test == Globals.TestNames.SelectedCT)
+                CheckCTSim();
+            else if (test == Globals.TestNames.Target)
+                CheckTargetPieces();
+            else if (test == Globals.TestNames.UseGated)
+                CheckForUseGated();
+            else if (test == Globals.TestNames.CouchValues)
+                CheckForCouchValues();
+            else if (test == Globals.TestNames.Machine)
+                CheckMachine();
+            else if (test == Globals.TestNames.ToleranceTables)
+                CheckToleranceTables();
+            else if (test == Globals.TestNames.Bolus)
+                CheckLinkedBolus();
+            else if (test == Globals.TestNames.CouchStructures)
+                CheckCouchStructures();
+            else if (test == Globals.TestNames.CalculationParameters)
+                CheckCalcParameters();
+            else if (test == Globals.TestNames.DRRs)
+                CheckDRRs();
+            else if (test == Globals.TestNames.PlanApproval)
+                PlanApproval();
+            else if (test == Globals.TestNames.CalcShifts)
+                CalcShifts();
+            else if (test == Globals.TestNames.Orientation)
+                CheckOrientation();
+            else if (test == Globals.TestNames.Prescription)
+                CheckPrescription();
+            else if (test == Globals.TestNames.JawTracking)
+                CheckForJawTracking();
+            else if (test == Globals.TestNames.Hotspot)
+                CheckHotspot();
+            else if (test == Globals.TestNames.PlanNameLaterality)
+                CheckPlanNameLaterality();
+            else
+            {
+                ThrowNotImplemented();
+                throw new NotImplementedException($"No \"{test}\" test defined");
+            }
 		}
 
 
@@ -1789,46 +1794,54 @@ namespace VMS.TPS
         {
             PlanSetupApprovalStatus approvalStatus = _context.PlanSetup.ApprovalStatus;
 
-            //get plan target for reviewed status
-            Structure planTarget = null;
-            if (_context.StructureSet.Structures.Where(x => x.Id == _context.PlanSetup.TargetVolumeID).Count() > 0)
-                planTarget = _context.StructureSet.Structures.Where(x => x.Id == _context.PlanSetup.TargetVolumeID).First();
-            //get approval of plan target or image set if there is no target
-            string reviewedUserName = planTarget != null ? planTarget.HistoryUserName : _context.StructureSet.Image.HistoryUserName;
-            string reviewedUserNameMinusDomain = reviewedUserName.Substring(reviewedUserName.IndexOf('\\') + 1);
-            //check approval user name against physician list
-            string department = Globals.TreatmentUnits.Where(x => x.Value == _selectedMachineUI).Select(x => x.Key).First().Substring(0, 3);
-
             Result = "";
             ResultDetails = $"Status: {AddSpacesToSentence(approvalStatus.ToString())}";
             ResultColor = "LimeGreen";
-            TestExplanation = "Displays plan approval\nAlso checks that plan has been reviewed by a physician\nReviewed timestamp is estimated based on target structure or CT image approval";
+            TestExplanation = "Displays plan approval and checks that plan has been reviewed by a physician";
 
-            //check approval user name against physician list
-            if (Globals.RadOncUserNames.Where(x => x.Item1 == department).First().Item2.First() != "")
+            if (approvalStatus != PlanSetupApprovalStatus.ExternallyApproved && approvalStatus != PlanSetupApprovalStatus.PlanningApproved && approvalStatus != PlanSetupApprovalStatus.Reviewed && approvalStatus != PlanSetupApprovalStatus.TreatmentApproved)
+                return;
+            if (_context.PlanSetup.ApprovalHistory.Where(x => x.ApprovalStatus == PlanSetupApprovalStatus.Reviewed).Count() == 0)
             {
-                if (!Globals.RadOncUserNames.Where(x => x.Item1 == department).First().Item2.Contains(reviewedUserNameMinusDomain))
+                ResultColor = "Gold";
+                Result = "Verify that a physician \"reviewed\" the plan";
+            }
+            else
+            {
+                //get plan target for reviewed status
+                Structure planTarget = null;
+                if (_context.StructureSet.Structures.Where(x => x.Id == _context.PlanSetup.TargetVolumeID).Count() > 0)
+                    planTarget = _context.StructureSet.Structures.Where(x => x.Id == _context.PlanSetup.TargetVolumeID).First();
+                //get user who marked plan as "Reviewed"
+                ApprovalHistoryEntry reviewedHistoryEntry = _context.PlanSetup.ApprovalHistory.Where(x => x.ApprovalStatus == PlanSetupApprovalStatus.Reviewed).First();
+                string reviewedUserName = reviewedHistoryEntry.UserId;
+                string reviewedDateTime = reviewedHistoryEntry.ApprovalDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt");
+                string reviewedUserNameMinusDomain = reviewedUserName.Substring(reviewedUserName.IndexOf('\\') + 1);
+                //check approval user name against physician list
+                string department = Globals.TreatmentUnits.Where(x => x.Value == _selectedMachineUI).Select(x => x.Key).First().Substring(0, 3);
+
+                //check approval user name against physician list
+                if (Globals.RadOncUserNames.Where(x => x.Item1 == department).First().Item2.First() != "")
                 {
-                    ResultColor = "Gold";
-                    Result = "Verify that there is a physician approval on the plan";
+                    if (!Globals.RadOncUserNames.Where(x => x.Item1 == department).First().Item2.Contains(reviewedUserNameMinusDomain))
+                    {
+                        ResultColor = "Gold";
+                        Result = "Verify that a physician \"reviewed\" the plan";
+                    }
                 }
+
+                ResultDetails += $"\nReviewed by: {reviewedUserName} at {reviewedDateTime}";
             }
 
             //add approval text
             if (approvalStatus == PlanSetupApprovalStatus.TreatmentApproved)
             {
-                ResultDetails += $"\nReviewed by: {reviewedUserName} at {_context.PlanSetup.StructureSet.Image.HistoryDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt")}";
                 ResultDetails += $"\nPlanning Approved by: {_context.PlanSetup.PlanningApprover} at {_context.PlanSetup.PlanningApprovalDate}";
                 ResultDetails += $"\nTreatment Approved by {_context.PlanSetup.TreatmentApprover} at {_context.PlanSetup.TreatmentApprovalDate}";
             }
             else if (approvalStatus == PlanSetupApprovalStatus.PlanningApproved)
             {
-                ResultDetails += $"\nReviewed by: {_context.PlanSetup.StructureSet.Image.HistoryUserName} at {_context.PlanSetup.StructureSet.Image.HistoryDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt")}";
                 ResultDetails += $"\nPlanning Approved by: {_context.PlanSetup.PlanningApprover} at {_context.PlanSetup.PlanningApprovalDate}";
-            }
-            else if (approvalStatus == PlanSetupApprovalStatus.Reviewed)
-            {
-                ResultDetails += $"\nReviewed by: {_context.PlanSetup.StructureSet.Image.HistoryUserName} at {_context.PlanSetup.StructureSet.Image.HistoryDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt")}";
             }
         }
 
@@ -1955,11 +1968,23 @@ namespace VMS.TPS
 		/// Checks plan prescription against Aria prescription
 		/// </summary>
 		public void CheckPrescription()
-		{
+        {
+            TestExplanation = "Displays plan dose information from Eclipse and checks it versus the prescription in Aria";
 
+            PlanSetup plan = _context.PlanSetup;
+            RTPrescriptionTarget rx = null;
 
-			PlanSetup plan = _context.PlanSetup;
-            RTPrescriptionTarget rx = plan.RTPrescription.Targets.OrderByDescending(x => x.DosePerFraction * x.NumberOfFractions).First();
+            try
+            {
+                rx = plan.RTPrescription.Targets.OrderByDescending(x => x.DosePerFraction * x.NumberOfFractions).First();
+            }
+            catch
+            {
+                Result = "";
+                ResultDetails = "No prescription attached to plan";
+                ResultColor = "Gold";
+                return;
+            }
 
             if ((plan.NumberOfFractions != rx.NumberOfFractions || plan.DosePerFraction != rx.DosePerFraction))
             {
@@ -1973,16 +1998,275 @@ namespace VMS.TPS
                 ResultDetails = $"{plan.DosePerFraction.ToString()} x {plan.NumberOfFractions} Fx = {plan.TotalDose.ToString()}\nPrescribed Percentage: {(plan.TreatmentPercentage * 100.0).ToString("0.0")}%\nPlan Normalization: {plan.PlanNormalizationValue.ToString("0.0")}%";
                 ResultColor = "LimeGreen";
             }
-			TestExplanation = "Displays plan dose information from Eclipse and checks it versus the prescription in Aria";
 		}
+        public void CheckPlanNameLaterality()
+        {
+            TestExplanation = "Checks the first letter of the plan id, Rx, and reference point for L or R and compares target center vs. body center to see if designation is correct";
+            PlanSetup plan = _context.PlanSetup;
+            bool planHasLaterality;
+            string midlineEstimateStructure = "";
+            try
+            {
+                
+                // Get First Characters
+                string rxFirstCharacters = plan.RTPrescription.Id.Substring(0,2).ToUpper();
+                string planFirstCharacters = plan.Id.Substring(0, 2).ToUpper();
+
+                // Parse out the Reference point (find laterality assuming there is a "DPV" in there.
+                string refPtFirstCharacters = plan.PrimaryReferencePoint.Id.Substring(0, 2);
+
+                ResultDetails = $"In, Patient in {plan.TreatmentOrientation.ToString()}";
+                ResultColor = "LightBlue";
+
+
+                // See if it is a laterality descripter or just a name (e.g. "L_" <-Left vs "Lu" <-Lung)
+                // If either the plan or rx has a laterality descripter set "planHasLaterality to "True"
+                if(rxFirstCharacters.Equals("L ")|| rxFirstCharacters.Equals("L_")|| rxFirstCharacters.Equals("L-") || rxFirstCharacters.Equals("R ") || rxFirstCharacters.Equals("R_") || rxFirstCharacters.Equals("R-") || rxFirstCharacters.Equals("LT") || rxFirstCharacters.Equals("RT"))
+                {
+                    planHasLaterality = true;
+                    planFirstCharacters = planFirstCharacters.Substring(0, 1);
+                    rxFirstCharacters = rxFirstCharacters.Substring(0, 1);
+                    ResultDetails += $"rx Characters have matched, plan={planFirstCharacters}, rx={rxFirstCharacters}";
+                }
+                else if (planFirstCharacters.Equals("L ") || planFirstCharacters.Equals("L_") || planFirstCharacters.Equals("L-")|| planFirstCharacters.Equals("R ") || planFirstCharacters.Equals("R_") || planFirstCharacters.Equals("R-") || planFirstCharacters.Equals("LT") || planFirstCharacters.Equals("RT"))
+                {
+                    planHasLaterality = true;
+                    planFirstCharacters = planFirstCharacters.Substring(0, 1);
+                    rxFirstCharacters = rxFirstCharacters.Substring(0, 1);
+                    ResultDetails += "plan Characters have matched, ";
+                }
+                else
+                {
+                    planHasLaterality = false;
+                    ResultDetails += "script didn't find laterality, ";
+                }
+
+
+                // Check to make sure
+                // Check which side the target is on !!!! NEED TO CHECK PATIENT POSITION
+                PatientOrientation patientPosition = plan.TreatmentOrientation;
+                var targetStucture = plan.StructureSet.Structures.FirstOrDefault(s => s.Id == plan.TargetVolumeID);
+                var bodyStructure = plan.StructureSet.Structures.FirstOrDefault(s => s.Id == "Body");
+                var targetX = targetStucture.CenterPoint.x;
+                double midlineX;
+
+                //
+                if (plan.StructureSet.Structures.FirstOrDefault(s => s.Id == "Brain").HasSegment)
+                {
+                    midlineX = plan.StructureSet.Structures.FirstOrDefault(s => s.Id == "Brain").CenterPoint.x;
+                    ResultDetails += " using the brain for center, ";
+                    midlineEstimateStructure = "Brain";
+                }
+                else if (plan.StructureSet.Structures.FirstOrDefault(s => s.Id == "SpinalCord").HasSegment)
+                {
+                    midlineX = plan.StructureSet.Structures.FirstOrDefault(s => s.Id == "SpinalCord").CenterPoint.x;
+                    ResultDetails += " using the spinalcord for center, ";
+                    midlineEstimateStructure = "SpinalCord";
+                }
+                else if (plan.StructureSet.Structures.FirstOrDefault(s => s.Id == "Bladder").HasSegment) 
+                {
+                    midlineX = plan.StructureSet.Structures.FirstOrDefault(s => s.Id == "Bladder").CenterPoint.x;
+                    ResultDetails += " Using the Bladder for center, ";
+                    midlineEstimateStructure = "Bladder";
+                }
+                else
+                {
+                    midlineX = bodyStructure.CenterPoint.x;
+                    ResultDetails += " Using the Body for center, ";
+                    midlineEstimateStructure = "Body";
+                }
+
+                // Perform the verification
+                // If it has laterality check to see if it is correct, if it doesn't check to see if it is far from midline
+                if (planHasLaterality)
+                {
+                    if (!rxFirstCharacters.Equals(planFirstCharacters))
+                    {
+                        Result = "Plan // Rx Laterality mismatch.";
+                        ResultDetails= $"Plan Laterality {planFirstCharacters}, Rx Laterality: {rxFirstCharacters}.";
+                        ResultDetails += "\n\n Laterality tests not performed due to mismatch, please resolve and re-run plan check";
+                        ResultColor = "Red";
+                    }
+                    else if (patientPosition == PatientOrientation.HeadFirstSupine)
+                    {
+                        if (targetX > midlineX) // Target is on the left
+                        {
+                            if (planFirstCharacters.Equals("L"))
+                            {
+                                ResultDetails = $"Target is on the Left, plan and rx names begin with {planFirstCharacters}. \n " +
+                                    $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "LimeGreen";
+                            }
+                            else
+                            {
+                                Result = "Warning";
+                                ResultDetails += "Target estimated to be on left side, Rx and Plan first character is not L\n" +
+                                     $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "Gold";
+                            }
+                        }
+                        else // Target estimated to be on right
+                        {
+                            if (planFirstCharacters.Equals("R"))
+                            {
+                                ResultDetails = $"Target is on the Right, plan and rx names begin with {planFirstCharacters}. \n " +
+                                    $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "LimeGreen";
+                            }
+                            else
+                            {
+                                Result = "Warning";
+                                ResultDetails += "Target estimated to be on Right side, Rx and Plan first character is not R\n" +
+                                     $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "Gold";
+                            }
+                        }
+                    }
+                    else if (patientPosition == PatientOrientation.HeadFirstProne)
+                    {
+                        if (targetX > midlineX) // Target is on the right (HFP)
+                        {
+                            if (planFirstCharacters.Equals("R"))
+                            {
+                                ResultDetails = $"Target is on the Right, plan and rx names begin with {planFirstCharacters}. \n " +
+                                    $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "LimeGreen";
+                            }
+                            else
+                            {
+                                Result = "Warning";
+                                ResultDetails += "Target estimated to be on Right side, Rx and Plan first character is not R\n" +
+                                     $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "Gold";
+                            }
+                            
+                        }
+                        else // Target estimated to be on Left (HFP)
+                        {
+                            if (planFirstCharacters.Equals("L"))
+                            {
+                                ResultDetails = $"Target is on the Left, plan and rx names begin with {planFirstCharacters}. \n " +
+                                    $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "LimeGreen";
+                            }
+                            else
+                            {
+                                Result = "Warning";
+                                ResultDetails += "Target estimated to be on left side, Rx and Plan first character is not L\n" +
+                                     $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "Gold";
+                            }
+                        }
+                    }
+                    else if (patientPosition == PatientOrientation.FeetFirstSupine)
+                    {
+                        if (targetX > midlineX) // Target is on the right (FFS)
+                        {
+                            if (planFirstCharacters.Equals("R"))
+                            {
+                                ResultDetails = $"Target is on the Right, plan and rx names begin with {planFirstCharacters}. \n " +
+                                    $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "LimeGreen";
+                            }
+                            else
+                            {
+                                Result = "Warning";
+                                ResultDetails += "Target estimated to be on Right side, Rx and Plan first character is not R\n" +
+                                     $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "Gold";
+                            }
+
+                        }
+                        else // Target estimated to be on Left (FFS)
+                        {
+                            if (planFirstCharacters.Equals("L"))
+                            {
+                                ResultDetails = $"Target is on the Left, plan and rx names begin with {planFirstCharacters}. \n " +
+                                    $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "LimeGreen";
+                            }
+                            else
+                            {
+                                Result = "Warning";
+                                ResultDetails += "Target estimated to be on left side, Rx and Plan first character is not L\n" +
+                                     $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "Gold";
+                            }
+                        }
+                    }
+                    else if (patientPosition == PatientOrientation.FeetFirstProne)
+                    {
+                        if (targetX > midlineX) // Target is on the left
+                        {
+                            if (planFirstCharacters.Equals("L"))
+                            {
+                                ResultDetails = $"Target is on the Left, plan and rx names begin with {planFirstCharacters}. \n " +
+                                    $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "LimeGreen";
+                            }
+                            else
+                            {
+                                Result = "Warning";
+                                ResultDetails += "Target estimated to be on left side, Rx and Plan first character is not L\n" +
+                                     $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "Gold";
+                            }
+                        }
+                        else // Target estimated to be on right
+                        {
+                            if (planFirstCharacters.Equals("R"))
+                            {
+                                ResultDetails = $"Target is on the Right, plan and rx names begin with {planFirstCharacters}. \n " +
+                                    $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "LimeGreen";
+                            }
+                            else
+                            {
+                                Result = "Warning";
+                                ResultDetails += "Target estimated to be on Right side, Rx and Plan first character is not R\n" +
+                                     $"Midline estimate based on Structure: {midlineEstimateStructure}";
+                                ResultColor = "Gold";
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        Result = "Unable to Check: Patient orientation not matched";
+                        ResultDetails = "Check currently works for HFS, HFP, FFS, FFP only";
+                        ResultColor = "Gold";
+                    }
+                       
+                }
+            }
+            catch
+            {
+                Result = "";
+                ResultDetails = "Test Failed to Run";
+                ResultColor = "Gold";
+            }
+        }
 
         /// <summary>
         /// Checks if the hotspot is inside of the plan target
         /// </summary>
 		public void CheckHotspot()
-		{
-			PlanSetup plan = _context.PlanSetup;
-			Structure target = plan.StructureSet.Structures.First(s => s.Id == plan.TargetVolumeID);
+        {
+            TestExplanation = "Checks to see if the hotspot is inside of the plan target";
+
+            PlanSetup plan = _context.PlanSetup;
+            Structure target = null;
+            try
+            {
+                target = plan.StructureSet.Structures.First(s => s.Id == plan.TargetVolumeID);
+            }
+            catch
+            {
+                Result = "";
+                ResultDetails = "No plan target";
+                ResultColor = "Gold";
+                return;
+            }
 
 			if (plan.IsDoseValid)
 			{
@@ -1998,8 +2282,6 @@ namespace VMS.TPS
 				ResultDetails = "Dose has not been calculated";
 				ResultColor = "Gold";
 			}
-
-			TestExplanation = "Checks to see if the hotspot is inside of the plan target";
 		}
 
 		public void CheckCollisions()
@@ -2131,5 +2413,25 @@ namespace VMS.TPS
 				handler(this, new PropertyChangedEventArgs(name));
 			}
 		}
+
+
+
+
+
+
+
+
+
+        private void testing()
+        {
+            Patient patient = _context.Patient;
+            Course course = _context.Course;
+            ExternalPlanSetup plan = course.AddExternalPlanSetup(_context.StructureSet);
+            ExternalBeamMachineParameters param = new ExternalBeamMachineParameters("TB2681", "6X", 600, "ARC", "");
+            plan.AddConformalArcBeam(param, 0, 180, 179.9, 180.1, GantryDirection.CounterClockwise, 0, _context.StructureSet.Structures.Where(s => s.Id == plan.TargetVolumeID).First().CenterPoint);
+            //plan.Beams.First().GetEditableParameters().
+
+            
+        }
 	}
 }
