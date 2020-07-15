@@ -24,7 +24,9 @@ namespace VMS.TPS
 			public static string FARIX = "FAR - iX";
 			public static string FLTFTB = "FLT - Front TrueBeam";
 			public static string FLTBTB = "FLT - Back TrueBeam";
-			public static string LANIX = "LAN - iX";
+            public static string FLTPG1 = "FLT - Proton Gantry Room 1";
+            public static string FLTPG2 = "FLT - Proton Gantry Room 2";
+            public static string LANIX = "LAN - iX";
 			public static string LAPIX = "LAP - iX";
 			public static string MACTB = "MAC - TrueBeam";
 			public static string MACIX = "MAC - Trilogy";
