@@ -42,15 +42,15 @@ namespace VMS.TPS
         /// </summary>
         protected abstract List<string> MachineExemptions { get; }
 
-        public void RunTestNew(PlanSetup plan, List<string> exemptions)
+        public PlanCheck(PlanSetup plan)
         {
             if (plan.Beams.Count() < 1)
-            { 
+            {
                 MessageBox.Show("Plan must contain at least one beam", "No Beams", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new Exception("Plan must contain at least one beam");
             }
 
-            else if (!exemptions.Contains(plan.Beams.First().TreatmentUnit.Id))   // Planned machine isn't in the list of test exceptions
+            else if (!MachineExemptions.Contains(plan.Beams.First().TreatmentUnit.Id))   // Planned machine isn't in the list of test exceptions
                 RunTest(plan);
         }
 

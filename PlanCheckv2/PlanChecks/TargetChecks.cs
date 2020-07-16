@@ -11,12 +11,8 @@ namespace VMS.TPS.PlanChecks
     class TargetChecks : PlanCheck
 	{
 		protected override List<string> MachineExemptions => new List<string> { };
-		//public TargetChecks(PlanSetup plan) : base(plan, MachineExemptions) { }
 
-		public void RunTestWithExemptions(PlanSetup plan)
-        {
-			RunTestNew(plan, MachineExemptions);
-        }
+		public TargetChecks(PlanSetup plan) : base(plan) { }
 
         protected override void RunTest(PlanSetup plan)
 		{

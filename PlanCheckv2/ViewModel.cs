@@ -100,22 +100,8 @@ namespace VMS.TPS
         private void RunPlanChecks()
         {
             PlanChecksNew = new ObservableCollection<PlanCheck>();
-            PlanChecksNew.Add(new TargetChecks());
-            (PlanChecksNew.First() as TargetChecks).RunTestWithExemptions(_context.PlanSetup);
 
-
-            ////check that each test should be run for this machine
-            //foreach (string test in Globals.TestNames.Tests)
-            //{
-            //    if (!Globals.Exemptions[test].Contains(Globals.TreatmentUnits.Where(x => x.Value == SelectedTreatmentUnit).Select(x => x.Key).First()))
-            //        PlanChecks.Add(new PlanCheckOld(test, SelectedTreatmentUnit, _context));
-            //}
-
-            ////display a warning if the incorrect machine is chosen from the dropdown
-            //if (SelectedTreatmentUnit != _context.PlanSetup.Beams.First().TreatmentUnit.Id)
-            //    SelectionWarning = $"Warning: Selected machine ({SelectedTreatmentUnit}) does not match planned machine ({_context.PlanSetup.Beams.First().TreatmentUnit.Id}), some checks may be invalid";
-            //else
-            //    SelectionWarning = "";
+            PlanChecksNew.Add(new TargetChecks(_context.PlanSetup));
         }
 
         // Populate reference points in the dropdown list
