@@ -7,7 +7,7 @@
     <ProjectGuid>{FDF18849-FB31-4826-9CB6-9183D2BE1B1A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>VMS.TPS</RootNamespace>
-    <AssemblyName>PlanCheck.esapi</AssemblyName>
+    <AssemblyName>PlanCheckTest01.esapi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -89,11 +89,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MROQCStructureCheck.cs" />
-    <Compile Include="MROQCWindow.xaml.cs">
+    <Compile Include="PlanChecks\PlanCheck.cs" />
+    <Compile Include="PlanChecks\TargetChecks.cs" />
+    <Compile Include="Views\MROQCWindow.xaml.cs">
       <DependentUpon>MROQCWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="OptimizationConstraint.cs" />
-    <Compile Include="OptimizationWindow.xaml.cs">
+    <Compile Include="Views\OptimizationWindow.xaml.cs">
       <DependentUpon>OptimizationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="PlanChecks.cs" />
@@ -101,19 +103,19 @@
     <Compile Include="Script.cs" />
     <Compile Include="SetupNote.cs" />
     <Compile Include="ViewModel.cs" />
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MROQCWindow.xaml">
+    <Page Include="Views\MROQCWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OptimizationWindow.xaml">
+    <Page Include="Views\OptimizationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

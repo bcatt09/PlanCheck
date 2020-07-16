@@ -8,6 +8,7 @@ using VMS.TPS.Common.Model.Types;
 using VMS.TPS.Common.Model.API;
 using System.Windows;
 using System.Collections.ObjectModel;
+using VMS.TPS.PlanChecks;
 
 namespace VMS.TPS
 {
@@ -15,7 +16,8 @@ namespace VMS.TPS
     {
         private ScriptContext _context;                                             //ScriptContext from Aria
         private Dictionary<string, string> _treatmentUnits;                         //list of treatment units for the dropdown
-        private ObservableCollection<PlanCheck> _planChecks;                        //list of plan checks and results to be displayed
+        private ObservableCollection<PlanCheckOld> _planChecks;                        //list of plan checks and results to be displayed
+        private ObservableCollection<PlanCheck> _planChecksNew;                        //list of plan checks and results to be displayed
         private List<Tuple<ReferencePoint, PlanSetup, string>> _referencePoints;    //list of reference points for the dropdown
         private ObservableCollection<ReferencePointTableEntry> _referencePointTable;//list of reference point info to be displayed
         private string _patientName;                                                //patient name
@@ -31,7 +33,8 @@ namespace VMS.TPS
         private Tuple<string, List<string>> _selectedMROQCTemplate;
 
         public Dictionary<string, string> TreatmentUnits { get { return _treatmentUnits; } set { _treatmentUnits = value; OnPropertyChanged("TreatmentUnits"); } }  //just for binding in the xaml
-        public ObservableCollection<PlanCheck> PlanChecks { get { return _planChecks; } set { _planChecks = value; OnPropertyChanged("PlanChecks"); } }
+        public ObservableCollection<PlanCheckOld> PlanChecks { get { return _planChecks; } set { _planChecks = value; OnPropertyChanged("PlanChecks"); } }
+        public ObservableCollection<PlanCheck> PlanChecksNew { get { return _planChecksNew; } set { _planChecksNew = value; OnPropertyChanged("PlanChecksNew"); } }
         public List<Tuple<ReferencePoint, PlanSetup, string>> ReferencePoints { get { return _referencePoints; } set { _referencePoints = value; OnPropertyChanged("ReferencePoints"); } }
         public ObservableCollection<ReferencePointTableEntry> ReferencePointTable { get { return _referencePointTable; } set { _referencePointTable = value; OnPropertyChanged("ReferencePointTable"); } }
         public string PatientName { get { return _patientName; } set { _patientName = value; OnPropertyChanged("PatientName"); } }
@@ -53,7 +56,7 @@ namespace VMS.TPS
             //create the treatment unit dropdown list
             TreatmentUnits = Globals.TreatmentUnits;
 
-            PlanChecks = new ObservableCollection<PlanCheck>();
+            PlanChecks = new ObservableCollection<PlanCheckOld>();
             MROQCChecks = new ObservableCollection<MROQCStructureCheck>();
 
             //plan information
@@ -96,18 +99,23 @@ namespace VMS.TPS
         // Run all tests
         private void RunPlanChecks()
         {
-            //check that each test should be run for this machine
-            foreach (string test in Globals.TestNames.Tests)
-            {
-                if (!Globals.Exemptions[test].Contains(Globals.TreatmentUnits.Where(x => x.Value == SelectedTreatmentUnit).Select(x => x.Key).First()))
-                    PlanChecks.Add(new PlanCheck(test, SelectedTreatmentUnit, _context));
-            }
+            PlanChecksNew = new ObservableCollection<PlanCheck>();
+            PlanChecksNew.Add(new TargetChecks());
+            (PlanChecksNew.First() as TargetChecks).RunTestWithExemptions(_context.PlanSetup);
 
-            //display a warning if the incorrect machine is chosen from the dropdown
-            if (SelectedTreatmentUnit != _context.PlanSetup.Beams.First().TreatmentUnit.Id)
-                SelectionWarning = $"Warning: Selected machine ({SelectedTreatmentUnit}) does not match planned machine ({_context.PlanSetup.Beams.First().TreatmentUnit.Id}), some checks may be invalid";
-            else
-                SelectionWarning = "";
+
+            ////check that each test should be run for this machine
+            //foreach (string test in Globals.TestNames.Tests)
+            //{
+            //    if (!Globals.Exemptions[test].Contains(Globals.TreatmentUnits.Where(x => x.Value == SelectedTreatmentUnit).Select(x => x.Key).First()))
+            //        PlanChecks.Add(new PlanCheckOld(test, SelectedTreatmentUnit, _context));
+            //}
+
+            ////display a warning if the incorrect machine is chosen from the dropdown
+            //if (SelectedTreatmentUnit != _context.PlanSetup.Beams.First().TreatmentUnit.Id)
+            //    SelectionWarning = $"Warning: Selected machine ({SelectedTreatmentUnit}) does not match planned machine ({_context.PlanSetup.Beams.First().TreatmentUnit.Id}), some checks may be invalid";
+            //else
+            //    SelectionWarning = "";
         }
 
         // Populate reference points in the dropdown list

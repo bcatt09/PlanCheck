@@ -21,12 +21,12 @@
         <TextBlock HorizontalAlignment="Right" Margin="0,31,20,0" Text="{Binding SelectionWarning}" VerticalAlignment="Top" Foreground="Tomato" Width="350" TextWrapping="Wrap" TextAlignment="Right"/>
 
 		<StackPanel Orientation="Horizontal">
-			<DataGrid Name="TestsGrid" Margin="20, 60, 20, 20" Width="auto" Height="auto" ItemsSource="{Binding PlanChecks}" SelectedItem="{Binding SelectedRows}" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" Background="AliceBlue" MouseLeftButtonUp="dataGridMouseLeftButton" HorizontalScrollBarVisibility="Disabled">
+			<DataGrid Name="TestsGrid" Margin="20, 60, 20, 20" Width="auto" Height="auto" ItemsSource="{Binding PlanChecksNew}" SelectedItem="{Binding SelectedRows}" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" Background="AliceBlue" MouseLeftButtonUp="dataGridMouseLeftButton" HorizontalScrollBarVisibility="Disabled">
 				<DataGrid.Columns>
 					<DataGridTemplateColumn Header="Test" Width="auto" MinWidth="150">
 						<DataGridTemplateColumn.CellTemplate>
 							<DataTemplate>
-								<TextBlock Text="{Binding Test}" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,5,5,5"/>
+								<TextBlock Text="{Binding DisplayName}" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,5,5,5"/>
 							</DataTemplate>
 						</DataGridTemplateColumn.CellTemplate>
 						<DataGridTemplateColumn.HeaderStyle>

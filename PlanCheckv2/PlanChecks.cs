@@ -172,7 +172,7 @@ namespace VMS.TPS
 		}
 	}
 
-	public class PlanCheck : INotifyPropertyChanged
+	public class PlanCheckOld : INotifyPropertyChanged
 	{
 		private ScriptContext _context;
 		private string _machine;			//machine used in planning
@@ -189,7 +189,7 @@ namespace VMS.TPS
 		public string ResultColor { get { return _resultColor; } set { _resultColor = value; OnPropertyChanged("ResultColor"); } }
 		public string TestExplanation { get { return _testExplanation; } set { _testExplanation = value; OnPropertyChanged("TestExplanation"); } }
 
-		public PlanCheck(string test, string selectedTreatmentUnit, ScriptContext context)
+		public PlanCheckOld(string test, string selectedTreatmentUnit, ScriptContext context)
 		{
 			_context = context;
 			_machine = context.PlanSetup.Beams.First().TreatmentUnit.Id;
