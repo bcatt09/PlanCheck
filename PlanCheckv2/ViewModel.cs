@@ -9,6 +9,8 @@ using VMS.TPS.Common.Model.API;
 using System.Windows;
 using System.Collections.ObjectModel;
 using VMS.TPS.PlanChecks;
+using NLog;
+using NLog.Fluent;
 
 namespace VMS.TPS
 {
@@ -43,6 +45,8 @@ namespace VMS.TPS
         public List<Tuple<string, List<string>>> MROQCTemplates { get { return _mroqcTemplates; } set { _mroqcTemplates = value; OnPropertyChanged("MROQCTemplates"); } }
         public Tuple<string, List<string>> SelectedMROQCTemplate { get { return _selectedMROQCTemplate; } set { _selectedMROQCTemplate = value; SelectedMROQCTemplateChanged(); OnPropertyChanged("SelectedMROQCTemplate"); } }
 
+        private static readonly Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public ViewModel(ScriptContext context)
         {
             _context = context;
@@ -55,6 +59,8 @@ namespace VMS.TPS
             CourseID = context.Course.Id;
             PlanID = context.PlanSetup.Id;
 
+            MyLogger.Initialize(context);
+
             RunPlanChecks();
 
             //populate reference points dropdown
@@ -62,6 +68,10 @@ namespace VMS.TPS
 
             //setup optimization constraints dataset
             //PopulateOptimizationConstraints();
+
+            logger.Info("Completed");
+
+            NLog.LogManager.Shutdown();
         }
 
         // Run all tests

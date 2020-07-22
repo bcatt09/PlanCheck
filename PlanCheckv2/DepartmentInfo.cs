@@ -200,14 +200,14 @@ namespace VMS.TPS
 		{
 			public static readonly List<string> BAY = new List<string> { "" };
 			public static readonly List<string> CEN = new List<string> { "" };
-			public static readonly List<string> CLA = new List<string> { "afrazier", "sfranklin", "mjohnson5", "nbhatt" };
+			public static readonly List<string> CLA = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> DET = new List<string> { "" };
 			public static readonly List<string> FAR = new List<string> { "" };
 			public static readonly List<string> FLT = new List<string> { "heshamg", "jackn", "kirand", "ogayar" };
 			public static readonly List<string> LAN = new List<string> { "abhatt1" };
 			public static readonly List<string> LAP = new List<string> { "heshamg", "jackn", "kirand", "ogayar" };
-			public static readonly List<string> MAC = new List<string> { "afrazier", "sfranklin", "mjohnson5", "nbhatt" };
-			public static readonly List<string> MPH = new List<string> { "afrazier", "sfranklin", "mjohnson5", "nbhatt" };
+			public static readonly List<string> MAC = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
+			public static readonly List<string> MPH = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> NOR = new List<string> { "" };
 			public static readonly List<string> OWO = new List<string> { "heshamg", "jackn", "kirand", "ogayar" };
 		}

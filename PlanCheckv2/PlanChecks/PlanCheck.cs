@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -55,6 +56,8 @@ namespace VMS.TPS.PlanChecks
         /// </summary>
         protected Department Department { get; }
 
+        protected static readonly Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public PlanCheck(PlanSetup plan)
         {
             if (plan.Beams.Count() < 1)
@@ -67,7 +70,16 @@ namespace VMS.TPS.PlanChecks
             Department = DepartmentInfo.GetDepartment(MachineID);
 
             if (!MachineExemptions.Contains(plan.Beams.First().TreatmentUnit.Id))   // Planned machine isn't in the list of test exceptions
-                RunTest(plan);
+            {
+                try
+                {
+                    RunTest(plan);
+                }
+                catch (Exception e)
+                {
+                    logger.Error($"{DisplayName} - {e.Message}");
+                }
+            }
         }
 
         /// <summary>
@@ -82,7 +94,7 @@ namespace VMS.TPS.PlanChecks
         /// <param name="message"></param>
         protected void TestCouldNotComplete(string message)
         {
-            //ESAPILog.Entry(_context, "PlanCheck", message);
+            logger.Error(message);
 
             Result = "Failure - Test could not be run";
             ResultDetails = message;
