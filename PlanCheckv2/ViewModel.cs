@@ -11,6 +11,8 @@ using System.Collections.ObjectModel;
 using VMS.TPS.PlanChecks;
 using NLog;
 using NLog.Fluent;
+using System.Reflection;
+using System.IO;
 
 namespace VMS.TPS
 {
@@ -79,6 +81,7 @@ namespace VMS.TPS
         {
             PlanChecks = new ObservableCollection<PlanCheck>();
 
+            // Run all plan checks
             PlanChecks.Add(new MachineChecks(_context.PlanSetup));
             PlanChecks.Add(new DoseRateChecks(_context.PlanSetup));
             PlanChecks.Add(new CTSimChecks(_context.PlanSetup));
@@ -98,6 +101,10 @@ namespace VMS.TPS
             PlanChecks.Add(new DRRChecks(_context.PlanSetup));
             PlanChecks.Add(new UseGatedChecks(_context.PlanSetup));
             PlanChecks.Add(new CalcParametersChecks(_context.PlanSetup));
+
+            // Remove any plan checks that were not run
+            foreach (var p in PlanChecks.Where(x => x.MachineExempt).ToList())
+                PlanChecks.Remove(p);
         }
 
         // Populate reference points in the dropdown list

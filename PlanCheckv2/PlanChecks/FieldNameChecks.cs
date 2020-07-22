@@ -73,7 +73,7 @@ namespace VMS.TPS.PlanChecks
                     if (field.ControlPoints.First().PatientSupportAngle != 0)
 					{
 						//field name matching pattern: g125 with or without a space or "_" between
-						string fieldNamePedestal = "(?i)p_? ?" + Math.Round(field.PatientSupportAngleToUser(field.ControlPoints.First().PatientSupportAngle), 0).ToString();
+						string fieldNamePedestal = "(?i)(p|t)_? ?" + Math.Round(field.PatientSupportAngleToUser(field.ControlPoints.First().PatientSupportAngle), 0).ToString();
 
 						if (!Regex.IsMatch(field.Id, fieldNamePedestal))
 						{

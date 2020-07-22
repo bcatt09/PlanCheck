@@ -208,7 +208,7 @@ namespace VMS.TPS
 			public static readonly List<string> LAP = new List<string> { "heshamg", "jackn", "kirand", "ogayar" };
 			public static readonly List<string> MAC = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> MPH = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
-			public static readonly List<string> NOR = new List<string> { "" };
+			public static readonly List<string> NOR = new List<string> { "ikaufman", "rhmg27" };
 			public static readonly List<string> OWO = new List<string> { "heshamg", "jackn", "kirand", "ogayar" };
 		}
 

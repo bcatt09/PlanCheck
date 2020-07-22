@@ -16,6 +16,7 @@ namespace VMS.TPS.PlanChecks
 
         protected override void RunTest(PlanSetup plan)
         {
+			DisplayName = "Dose Rate";
 			ResultDetails = "";
 			TestExplanation = "Checks that all dose rates are set to maximum allowed per department standards";
 
@@ -306,6 +307,37 @@ namespace VMS.TPS.PlanChecks
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
 								ResultColor = "Gold";
 							}
+						}
+					}
+				}
+
+				//no problems found
+				if (ResultDetails == "")
+				{
+					Result = "";
+					ResultDetails = plan.Beams.Where(x => !x.IsSetupField).First().DoseRate.ToString();
+					ResultColor = "LimeGreen";
+				}
+
+				ResultDetails = ResultDetails.TrimEnd('\n');
+			}
+            #endregion
+
+            #region Northern
+            // 600 for everything
+            else if (Department == Department.NOR)
+			{
+				foreach (Beam field in plan.Beams)
+				{
+					//ignore setup fields
+					if (!field.IsSetupField)
+					{
+
+						if (field.DoseRate < 600)
+						{
+							Result = "Warning";
+							ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
+							ResultColor = "Gold";
 						}
 					}
 				}

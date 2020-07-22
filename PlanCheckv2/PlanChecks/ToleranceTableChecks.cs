@@ -221,8 +221,46 @@ namespace VMS.TPS.PlanChecks
 			}
             #endregion
 
-            else
-                TestNotImplemented();
+            #region Northern
+            else if (Department == Department.NOR)
+			{
+				//Check each field to make sure they're the same
+				foreach (Beam field in plan.Beams)
+				{
+					if (field.IsSetupField)
+					{
+						if (field.ToleranceTableLabel != "IGRT")
+						{
+							Result = "Warning";
+							ResultDetails = "IGRT tolerance table not chosen for setup field";
+							ResultColor = "Gold";
+							break;
+						}
+					}
+					else
+					{
+						if (ResultDetails == "")
+							ResultDetails = field.ToleranceTableLabel;
+						else if (ResultDetails != field.ToleranceTableLabel)
+						{
+							Result = "Warning";
+							ResultDetails = "Not all fields have the same tolerance table";
+							ResultColor = "Gold";
+						}
+					}
+				}
+
+                //no issues found
+                if (Result == "")
+				{
+					Result = "";
+					ResultColor = "LimeGreen";
+				}
+			}
+			#endregion
+
+			else
+				TestNotImplemented();
 		}
     }
 }

@@ -194,6 +194,34 @@ namespace VMS.TPS.PlanChecks
 			}
             #endregion
 
+			#region Northern
+            else if (Department == Department.NOR)
+			{
+				if (couchStructure)
+				{
+					if (couchName == "BrainLab - iBeam Couch")
+					{
+						Result = "";
+						AddCouchStructureInfo(couchName, couchStructures);
+					}
+					else
+					{
+						Result = "Warning";
+						ResultDetails = "BrainLab couch structures not inserted, please check that correct couch is inserted";
+
+						AddCouchStructureInfo(couchName, couchStructures);
+					}
+				}
+				else
+				{
+					Result = "";
+					ResultDetails = "No couch structures included";
+				}
+				Result = "";
+				ResultColor = "Gold";
+			}
+            #endregion
+
             else
                 TestNotImplemented();
 		}

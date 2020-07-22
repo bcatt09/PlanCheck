@@ -9,7 +9,11 @@ namespace VMS.TPS.PlanChecks
 {
     public class CouchValueChecks : PlanCheck
 	{
-		protected override List<string> MachineExemptions => new List<string> { };
+		protected override List<string> MachineExemptions => new List<string> 
+		{
+			DepartmentInfo.MachineNames.NOR_EX,
+			DepartmentInfo.MachineNames.NOR_IX
+		};
 
 		public CouchValueChecks(PlanSetup plan) : base(plan) { }
 

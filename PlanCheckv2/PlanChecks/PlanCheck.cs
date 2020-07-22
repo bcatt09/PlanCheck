@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.ServiceModel.Channels;
 using System.Text;
 using System.Windows;
 using VMS.TPS.Common.Model.API;
@@ -56,6 +57,8 @@ namespace VMS.TPS.PlanChecks
         /// </summary>
         protected Department Department { get; }
 
+        public bool MachineExempt { get; private set; }
+
         protected static readonly Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public PlanCheck(PlanSetup plan)
@@ -79,6 +82,10 @@ namespace VMS.TPS.PlanChecks
                 {
                     logger.Error($"{DisplayName} - {e.Message}");
                 }
+            }
+            else
+            {
+                MachineExempt = true;
             }
         }
 
