@@ -7,7 +7,7 @@
     <ProjectGuid>{FDF18849-FB31-4826-9CB6-9183D2BE1B1A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>VMS.TPS</RootNamespace>
-    <AssemblyName>PlanCheck.esapi</AssemblyName>
+    <AssemblyName>PlanCheckTest1.esapi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -61,12 +61,16 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ESAPILog, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ESAPILog\ESAPILog\ESAPILog.dll</HintPath>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.7.2\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -88,32 +92,53 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DepartmentInfo.cs" />
+    <Compile Include="MyLogger.cs" />
     <Compile Include="MROQCStructureCheck.cs" />
-    <Compile Include="MROQCWindow.xaml.cs">
+    <Compile Include="PlanChecks\BolusChecks.cs" />
+    <Compile Include="PlanChecks\CalcParametersChecks.cs" />
+    <Compile Include="PlanChecks\CouchStructuresChecks.cs" />
+    <Compile Include="PlanChecks\CouchValueChecks.cs" />
+    <Compile Include="PlanChecks\CTSimChecks.cs" />
+    <Compile Include="PlanChecks\DoseRateChecks.cs" />
+    <Compile Include="PlanChecks\DRRChecks.cs" />
+    <Compile Include="PlanChecks\FieldNameChecks.cs" />
+    <Compile Include="PlanChecks\HotspotChecks.cs" />
+    <Compile Include="PlanChecks\IsocenterChecks.cs" />
+    <Compile Include="PlanChecks\JawTrackingChecks.cs" />
+    <Compile Include="PlanChecks\MachineChecks.cs" />
+    <Compile Include="PlanChecks\OrientationChecks.cs" />
+    <Compile Include="PlanChecks\PlanApprovalChecks.cs" />
+    <Compile Include="PlanChecks\PlanCheck.cs" />
+    <Compile Include="PlanChecks\Shifts.cs" />
+    <Compile Include="PlanChecks\TargetChecks.cs" />
+    <Compile Include="PlanChecks\ToleranceTableChecks.cs" />
+    <Compile Include="PlanChecks\UseGatedChecks.cs" />
+    <Compile Include="PrecriptionChecks.cs" />
+    <Compile Include="StringExtensions.cs" />
+    <Compile Include="Views\MROQCWindow.xaml.cs">
       <DependentUpon>MROQCWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="OptimizationConstraint.cs" />
-    <Compile Include="OptimizationWindow.xaml.cs">
+    <Compile Include="Views\OptimizationWindow.xaml.cs">
       <DependentUpon>OptimizationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PlanChecks.cs" />
     <Compile Include="ReferencePointTableEntry.cs" />
     <Compile Include="Script.cs" />
-    <Compile Include="SetupNote.cs" />
     <Compile Include="ViewModel.cs" />
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MROQCWindow.xaml">
+    <Page Include="Views\MROQCWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="OptimizationWindow.xaml">
+    <Page Include="Views\OptimizationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -136,6 +161,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -1,0 +1,116 @@
+﻿<UserControl x:Class="VMS.TPS.MainWindow"
+			xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			xmlns:local="clr-namespace:VMS.TPS"
+			mc:Ignorable="d"
+			Name="MyWindow" Height="auto" Width="auto">
+    <UserControl.Resources>
+
+    </UserControl.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="85"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="Patient Name: " Margin="0, 0, 0, 5" />
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Course: " Margin="0, 0, 0, 5" />
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="Plan: " Margin="0, 0, 0, 10" />
+        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=PatientName}" />
+        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=CourseID}" />
+        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=PlanID}" />
+        <Button Grid.Column="2" Grid.RowSpan="3" Content="MROQC Structure Checks" HorizontalAlignment="Center" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="2" Click="MROQC_Button_Click" Height="25" Width="150"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="3" Height="auto">
+            <DataGrid Name="TestsGrid" Width="auto" Height="auto" ItemsSource="{Binding PlanChecks}" SelectedItem="{Binding SelectedRows}" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" Background="AliceBlue" MouseLeftButtonUp="dataGridMouseLeftButton" HorizontalScrollBarVisibility="Disabled">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="Test" Width="auto" MinWidth="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayName}" TextAlignment="Center" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5,5,5,5"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Right"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                        <DataGridTemplateColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="AliceBlue"/>
+                            </Style>
+                        </DataGridTemplateColumn.CellStyle>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Result" Width="auto" MinWidth="350">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Height="auto" Background="Transparent" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Result}" Background="Transparent" TextAlignment="Center" Height="auto" VerticalAlignment="Stretch" Margin="5,0,5,0">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <Trigger Property="Text" Value="">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding ResultDetails}" Background="Transparent" TextAlignment="Center" Height="auto" VerticalAlignment="Stretch" Margin="5,0,5,0">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Style.Triggers>
+                                                    <Trigger Property="Text" Value="">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Background" Value="{Binding ResultColor}"/>
+                            </Style>
+                        </DataGridTemplateColumn.CellStyle>
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="Height" Value="auto"/>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.RowDetailsTemplate>
+                    <DataTemplate>
+                        <TextBlock Background="AliceBlue" Text="{Binding TestExplanation}" TextAlignment="Center" MaxWidth="500" TextWrapping="Wrap"/>
+                    </DataTemplate>
+                </DataGrid.RowDetailsTemplate>
+            </DataGrid>
+
+            <StackPanel Orientation="Vertical" Margin="10, 0, 0, 0" Visibility="{Binding ReferencePointVisibility}">
+                <StackPanel Orientation="Horizontal" Visibility="{Binding ReferencePointVisibility}">
+                    <TextBlock HorizontalAlignment="Left" Text="Reference Point: " Margin="0, 0,0,10" VerticalAlignment="Center"/>
+                    <ComboBox HorizontalAlignment="Right" ItemsSource="{Binding ReferencePoints}" SelectedItem="{Binding SelectedReferencePoint}" DisplayMemberPath="Item3" Margin="0,0,20,10" MinWidth="100" ToolTip="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}"/>
+                </StackPanel>
+                <DataGrid ItemsSource="{Binding ReferencePointTable}" Margin="0,10,20,20" Visibility="{Binding ReferencePointVisibility}" Width="auto" HorizontalAlignment="Center"/>
+
+                <!--Button Content="Optimizer Constraints" Width="125" Click="OptimizerButton_Click"/-->
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>

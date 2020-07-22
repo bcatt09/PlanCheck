@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace VMS.TPS
 		public double Depth { get { return _depth; } set { _depth = value; OnPropertyChanged("Depth"); } }
 		public double EffectiveDepth { get { return _effectiveDepth; } set { _effectiveDepth = value; OnPropertyChanged("EffectiveDepth"); } }
 
+		private static readonly Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
 		public ReferencePointTableEntry(Beam beam, FieldReferencePoint point, ScriptContext context)
 		{
 			_beam = beam;
@@ -32,7 +35,8 @@ namespace VMS.TPS
 			}
 			catch(Exception e)
 			{
-				ESAPILog.Entry(context, "PlanCheck", "Reference Points - " + e.Message);
+				logger.Error("Could not get reference points - " + e.Message);
+				
 			}
 		}
 

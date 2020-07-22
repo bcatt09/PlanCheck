@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VMS.TPS.Common.Model.API;
+
+namespace VMS.TPS.PlanChecks
+{
+    public class MachineChecks : PlanCheck
+	{
+		protected override List<string> MachineExemptions => new List<string> { };
+
+		public MachineChecks(PlanSetup plan) : base(plan) { }
+
+        protected override void RunTest(PlanSetup plan)
+		{
+			DisplayName = "Machine";
+			Result = "";
+			ResultDetails = "";
+			TestExplanation = "Checks that all fields are planned using the same machine";
+
+			//Check each field to make sure they're the same
+			foreach (Beam field in plan.Beams)
+			{
+				if (field.TreatmentUnit.Id != MachineID)
+				{
+					Result = "Fail";
+					ResultDetails = $"Patient is being treated on {MachineID} but not all fields use that machine";
+					ResultColor = "Tomato";
+				}
+			}
+
+			if (Result == "")
+			{
+				Result = "";
+				ResultDetails = MachineID;
+				ResultColor = "LimeGreen";
+			}
+		}
+    }
+}
