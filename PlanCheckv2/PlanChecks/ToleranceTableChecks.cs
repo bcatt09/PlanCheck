@@ -20,36 +20,69 @@ namespace VMS.TPS.PlanChecks
 			ResultDetails = "";
 			TestExplanation = "Checks that all fields use the correct tolerance table based on department standards";
 
-            #region Macomb Group
-			// OBI TX for setup fields
-			// Same tolerance table selected for all treatment fields
-            if (Department == Department.CLA ||
-				Department == Department.MAC ||
-				Department == Department.MPH)
+			#region Port Huron
+			// SRS/SRT for plans with "_5"
+			// SBRT for plans with "_4"
+			// Electron for electron plans
+			// TB Photon for all other plans
+			if (Department == Department.MPH)
+			{
+				string tolTable;
+				string badFields = "";
+
+				if (plan.Id.Contains("_5"))
+					tolTable = "SRS/SRT";
+				else if (plan.Id.Contains("_4"))
+					tolTable = "SBRT";
+				else if (plan.Beams.Where(x => !x.IsSetupField).Where(x => x.EnergyModeDisplayName.Contains("E", StringComparison.CurrentCultureIgnoreCase)).Count() > 0)
+					tolTable = "Electron";
+				else
+					tolTable = "TB Photon";
+
+				//Check each field to make sure they're the same
+				foreach (Beam field in plan.Beams)
+				{
+					if (ResultDetails == "")
+						ResultDetails = field.ToleranceTableLabel;
+
+					//wrong tolerance table
+					if (field.ToleranceTableLabel != tolTable)
+					{
+						Result = "Warning";
+						ResultDetails = $"Not all fields use the {tolTable} tolerance table: ";
+						badFields += field.Id + ", ";
+						ResultColor = "Gold";
+					}
+				}
+
+				ResultDetails += badFields;
+				ResultDetails = ResultDetails.TrimEnd(' ');
+				ResultDetails = ResultDetails.TrimEnd(',');
+
+				//no issues found
+				if (Result == "")
+				{
+					Result = "";
+					ResultColor = "LimeGreen";
+				}
+			}
+			#endregion
+
+			#region Macomb / Clarkston
+			// Same tolerance table selected for all fields
+			else if (Department == Department.CLA ||
+					 Department == Department.MAC)
 			{
 				//Check each field to make sure they're the same
 				foreach (Beam field in plan.Beams)
 				{
-					if (field.IsSetupField)
+					if (ResultDetails == "")
+						ResultDetails = field.ToleranceTableLabel;
+					else if (ResultDetails != field.ToleranceTableLabel)
 					{
-						if (field.ToleranceTableLabel != "OBI TX")
-						{
-							Result = "Warning";
-							ResultDetails = "OBI TX tolerance table not chosen for setup field";
-							ResultColor = "Gold";
-							break;
-						}
-					}
-					else
-					{
-						if (ResultDetails == "")
-							ResultDetails = field.ToleranceTableLabel;
-						else if (ResultDetails != field.ToleranceTableLabel)
-						{
-							Result = "Warning";
-							ResultDetails = "Not all fields have the same tolerance table";
-							ResultColor = "Gold";
-						}
+						Result = "Warning";
+						ResultDetails = "Not all fields have the same tolerance table";
+						ResultColor = "Gold";
 					}
 				}
 
