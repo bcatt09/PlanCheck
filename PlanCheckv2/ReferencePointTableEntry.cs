@@ -35,8 +35,9 @@ namespace VMS.TPS
 			}
 			catch(Exception e)
 			{
-				logger.Error("Could not get reference points - " + e.Message);
-				
+				logger.Error($"Could not get reference points - {e.Message}\n\t\t\t{e.StackTrace}");
+
+
 			}
 		}
 

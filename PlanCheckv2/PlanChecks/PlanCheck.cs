@@ -57,6 +57,9 @@ namespace VMS.TPS.PlanChecks
         /// </summary>
         protected Department Department { get; }
 
+        /// <summary>
+        /// Check will not run on any machine with an ID in this list
+        /// </summary>
         public bool MachineExempt { get; private set; }
 
         protected static readonly Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -80,7 +83,7 @@ namespace VMS.TPS.PlanChecks
                 }
                 catch (Exception e)
                 {
-                    logger.Error($"{DisplayName} - {e.Message}");
+                    TestCouldNotComplete(e);
                 }
             }
             else
@@ -98,15 +101,44 @@ namespace VMS.TPS.PlanChecks
         /// <summary>
         /// Log that check failed to run
         /// </summary>
-        /// <param name="message"></param>
-        protected void TestCouldNotComplete(string message)
+        protected void TestCouldNotComplete()
         {
-            logger.Error(message);
-
             Result = "Failure - Test could not be run";
-            ResultDetails = message;
             ResultColor = "Tomato";
         }
+
+        /// <summary>
+        /// Log that check failed to run
+        /// </summary>
+        protected void TestCouldNotComplete(string message)
+        {
+            logger.Error($"{DisplayName} - Could not complete");
+
+            ResultDetails = message;
+            TestCouldNotComplete();
+        }
+
+        /// <summary>
+        /// Log that check failed to run
+        /// </summary>
+        protected void TestCouldNotComplete(Exception e)
+        {
+            logger.Error(e, $"{DisplayName} - {e.GetType()}");
+
+            TestCouldNotComplete();
+        }
+
+        /// <summary>
+        /// Log that check failed to run
+        /// </summary>
+        protected void TestCouldNotComplete(Exception e, string message)
+        {
+            logger.Error(e, message);
+
+            ResultDetails = message;
+            TestCouldNotComplete();
+        }
+
 
         /// <summary>
         /// Test criteria have not been specified by a site for implementation
@@ -118,7 +150,13 @@ namespace VMS.TPS.PlanChecks
             TestExplanation += "\n\nCriteria for test need to be specified";
         }
 
-        protected static string AddSpacesToSentence(string text, bool preserveAcronyms = true)
+        /// <summary>
+        /// Adds spaces in front of capital letters in text and can attempt to preserve acronyms
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="preserveAcronyms"></param>
+        /// <returns></returns>
+        protected static string AddSpaces(string text, bool preserveAcronyms = true)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return string.Empty;

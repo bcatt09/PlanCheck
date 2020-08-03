@@ -20,19 +20,19 @@ namespace VMS.TPS.PlanChecks
 			Result = "";
 			ResultDetails = "";
 			ResultColor = "LimeGreen";
-			TestExplanation = "Displays calculation parameters";
+			TestExplanation = "";
 
-			Boolean photon = false;
-			Boolean electron = false;
-			Boolean IMRT = false;
-			Boolean VMAT = false;
+            bool photon = false;
+			bool electron = false;
+			bool IMRT = false;
+			bool VMAT = false;
 
 			//get calc options
 			Dictionary<string, string> photonOptions = plan.PhotonCalculationOptions;
 			Dictionary<string, string> electronOptions = plan.ElectronCalculationOptions;
 
 			//loop through beams to see what needs to be displayed
-			foreach (Beam beam in plan.Beams)
+			foreach (Beam beam in plan.Beams.Where(x => !x.IsSetupField))
 			{
 				if (beam.EnergyModeDisplayName.Contains('E'))
 					electron = true;
@@ -45,6 +45,49 @@ namespace VMS.TPS.PlanChecks
 					VMAT = true;
 			}
 
+			// Photon Volume Dose Options:
+			// CalculationGridSizeInCM
+			// CalculationGridSizeInCMForSRSAndHyperArc
+			// FieldNormalizationType
+			// HeterogeneityCorrection
+			if (photon)
+			{
+				ResultDetails += "Volume Dose: " + plan.PhotonCalculationModel.ToString();
+
+				TestExplanation += $"Volume Dose: {plan.PhotonCalculationModel}\n";
+				TestExplanation += String.Join("\n", photonOptions.Select(x => $"{AddSpaces(x.Key)}: {x.Value}"));
+
+				if (IMRT)
+				{
+					ResultDetails += "\nIMRT Optimization: " + plan.GetCalculationModel(CalculationType.PhotonIMRTOptimization);
+					ResultDetails += "\nLeaf Motion: " + plan.GetCalculationModel(CalculationType.PhotonLeafMotions);
+
+					TestExplanation += $"\n\nIMRT Optimization: {plan.GetCalculationModel(CalculationType.PhotonIMRTOptimization)}\n";
+					TestExplanation += String.Join("\n", plan.GetCalculationOptions(plan.GetCalculationModel(CalculationType.PhotonIMRTOptimization)).Select(x => $"{AddSpaces(x.Key)}: {x.Value}"));
+					TestExplanation += $"\n\nLeaf Motion: {plan.GetCalculationModel(CalculationType.PhotonLeafMotions)}\n";
+					TestExplanation += String.Join("\n", plan.GetCalculationOptions(plan.GetCalculationModel(CalculationType.PhotonLeafMotions)).Select(x => $"{AddSpaces(x.Key)}: {x.Value}"));
+				}
+				if (VMAT)
+				{
+					ResultDetails += "\nVMAT Optimization: " + plan.GetCalculationModel(CalculationType.PhotonVMATOptimization);
+
+					TestExplanation += $"\n\nVMAT Optimization: {plan.GetCalculationModel(CalculationType.PhotonVMATOptimization)}\n";
+					TestExplanation += String.Join("\n", plan.GetCalculationOptions(plan.GetCalculationModel(CalculationType.PhotonVMATOptimization)).Select(x => $"{AddSpaces(x.Key)}: {x.Value}"));
+				}
+
+				ResultDetails += "\nGrid Size: " + photonOptions["CalculationGridSizeInCM"] + "cm";
+				ResultDetails += "\nHeterogeneity Corrections: " + photonOptions["HeterogeneityCorrection"];
+			}
+
+			// Electron Volume Dose Options:
+			// CalculationGridSizeInCM
+			// DoseThresholdForUncertainty
+			// NumberOfParticleHistories
+			// RandomGeneratorSeedNumber
+			// SmoothingLevel
+			// SmoothingMethod
+			// StatisticalUncertainty
+			// StatisticalUncertaintyLimit
 			if (electron)
 			{
 				ResultDetails += "Volume Dose: " + plan.ElectronCalculationModel.ToString();
@@ -52,22 +95,12 @@ namespace VMS.TPS.PlanChecks
 				ResultDetails += "\nUncertainty: " + electronOptions["StatisticalUncertainty"];
 				ResultDetails += "\nSmooting Method: " + electronOptions["SmoothingMethod"];
 				ResultDetails += "\nSmoothing Level: " + electronOptions["SmoothingLevel"];
-			}
-			if (photon)
-			{
-				ResultDetails += "Volume Dose: " + plan.PhotonCalculationModel.ToString();
 
-				if (IMRT)
-				{
-					ResultDetails += "\nIMRT Optimization: " + plan.GetCalculationModel(CalculationType.PhotonIMRTOptimization);
-					ResultDetails += "\nLeaf Motion: " + plan.GetCalculationModel(CalculationType.PhotonLeafMotions);
-				}
-				if (VMAT)
-					ResultDetails += "\nVMAT Optimization: " + plan.GetCalculationModel(CalculationType.PhotonVMATOptimization);
+				TestExplanation += $"Volume Dose: {plan.ElectronCalculationModel}\n";
+                TestExplanation += String.Join("\n", electronOptions.Select(x => $"{AddSpaces(x.Key)}: {x.Value}"));
+            }
 
-				ResultDetails += "\nGrid Size: " + photonOptions["CalculationGridSizeInCM"] + "cm";
-				ResultDetails += "\nHeterogeneity Corrections: " + photonOptions["HeterogeneityCorrection"];
-			}
+			ResultDetails += "\n\nClick to see full model options";
 		}
     }
 }

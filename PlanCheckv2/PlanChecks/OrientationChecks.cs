@@ -18,13 +18,13 @@ namespace VMS.TPS.PlanChecks
 			DisplayName = "Orientation";
 			TestExplanation = "Checks the planned patient orientation against the orientation selected from CT sim";
 			Result = "";
-			ResultDetails = AddSpacesToSentence(plan.TreatmentOrientation.ToString());
+			ResultDetails = AddSpaces(plan.TreatmentOrientation.ToString());
 			ResultColor = "LimeGreen";
 
 			if (plan.StructureSet.Image.ImagingOrientation != plan.TreatmentOrientation)
 			{
 				Result = "Warning";
-				ResultDetails = $"Scanning orientation of \"{AddSpacesToSentence(plan.StructureSet.Image.ImagingOrientation.ToString())}\" does not match treatment orientation of \"{AddSpacesToSentence(plan.TreatmentOrientation.ToString())}\"\nAny calculated directions may be backwards";
+				ResultDetails = $"Scanning orientation of \"{AddSpaces(plan.StructureSet.Image.ImagingOrientation.ToString())}\" does not match treatment orientation of \"{AddSpaces(plan.TreatmentOrientation.ToString())}\"\nAny calculated directions may be backwards";
 				ResultColor = "Gold";
 			}
 		}

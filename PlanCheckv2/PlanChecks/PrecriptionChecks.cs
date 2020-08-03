@@ -19,6 +19,15 @@ namespace VMS.TPS
             DisplayName = "Prescription";
             TestExplanation = "Displays plan dose information from Eclipse and checks it versus the prescription in Aria";
 
+            if (plan.RTPrescription == null)
+            {
+                Result = "";
+                ResultDetails = "No prescription attached to the plan";
+                ResultColor = "Tomato";
+
+                return;
+            }
+
             RTPrescriptionTarget rx = plan.RTPrescription.Targets.OrderByDescending(x => x.DosePerFraction * x.NumberOfFractions).First();
 
             if ((plan.NumberOfFractions != rx.NumberOfFractions || plan.DosePerFraction != rx.DosePerFraction))
@@ -30,7 +39,7 @@ namespace VMS.TPS
             else
             {
                 Result = "";
-                ResultDetails = $"{plan.DosePerFraction.ToString()} x {plan.NumberOfFractions} Fx = {plan.TotalDose.ToString()}\nPrescribed Percentage: {(plan.TreatmentPercentage * 100.0).ToString("0.0")}%\nPlan Normalization: {plan.PlanNormalizationValue.ToString("0.0")}%";
+                ResultDetails = $"{plan.DosePerFraction} x {plan.NumberOfFractions} Fx = {plan.TotalDose}\nPrescribed Percentage: {(plan.TreatmentPercentage * 100.0).ToString("0.0")}%\nPlan Normalization: {plan.PlanNormalizationValue.ToString("0.0")}%";
                 ResultColor = "LimeGreen";
             }
         }

@@ -20,7 +20,7 @@ namespace VMS.TPS.PlanChecks
 
             DisplayName = "Plan Approval";
             Result = "";
-            ResultDetails = $"Status: {AddSpacesToSentence(approvalStatus.ToString())}";
+            ResultDetails = $"Status: {AddSpaces(approvalStatus.ToString())}";
             ResultColor = "LimeGreen";
             TestExplanation = "Displays plan approval\nAlso checks that plan has been reviewed by a physician\nReviewed timestamp is estimated based on target structure or CT image approval";
 

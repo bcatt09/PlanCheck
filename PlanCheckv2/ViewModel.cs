@@ -100,6 +100,7 @@ namespace VMS.TPS
             PlanChecks.Add(new BolusChecks(_context.PlanSetup));
             PlanChecks.Add(new DRRChecks(_context.PlanSetup));
             PlanChecks.Add(new UseGatedChecks(_context.PlanSetup));
+            PlanChecks.Add(new MLCChecks(_context.PlanSetup));
             PlanChecks.Add(new CalcParametersChecks(_context.PlanSetup));
 
             // Remove any plan checks that were not run

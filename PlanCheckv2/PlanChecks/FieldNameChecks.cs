@@ -84,17 +84,15 @@ namespace VMS.TPS.PlanChecks
 					}
                     #endregion
                 }
+			}
 
-                ResultDetails = ResultDetails.TrimEnd('\n');
+			ResultDetails = ResultDetails.TrimEnd('\n');
 
-				//no problems found
-				if (ResultDetails == "")
-				{
-					Result = "Pass";
-					ResultColor = "LimeGreen";
-				}
-				else
-					TestNotImplemented();
+			//no problems found
+			if (ResultDetails == "")
+			{
+				Result = "Pass";
+				ResultColor = "LimeGreen";
 			}
 		}
     }
