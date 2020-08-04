@@ -13,6 +13,7 @@ namespace VMS.TPS.PlanChecks
     {
         protected override List<string> MachineExemptions => new List<string>
 		{
+			DepartmentInfo.MachineNames.CEN_EX,
 			DepartmentInfo.MachineNames.CLA_EX,
 			DepartmentInfo.MachineNames.LAN_IX,
 			DepartmentInfo.MachineNames.MAC_IX,

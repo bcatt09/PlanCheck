@@ -23,13 +23,14 @@ namespace VMS.TPS.PlanChecks
 			ResultDetails = "";
 			TestExplanation = "Checks that couch values are entered for each field based on department standards";
 
-            #region Macomb/Detroit Groups
+            #region Macomb/Detroit Groups and Central
             // Any couch values entered
             if (Department == Department.CLA ||
+				Department == Department.MAC ||
+				Department == Department.MPH ||
 				Department == Department.DET ||
 				Department == Department.FAR ||
-				Department == Department.MAC ||
-				Department == Department.MPH)
+				Department == Department.CEN)
 			{
 				//Check each field to see if couch values are NaN
 				foreach (Beam field in plan.Beams)

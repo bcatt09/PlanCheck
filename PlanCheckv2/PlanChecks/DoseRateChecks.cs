@@ -152,7 +152,7 @@ namespace VMS.TPS.PlanChecks
 			}
             #endregion
 
-            #region Lapeer/Owosso
+            #region Lapeer / Owosso
             // Photon   - 600
             // Electron - 400
             else if (Department == Department.LAP ||
@@ -352,10 +352,41 @@ namespace VMS.TPS.PlanChecks
 
 				ResultDetails = ResultDetails.TrimEnd('\n');
 			}
-            #endregion
+			#endregion
 
-            else
-                TestNotImplemented();
+			#region Central
+			// 400 or 600 for everything
+			else if (Department == Department.CEN)
+			{
+				foreach (Beam field in plan.Beams)
+				{
+					//ignore setup fields
+					if (!field.IsSetupField)
+					{
+
+						if (field.DoseRate != 600 && field.DoseRate != 400)
+						{
+							Result = "Warning";
+							ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
+							ResultColor = "Gold";
+						}
+					}
+				}
+
+				//no problems found
+				if (ResultDetails == "")
+				{
+					Result = "";
+					ResultDetails = plan.Beams.Where(x => !x.IsSetupField).First().DoseRate.ToString();
+					ResultColor = "LimeGreen";
+				}
+
+				ResultDetails = ResultDetails.TrimEnd('\n');
+			}
+			#endregion
+
+			else
+				TestNotImplemented();
 		}
     }
 }

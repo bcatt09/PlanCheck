@@ -199,7 +199,7 @@ namespace VMS.TPS
 		private static class RadOncUserNames
 		{
 			public static readonly List<string> BAY = new List<string> { "" };
-			public static readonly List<string> CEN = new List<string> { "" };
+			public static readonly List<string> CEN = new List<string> { "evzx38" };
 			public static readonly List<string> CLA = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> DET = new List<string> { "" };
 			public static readonly List<string> FAR = new List<string> { "" };

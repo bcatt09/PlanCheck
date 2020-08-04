@@ -68,7 +68,7 @@ namespace VMS.TPS.PlanChecks
 			}
 			#endregion
 
-			#region Macomb / Clarkston
+			#region Macomb / Clarkston / Central
 			// Same tolerance table selected for all fields
 			else if (Department == Department.CLA ||
 					 Department == Department.MAC)
@@ -158,7 +158,8 @@ namespace VMS.TPS.PlanChecks
 			// OBI for setup fields
 			// Same tolerance table selected for all treatment fields
             else if (Department == Department.LAP || 
-					 Department == Department.OWO)
+					 Department == Department.OWO ||
+					 Department == Department.CEN)
 			{
 				string tolTable = "";
 				string badFields = "";
