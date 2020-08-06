@@ -32,7 +32,7 @@ namespace VMS.TPS
             // Apply config           
             LogManager.Configuration = config;
 
-            GlobalDiagnosticsContext.Set("Script", "PlanCheck");
+            GlobalDiagnosticsContext.Set("Script", "KCIPlanCheck");
             GlobalDiagnosticsContext.Set("User", $"{context.CurrentUser.Name} ({context.CurrentUser.Id})");
             GlobalDiagnosticsContext.Set("Patient", $"{context.Patient.LastName}, {context.Patient.FirstName} ({context.Patient.Id})");
             GlobalDiagnosticsContext.Set("Plan", $"{context.PlanSetup.Id} ({context.Course.Id})");
