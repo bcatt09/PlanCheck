@@ -18,6 +18,15 @@ namespace VMS.TPS.PlanChecks
 			DisplayName = "Hotspot";
 			TestExplanation = "Checks to see if the hotspot is inside of the plan target";
 
+			if (plan.TargetVolumeID == "")
+            {
+				Result = "";
+				ResultDetails = $"No target structure selected";
+				ResultColor = "Gold";
+
+				return;
+			}
+
 			Structure target = plan.StructureSet.Structures.First(s => s.Id == plan.TargetVolumeID);
 
 			if (plan.IsDoseValid)

@@ -40,8 +40,8 @@ namespace VMS.TPS.PlanChecks
 			}
 			else
 			{
-				Result = "Warning";
-				ResultDetails = "No target defined";
+				Result = "";
+				ResultDetails = "No target structure selected";
 				ResultColor = "Gold";
 			}
 		}
