@@ -25,6 +25,9 @@ namespace VMS.TPS
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			TestsGrid.MaxHeight = SystemParameters.WorkArea.Height * 0.5;
+			TestsGrid.MaxWidth = SystemParameters.WorkArea.Width * 0.5;
 		}
 
 		// toggle the row details when clicking on the same row

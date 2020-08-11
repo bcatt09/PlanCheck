@@ -5,6 +5,7 @@ using System.Windows;
 using System.Collections.Generic;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
+using System.Security.Cryptography.X509Certificates;
 
 namespace VMS.TPS
 {
@@ -42,13 +43,19 @@ namespace VMS.TPS
 			}
 			window.Background = System.Windows.Media.Brushes.AliceBlue;
 			window.SizeToContent = SizeToContent.WidthAndHeight;
-			window.Title = $"PlanCheck - {context.Patient.Name.ToString()}";
+			window.MaxHeight = SystemParameters.WorkArea.Height * 0.95;
+			window.MaxWidth = SystemParameters.WorkArea.Width * 0.95;
+			window.Title = $"PlanCheck - {context.Patient.Name}";
 
 			MainWindow userControl = new MainWindow();
 			ViewModel viewModel = new ViewModel(context);
 
 			window.Content = userControl;
 			window.DataContext = viewModel;
+
+			//window.SizeChanged += new SizeChangedEventHandler((ob, e) => 
+				
+			//);
 		}
 
 		private void KeyPressed(object sender, System.Windows.Input.KeyEventArgs e)
