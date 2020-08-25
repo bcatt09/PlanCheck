@@ -91,6 +91,7 @@ namespace VMS.TPS
             PlanChecks.Add(new PlanApprovalChecks(_context.PlanSetup));
             PlanChecks.Add(new PrecriptionChecks(_context.PlanSetup));
             PlanChecks.Add(new IsocenterChecks(_context.PlanSetup));
+            PlanChecks.Add(new ProtonIsocenterMarkerCheck(_context.PlanSetup));
             PlanChecks.Add(new FieldNameChecks(_context.PlanSetup));
             PlanChecks.Add(new JawTrackingChecks(_context.PlanSetup));
             PlanChecks.Add(new CouchStructuresChecks(_context.PlanSetup));
