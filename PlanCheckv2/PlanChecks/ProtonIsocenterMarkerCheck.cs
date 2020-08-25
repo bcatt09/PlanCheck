@@ -10,7 +10,26 @@ namespace VMS.TPS.PlanChecks
 {
     class ProtonIsocenterMarkerCheck : PlanCheck
     {
-        protected override List<string> MachineExemptions => new List<string> { };
+        protected override List<string> MachineExemptions => new List<string>
+        {
+            DepartmentInfo.MachineNames.CEN_EX,
+            DepartmentInfo.MachineNames.CLA_EX,
+            DepartmentInfo.MachineNames.LAN_IX,
+            DepartmentInfo.MachineNames.MAC_IX,
+            DepartmentInfo.MachineNames.MAC_TB,
+            DepartmentInfo.MachineNames.BAY_TB,
+            DepartmentInfo.MachineNames.DET_IX,
+            DepartmentInfo.MachineNames.DET_TB,
+            DepartmentInfo.MachineNames.FLT_BackTB,
+            DepartmentInfo.MachineNames.FLT_FrontTB,
+            DepartmentInfo.MachineNames.LAP_IX,
+            DepartmentInfo.MachineNames.OWO_IX,
+            DepartmentInfo.MachineNames.NOR_EX,
+            DepartmentInfo.MachineNames.NOR_IX,
+            DepartmentInfo.MachineNames.FAR_IX
+
+        };
+
 
         public ProtonIsocenterMarkerCheck(PlanSetup plan) : base(plan) { }
 
