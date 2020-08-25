@@ -111,6 +111,7 @@
     <Compile Include="PlanChecks\OrientationChecks.cs" />
     <Compile Include="PlanChecks\PlanApprovalChecks.cs" />
     <Compile Include="PlanChecks\PlanCheck.cs" />
+    <Compile Include="PlanChecks\ProtonIsocenterMarkerCheck.cs" />
     <Compile Include="PlanChecks\Shifts.cs" />
     <Compile Include="PlanChecks\TargetChecks.cs" />
     <Compile Include="PlanChecks\ToleranceTableChecks.cs" />
