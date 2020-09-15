@@ -13,8 +13,8 @@ namespace VMS.TPS.PlanChecks
     {
         protected override List<string> MachineExemptions => new List<string>
         {
-            DepartmentInfo.MachineNames.FLT_ProtonG1,
-            DepartmentInfo.MachineNames.FLT_ProtonG2
+            DepartmentInfo.MachineNames.PRO_G1,
+            DepartmentInfo.MachineNames.PRO_G2
         };
 
         public MLCChecks(PlanSetup plan) : base(plan) { }
