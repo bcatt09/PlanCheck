@@ -101,6 +101,7 @@ namespace VMS.TPS
             PlanChecks.Add(new DRRChecks(_context.PlanSetup));
             PlanChecks.Add(new UseGatedChecks(_context.PlanSetup));
             PlanChecks.Add(new MLCChecks(_context.PlanSetup));
+            PlanChecks.Add(new TreatmentTimeCalculation(_context.PlanSetup));
             PlanChecks.Add(new CalcParametersChecks(_context.PlanSetup));
 
             // Remove any plan checks that were not run

@@ -114,6 +114,7 @@
     <Compile Include="PlanChecks\Shifts.cs" />
     <Compile Include="PlanChecks\TargetChecks.cs" />
     <Compile Include="PlanChecks\ToleranceTableChecks.cs" />
+    <Compile Include="PlanChecks\TreatmentTimeCalculation.cs" />
     <Compile Include="PlanChecks\UseGatedChecks.cs" />
     <Compile Include="PlanChecks\PrecriptionChecks.cs" />
     <Compile Include="StringExtensions.cs" />
