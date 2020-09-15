@@ -43,11 +43,15 @@ namespace VMS.TPS.PlanChecks
 
             // General test flow:
             //   - Check for marker structure
-            int isoMarkerCount = plan.StructureSet.Structures.Where(s => s.DicomType == "MARKER" && s.Id.ToLower().Contains("isocenter")).Count();
+            int isoMarkerCount = plan.StructureSet.Structures.Where(s => s.DicomType.ToUpper() == "ISOCENTER").Count();
+
+            //var isoStruct = plan.StructureSet.Structures.FirstOrDefault(s => s.Id.ToLower() == "isocenter marker"); (THIS WAS FOR DEBUGGING)
+
+            System.Windows.MessageBox.Show($"Isocount = {isoMarkerCount}");
 
             if (isoMarkerCount==1)
             {
-                isoMarker = plan.StructureSet.Structures.FirstOrDefault(s => s.DicomType == "MARKER" && s.Id.ToLower().Contains("isocenter"));
+                isoMarker = plan.StructureSet.Structures.FirstOrDefault(s => s.DicomType.ToUpper() == "ISOCENTER");
 
                 double isoDeltaX = isoMarker.CenterPoint.x - plan.Beams.FirstOrDefault().IsocenterPosition.x;
                 double isoDeltaY = isoMarker.CenterPoint.y - plan.Beams.FirstOrDefault().IsocenterPosition.y;
@@ -70,13 +74,13 @@ namespace VMS.TPS.PlanChecks
             else if (isoMarkerCount==0)
             {
                 ResultDetails = "No Isocenter Marker found in structure set";
-                ResultColor = "Red";
+                ResultColor = "Tomato";
                 Result = "Fail";
             }
             else if (isoMarkerCount > 1)
             {
                 ResultDetails = "Potentially multiple isocenter markers in plan";
-                ResultColor = "Red";
+                ResultColor = "Tomato";
                 Result = "Fail";
             }
         }

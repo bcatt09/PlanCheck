@@ -221,10 +221,94 @@ namespace VMS.TPS.PlanChecks
 				Result = "";
 				ResultColor = "Gold";
 			}
-            #endregion
+			#endregion
 
-            else
-                TestNotImplemented();
+			#region Proton
+			else if (Department == Department.PRO)
+			{
+				if (couchStructure)
+				{
+					// needed
+					//  Structure called couch 
+					//  HUs need to be correct (-930)
+					//  Body contains couch
+
+					if (plan.StructureSet.Structures.Where(s => s.Id.ToUpper() == "COUCH").Count()==1)
+                    {
+						var protonCouchStruct = plan.StructureSet.Structures.FirstOrDefault(s => s.Id.ToUpper() == "COUCH");
+						ResultDetails = "";
+
+						if (protonCouchStruct.GetAssignedHU(out double protonCouchHU))
+                        {
+                            if (protonCouchHU != -930)
+                            {
+								Result = "Warning";
+								ResultDetails += $"Couch found but HU set to {protonCouchHU} not -930\n";
+								ResultColor = "Gold";
+							}
+
+							// Check if Couch is inside body
+							var protonBodyStruct = plan.StructureSet.Structures.FirstOrDefault(s => s.DicomType.ToUpper() == "BODY");
+							if (!protonCouchStruct.Equals(protonCouchStruct.And(protonBodyStruct)))
+							{
+								Result = "Warning";
+								ResultDetails += $"Portions of Couch may not be in Body structure\n";
+								ResultColor = "Gold";
+							}
+							
+							if (protonCouchHU != -930 && protonCouchStruct.Equals(protonCouchStruct.And(protonBodyStruct)))
+                            {
+								Result = "Pass";
+								ResultDetails += $"Couch structure found inside body with HU of -930";
+								ResultColor = "LimeGreen";
+							}
+
+                        }
+                        else // No HU assigned to structure called couch
+                        {
+							var protonBodyStruct = plan.StructureSet.Structures.FirstOrDefault(s => s.DicomType.ToUpper() == "BODY");
+							if (protonCouchStruct.Equals(protonCouchStruct.And(protonBodyStruct)))
+							{
+								Result = "Warning";
+								ResultDetails += $"Couch structure found inside Body, but no HU assigned\n";
+								ResultColor = "Gold";
+							}
+							else
+                            {
+								Result = "Warning";
+								ResultDetails += $"Couch structure has no Assigned HU and is not inside the Body structure\n";
+								ResultColor = "Gold";
+							}
+
+
+						}
+					}
+
+					else
+                    {
+						Result = "Warning";
+						ResultDetails = "No Structure named \"Couch\" included in structure set";
+						ResultColor = "Gold";
+
+					}
+
+					Result = "";
+					ResultColor = "Gold";
+
+					AddCouchStructureInfo(couchName, couchStructures);
+				}
+				else
+				{
+					Result = "Warning";
+					ResultDetails = "No couch structures included";
+					ResultColor = "Gold";
+				}
+			}
+
+
+			#endregion
+			else
+				TestNotImplemented();
 		}
 
 		/// <summary>

@@ -20,7 +20,9 @@ namespace VMS.TPS.PlanChecks
 			DepartmentInfo.MachineNames.MAC_IX,
 			DepartmentInfo.MachineNames.NOR_EX,
 			DepartmentInfo.MachineNames.NOR_IX,
-			DepartmentInfo.MachineNames.OWO_IX
+			DepartmentInfo.MachineNames.OWO_IX,
+			DepartmentInfo.MachineNames.PRO_G1,
+			DepartmentInfo.MachineNames.PRO_G2
 		};
 
 		public JawTrackingChecks(PlanSetup plan) : base(plan) { }
