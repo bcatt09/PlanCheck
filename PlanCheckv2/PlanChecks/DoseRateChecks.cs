@@ -10,7 +10,11 @@ namespace VMS.TPS.PlanChecks
 {
     class DoseRateChecks : PlanCheck
     {
-        protected override List<string> MachineExemptions => new List<string> { };
+        protected override List<string> MachineExemptions => new List<string> 
+		{
+			DepartmentInfo.MachineNames.FLT_ProtonG1,
+			DepartmentInfo.MachineNames.FLT_ProtonG2
+		};
 
 		public DoseRateChecks(PlanSetup plan) : base(plan) { }
 

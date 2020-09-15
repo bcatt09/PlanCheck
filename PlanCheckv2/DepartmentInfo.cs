@@ -149,6 +149,13 @@ namespace VMS.TPS
 					RadOncUserNames = RadOncUserNames.OWO
 				}
 			},
+			{ Department.PRO,
+				new DepartmentInfoStruct {
+					Machines = new List<string> { MachineNames.PRO_G1, MachineNames.PRO_G2 },
+					CTs = new List<string> { CTNames.PRO },
+					RadOncUserNames = RadOncUserNames.PRO
+				}
+			},
 		};
 
 		/// <summary>
@@ -164,6 +171,8 @@ namespace VMS.TPS
 			public static readonly string FAR_IX = "IX_Farmington";
 			public static readonly string FLT_FrontTB = "TrueBeamSN2873";
 			public static readonly string FLT_BackTB = "TrueBeam1030";
+			public static readonly string PRO_G1 = "Proton GR1";
+			public static readonly string PRO_G2 = "Proton GR2";
 			public static readonly string LAN_IX = "ING21IX1";
 			public static readonly string LAP_IX = "21IX-SN3743";
 			public static readonly string MAC_TB = "MAC_TB3568";
@@ -191,7 +200,8 @@ namespace VMS.TPS
 			public static readonly string MPH = "MPH CT Sim";
 			public static readonly string NOR = "Oncology";
 			public static readonly string OWO = "Philips Big Bore";
-        }
+			public static readonly string PRO = "Philips Big Bore";
+		}
 
 		/// <summary>
 		/// Dictionary of allowable rad onc user names for plan approval
@@ -205,11 +215,12 @@ namespace VMS.TPS
 			public static readonly List<string> FAR = new List<string> { "" };
 			public static readonly List<string> FLT = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar" };
 			public static readonly List<string> LAN = new List<string> { "abhatt1" };
-			public static readonly List<string> LAP = new List<string> { "heshamg", "jackn", "kirand", "ogayar" };
+			public static readonly List<string> LAP = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar" };
 			public static readonly List<string> MAC = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> MPH = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> NOR = new List<string> { "ikaufman", "rhmg27" };
-			public static readonly List<string> OWO = new List<string> { "heshamg", "jackn", "kirand", "ogayar" };
+			public static readonly List<string> OWO = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar" };
+			public static readonly List<string> PRO = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar" };
 		}
 
 		/// <summary>
@@ -229,6 +240,7 @@ namespace VMS.TPS
 			public static readonly string MPH = "Port Huron";
 			public static readonly string NOR = "Northern";
 			public static readonly string OWO = "Owosso";
+			public static readonly string PRO = "Proton";
 		}
 
 		/// <summary>
@@ -259,6 +271,7 @@ namespace VMS.TPS
 		MPH,
 		NOR,
 		OWO,
+		PRO,
 		None
 	}
 }

@@ -93,14 +93,14 @@ namespace VMS.TPS.PlanChecks
 					ResultColor = "LimeGreen";
 				}
 			}
-            #endregion
+			#endregion
 
-            #region Flint
+			#region Flint
 			// OBI selected for setup fields
 			// SRS/SRT for plans with "_5"
 			// SBRT for plans with "_4"
 			// TrueBeam for all other plans
-            else if (Department == Department.FLT)
+			else if (Department == Department.FLT)
 			{
 				string tolTable;
 				string badFields = "";
@@ -141,6 +141,7 @@ namespace VMS.TPS.PlanChecks
 					}
 				}
 
+
 				ResultDetails += badFields;
 				ResultDetails = ResultDetails.TrimEnd(' ');
 				ResultDetails = ResultDetails.TrimEnd(',');
@@ -152,14 +153,39 @@ namespace VMS.TPS.PlanChecks
 					ResultColor = "LimeGreen";
 				}
 			}
-            #endregion
+			#endregion
 
-            #region Lapeer/Owosso
+			#region Proton
+			else if (Department == Department.PRO)
+			{
+				string tolTable = "Proton Standard";
+				ResultColor = "Gold";
+				string badFields = "";
+
+				foreach (Beam b in plan.Beams)
+                {
+					if (b.ToleranceTableLabel != tolTable)
+                    {
+						Result = "Warning";
+						ResultDetails = $"Not all fields use the {tolTable} tolerance table: ";
+						badFields += b.Id + ", ";
+						ResultColor = "Gold";
+					}
+					if (Result == "")
+                    {
+						ResultDetails = $"All beams contain Tolerance Table: {tolTable} ";
+						ResultColor = "LimeGreen";
+                    }
+                }
+			}
+			#endregion
+
+			#region Lapeer/Owosso
 			// OBI for setup fields
 			// Same tolerance table selected for all treatment fields
-            else if (Department == Department.LAP || 
-					 Department == Department.OWO ||
-					 Department == Department.CEN)
+			else if (Department == Department.LAP ||
+				 Department == Department.OWO ||
+				 Department == Department.CEN)
 			{
 				string tolTable = "";
 				string badFields = "";
@@ -253,10 +279,10 @@ namespace VMS.TPS.PlanChecks
 					ResultColor = "LimeGreen";
 				}
 			}
-            #endregion
+			#endregion
 
-            #region Northern
-            else if (Department == Department.NOR)
+			#region Northern
+			else if (Department == Department.NOR)
 			{
 				//Check each field to make sure they're the same
 				foreach (Beam field in plan.Beams)
@@ -284,8 +310,8 @@ namespace VMS.TPS.PlanChecks
 					}
 				}
 
-                //no issues found
-                if (Result == "")
+				//no issues found
+				if (Result == "")
 				{
 					Result = "";
 					ResultColor = "LimeGreen";
