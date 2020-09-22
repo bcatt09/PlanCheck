@@ -46,24 +46,29 @@ namespace VMS.TPS.PlanChecks
                     Result += $"{beam.Id} = {Math.Round(beam.Meterset.Value / beam.DoseRate, 2)} min";
                 }
 
-                // FiF/IMRT
+                // FiF / IMRT
                 else //if(beam.ControlPoints.Count < 25)
                 {
                     float[,] prevPos = null;
-                    float[,] totalMovement = new float[2, 60];
+                    float totalMaxMovement = 0;
                     foreach (var point in beam.ControlPoints)
                     {
                         if (prevPos != null)
                         {
+                            float[,] movements = new float[2, 60];
+                            // Get movements of each leaf from previous position into new position
                             for (int i = 0; i < 2; i++)
                                 for (int k = 0; k < 60; k++)
-                                    totalMovement[i, k] += Math.Abs(point.LeafPositions[i, k] - prevPos[i, k]);
+                                    movements[i, k] += Math.Abs(point.LeafPositions[i, k] - prevPos[i, k]);
+
+                            // Find max distance moved
+                            totalMaxMovement += movements.Cast<float>().Max();
                         }
 
                         prevPos = point.LeafPositions;
                     }
 
-                    Result += $"{beam.Id} = {Math.Round(beam.Meterset.Value / beam.DoseRate + (totalMovement.Cast<float>().Max() / 25) / 60, 2)} min\n";
+                    Result += $"{beam.Id} = {Math.Round(beam.Meterset.Value / beam.DoseRate + (totalMaxMovement / 25) / 60, 2)} min\n";
                 }
 
             }
