@@ -82,6 +82,7 @@ namespace VMS.TPS
             PlanChecks = new ObservableCollection<PlanCheck>();
 
             // Run all plan checks
+            PlanChecks.Add(new NamingConventionChecks(_context.PlanSetup));
             PlanChecks.Add(new MachineChecks(_context.PlanSetup));
             PlanChecks.Add(new DoseRateChecks(_context.PlanSetup));
             PlanChecks.Add(new CTSimChecks(_context.PlanSetup));
