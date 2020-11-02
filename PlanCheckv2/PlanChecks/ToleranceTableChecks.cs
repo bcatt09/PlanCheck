@@ -103,7 +103,10 @@ namespace VMS.TPS.PlanChecks
             else if (Department == Department.FLT)
 			{
 				string tolTable;
-				string badFields = "";
+				string txFieldsResult = "";
+				string badTxFields = "";
+				string setupFieldsResult = "";
+				string badSetupFields = "";
 
 				if (plan.Id.Contains("_5"))
 					tolTable = "SRS/SRT";
@@ -120,9 +123,9 @@ namespace VMS.TPS.PlanChecks
 						if (!field.ToleranceTableLabel.Contains("OBI"))
 						{
 							Result = "Warning";
-							ResultDetails = "OBI tolerance table not chosen for setup field";
+							setupFieldsResult = "OBI tolerance table not chosen for setup field: ";
+							badSetupFields += $"{field.Id}, ";
 							ResultColor = "Gold";
-							break;
 						}
 					}
 					else
@@ -134,14 +137,18 @@ namespace VMS.TPS.PlanChecks
 						if (field.ToleranceTableLabel != tolTable)
 						{
 							Result = "Warning";
-							ResultDetails = $"Not all fields use the {tolTable} tolerance table: ";
-							badFields += field.Id + ", ";
+							txFieldsResult = $"Not all fields use the {tolTable} tolerance table: ";
+							badTxFields += $"{field.Id}, ";
 							ResultColor = "Gold";
 						}
 					}
 				}
 
-				ResultDetails += badFields;
+				ResultDetails = $"{setupFieldsResult}{badSetupFields}";
+				ResultDetails = ResultDetails.TrimEnd(' ');
+				ResultDetails = ResultDetails.TrimEnd(',');
+				if (setupFieldsResult != "") ResultDetails += "\n";
+				ResultDetails += $"{txFieldsResult}{badTxFields}";
 				ResultDetails = ResultDetails.TrimEnd(' ');
 				ResultDetails = ResultDetails.TrimEnd(',');
 
