@@ -21,7 +21,7 @@ namespace VMS.TPS.PlanChecks
             DepartmentInfo.MachineNames.LAP_IX,
             DepartmentInfo.MachineNames.MAC_IX,
             DepartmentInfo.MachineNames.MAC_TB,
-            //DepartmentInfo.MachineNames.MPH_TB,
+            DepartmentInfo.MachineNames.MPH_TB,
             DepartmentInfo.MachineNames.NOR_EX,
             DepartmentInfo.MachineNames.NOR_IX,
             DepartmentInfo.MachineNames.OWO_IX
