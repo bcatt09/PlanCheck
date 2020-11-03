@@ -24,8 +24,9 @@ namespace VMS.TPS.PlanChecks
 
             var courseIdRegexStrings = Properties.Resources.CourseSiteNames.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => $@"^\d{{1,2}} (?:[RL] )?{x}$");
             var planIdRegexStrings = Properties.Resources.PlanSiteNames.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => $@"^(?:[RL] )?{x}(?: (?:LN|Bst))?_\d[a-z]?\.?$");
-            var refPointRegexStrings = Properties.Resources.PlanSiteNames.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => $@"^(?:[RL] )?{x}(?: (?:LN|Bst))$");
+            var refPointRegexStrings = Properties.Resources.PlanSiteNames.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => $@"^(?:[RL] )?{x}(?: (?:LN|Bst))?$");
 
+            // Course ID
             bool match = false;
             foreach (var allowedCourseIdString in courseIdRegexStrings)
             {
@@ -42,8 +43,9 @@ namespace VMS.TPS.PlanChecks
                 ResultDetails += $"Course ID: {plan.Course.Id} doesn't match OneAria naming conventions\n";
                 ResultColor = "Gold";
             }
-            match = false;
 
+            // Plan ID
+            match = false;
             foreach (var allowedPlanIdString in planIdRegexStrings)
             {
                 Regex planRegex = new Regex(allowedPlanIdString);
@@ -59,8 +61,9 @@ namespace VMS.TPS.PlanChecks
                 ResultDetails += $"Plan ID: {plan.Id} doesn't match OneAria naming conventions\n";
                 ResultColor = "Gold";
             }
-            match = false;
 
+            // Reference Point ID
+            match = false;
             foreach (var allowedRefPointString in refPointRegexStrings)
             {
                 Regex refPointRegex = new Regex(allowedRefPointString);
@@ -77,8 +80,9 @@ namespace VMS.TPS.PlanChecks
                 ResultDetails += $"Reference Point: {plan.PrimaryReferencePoint.Id} doesn't match OneAria naming conventions\n";
                 ResultColor = "Gold";
             }
-            match = false;
 
+            // Plan Name
+            match = false;
             foreach (var planNameString in refPointRegexStrings)
             {
                 Regex planNameRegex = new Regex(planNameString);
@@ -91,10 +95,9 @@ namespace VMS.TPS.PlanChecks
 
             if (!match)
             {
-                ResultDetails += $"Plan Name: {(plan.Name == "" ? "No Plan Name" : plan.Name)} doesn't match OneAria naming conventions\n";
+                ResultDetails += $"Plan Name: {(plan.Name == "" ? "Blank name" : plan.Name)} doesn't match OneAria naming conventions\n";
                 ResultColor = "Gold";
             }
-            match = false;
 
             ResultDetails = ResultDetails.TrimEnd('\n');
 
