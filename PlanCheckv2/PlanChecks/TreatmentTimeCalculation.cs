@@ -21,7 +21,7 @@ namespace VMS.TPS.PlanChecks
             DepartmentInfo.MachineNames.LAP_IX,
             DepartmentInfo.MachineNames.MAC_IX,
             DepartmentInfo.MachineNames.MAC_TB,
-            DepartmentInfo.MachineNames.MPH_TB,
+            //DepartmentInfo.MachineNames.MPH_TB,
             DepartmentInfo.MachineNames.NOR_EX,
             DepartmentInfo.MachineNames.NOR_IX,
             DepartmentInfo.MachineNames.OWO_IX
@@ -40,10 +40,20 @@ namespace VMS.TPS.PlanChecks
 
             foreach(var beam in beams)
             {
-                // 3D
-                if(beam.ControlPoints.Count == 1)
+                // Electron
+                if (beam.EnergyModeDisplayName.ToUpper().Contains("E"))
                 {
-                    Result += $"{beam.Id} = {Math.Round(beam.Meterset.Value / beam.DoseRate, 2)} min";
+                    Result += $"{beam.Id} = {Math.Round(beam.Meterset.Value / beam.DoseRate, 2)} min\n";
+                }
+                // Can't calculate for EDW fields right now
+                else if (beam.Wedges.Where(x => x is EnhancedDynamicWedge).Count() > 0)
+                {
+                    Result += $"{beam.Id}: Can't calculate times for EDW fields\n";
+                }
+                // 3D
+                else if(beam.ControlPoints.Count == 1)
+                {
+                    Result += $"{beam.Id} = {Math.Round(beam.Meterset.Value / beam.DoseRate, 2)} min\n";
                 }
 
                 // FiF / IMRT
