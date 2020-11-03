@@ -82,7 +82,6 @@ namespace VMS.TPS
             PlanChecks = new ObservableCollection<PlanCheck>();
 
             // Run all plan checks
-            PlanChecks.Add(new NamingConventionChecks(_context.PlanSetup));
             PlanChecks.Add(new MachineChecks(_context.PlanSetup));
             PlanChecks.Add(new DoseRateChecks(_context.PlanSetup));
             PlanChecks.Add(new CTSimChecks(_context.PlanSetup));
@@ -103,6 +102,7 @@ namespace VMS.TPS
             PlanChecks.Add(new UseGatedChecks(_context.PlanSetup));
             PlanChecks.Add(new MLCChecks(_context.PlanSetup));
             PlanChecks.Add(new TreatmentTimeCalculation(_context.PlanSetup));
+            PlanChecks.Add(new NamingConventionChecks(_context.PlanSetup));
             PlanChecks.Add(new CalcParametersChecks(_context.PlanSetup));
 
             // Remove any plan checks that were not run
