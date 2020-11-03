@@ -71,7 +71,7 @@ namespace VMS.TPS
             //setup optimization constraints dataset
             //PopulateOptimizationConstraints();
 
-            logger.Info("Completed");
+            logger.Info("");
 
             NLog.LogManager.Shutdown();
         }
