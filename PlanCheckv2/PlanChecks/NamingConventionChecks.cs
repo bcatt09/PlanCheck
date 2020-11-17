@@ -70,7 +70,6 @@ namespace VMS.TPS.PlanChecks
                 if (refPointRegex.IsMatch(plan.PrimaryReferencePoint.Id))
                 {
                     match = true;
-                    ResultDetails += allowedRefPointString;
                     continue;
                 }
             }
