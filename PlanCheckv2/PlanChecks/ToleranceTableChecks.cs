@@ -96,10 +96,9 @@ namespace VMS.TPS.PlanChecks
             #endregion
 
             #region Flint
-			// OBI selected for setup fields
-			// SRS/SRT for plans with "_5"
-			// SBRT for plans with "_4"
-			// TrueBeam for all other plans
+
+			// TrueBeam for all plans
+
             else if (Department == Department.FLT)
 			{
 				string tolTable;
@@ -108,10 +107,10 @@ namespace VMS.TPS.PlanChecks
 				string setupFieldsResult = "";
 				string badSetupFields = "";
 
-				if (plan.Id.Contains("_5"))
-					tolTable = "SRS/SRT";
-				else if (plan.Id.Contains("_4"))
-					tolTable = "SBRT";
+				if (plan.Id.Contains("_5")) // SRS Plan
+					tolTable = "TrueBeam";
+				else if (plan.Id.Contains("_4")) // SBRT Plan
+					tolTable = "TrueBeam";
 				else
 					tolTable = "TrueBeam";
 
@@ -120,7 +119,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					if (field.IsSetupField)
 					{
-						if (!field.ToleranceTableLabel.Contains("OBI"))
+						if (!field.ToleranceTableLabel.Contains("TrueBeam"))
 						{
 							Result = "Warning";
 							setupFieldsResult = "OBI tolerance table not chosen for setup field: ";
@@ -128,7 +127,7 @@ namespace VMS.TPS.PlanChecks
 							ResultColor = "Gold";
 						}
 					}
-					else
+					else  // not a setup field
 					{
 						if (ResultDetails == "")
 							ResultDetails = field.ToleranceTableLabel;
@@ -144,7 +143,8 @@ namespace VMS.TPS.PlanChecks
 					}
 				}
 
-				ResultDetails = $"{setupFieldsResult}{badSetupFields}";
+				if (setupFieldsResult != "" || txFieldsResult != "") ResultDetails += "\n";
+				ResultDetails += $"{setupFieldsResult}{badSetupFields}";
 				ResultDetails = ResultDetails.TrimEnd(' ');
 				ResultDetails = ResultDetails.TrimEnd(',');
 				if (setupFieldsResult != "") ResultDetails += "\n";
