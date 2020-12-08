@@ -8,7 +8,7 @@ using VMS.TPS.Common.Model.Types;
 
 namespace VMS.TPS.PlanChecks
 {
-    public class JawTrackingChecks : PlanCheck
+    public class JawTrackingChecks : PlanCheckBase
     {
 		protected override List<string> MachineExemptions => new List<string> {
 			DepartmentInfo.MachineNames.CEN_EX,
@@ -63,7 +63,7 @@ namespace VMS.TPS.PlanChecks
 									if (x1 != point.JawPositions.X1 || x2 != point.JawPositions.X2 || y1 != point.JawPositions.Y1 || y2 != point.JawPositions.Y2)
 									{
 										Result = "Pass";
-										ResultColor = "LimeGreen";
+										DisplayColor = ResultColorChoices.Pass;
 										break;
 									}
 								}
@@ -96,7 +96,7 @@ namespace VMS.TPS.PlanChecks
 									if (x1 != point.JawPositions.X1 || x2 != point.JawPositions.X2 || y1 != point.JawPositions.Y1 || y2 != point.JawPositions.Y2)
 									{
 										Result = "Pass";
-										ResultColor = "LimeGreen";
+										DisplayColor = ResultColorChoices.Pass;
 										break;
 									}
 								}
@@ -109,7 +109,7 @@ namespace VMS.TPS.PlanChecks
 				if (!IMRT)
 				{
 					Result = "Pass";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 
 				//No jaw tracking detected
@@ -117,7 +117,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "Warning";
 					ResultDetails = "Please check that jaw tracking is enabled in the optimization window or leaf motion calculator";
-					ResultColor = "Gold";
+					DisplayColor = ResultColorChoices.Warn;
 				}
 			}
             #endregion
@@ -152,7 +152,7 @@ namespace VMS.TPS.PlanChecks
 									{
 										Result = "Warning";
 										ResultDetails = "Please check that jaw tracking is disabled in the optimization window";
-										ResultColor = "Gold";
+										DisplayColor = ResultColorChoices.Warn;
 										break;
 									}
 								}
@@ -186,7 +186,7 @@ namespace VMS.TPS.PlanChecks
 									{
 										Result = "Warning";
 										ResultDetails = "Please check that jaw tracking is disabled in the leaf motion calculator";
-										ResultColor = "Gold";
+										DisplayColor = ResultColorChoices.Warn;
 										break;
 									}
 								}
@@ -199,14 +199,14 @@ namespace VMS.TPS.PlanChecks
                 if (!IMRT)
 				{
 					Result = "Pass";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 
 				//No jaw tracking detected
 				else if (Result == "")
 				{
 					Result = "Pass";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
 			#endregion

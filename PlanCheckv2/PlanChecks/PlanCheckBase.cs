@@ -14,7 +14,7 @@ namespace VMS.TPS.PlanChecks
     /// Base class for all new plan checks<br/>
     /// Must add constructor: <br/> <code>public MyNewCheck(PlanSetup plan) : base(plan) { }</code>
     /// </summary>
-    public abstract class PlanCheck : INotifyPropertyChanged
+    public abstract class PlanCheckBase : INotifyPropertyChanged
     {
         /// <summary>
         /// Displayed name of the test that will show in the PlanCheck window
@@ -30,16 +30,40 @@ namespace VMS.TPS.PlanChecks
         /// </summary>
         public string ResultDetails { get; protected set; }
         /// <summary>
-        /// Color of the result background (must be a color from System.Drawing.Color)<br/>
+        /// Color of the result background used in xaml for display (must be a color from System.Drawing.Color)<br/>
+        /// THIS IS USED IN XAML ONLY, YOU MUST SET DisplayColor TO CHANGE THIS<br/>
         /// Pass = LimeGreen<br/>
         /// Warning = Gold<br/>
         /// Fail = Tomato
         /// </summary>
-        public string ResultColor { get; protected set; }
+        public string ResultColor 
+        { 
+            get
+            {
+                switch (DisplayColor)
+                {
+                    case ResultColorChoices.Pass:
+                        return "LightGreen";
+                    case ResultColorChoices.Warn:
+                        return "Khaki";
+                    case ResultColorChoices.Fail:
+                        return "Salmon";
+                    default:
+                        return "LightGreen";
+                }
+            }
+        }
         /// <summary>
         /// Explanation of the test that will show in the table when clicked
         /// </summary>
         public string TestExplanation { get; protected set; }
+        /// <summary>
+        /// Color of the result background (if left blank will default to green)<br/>
+        /// Pass = Green<br/>
+        /// Warn = Yellow<br/>
+        /// Fail = Red
+        /// </summary>
+        protected ResultColorChoices DisplayColor { get; set; }
         /// <summary>
         /// List of machine IDs that this test will not run for<br/>
         /// Example:
@@ -64,7 +88,7 @@ namespace VMS.TPS.PlanChecks
 
         protected static readonly Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
-        public PlanCheck(PlanSetup plan)
+        public PlanCheckBase(PlanSetup plan)
         {
             if (plan.Beams.Count() < 1)
             {
@@ -104,7 +128,7 @@ namespace VMS.TPS.PlanChecks
         protected void TestCouldNotComplete()
         {
             Result = "Failure - Test could not be run";
-            ResultColor = "Tomato";
+            DisplayColor = ResultColorChoices.Fail;
         }
 
         /// <summary>
@@ -146,7 +170,7 @@ namespace VMS.TPS.PlanChecks
         protected void TestNotImplemented()
         {
             Result = $"Test \"{DisplayName}\" has not been implemented yet for {MachineID}";
-            ResultColor = "Tomato";
+            DisplayColor = ResultColorChoices.Fail;
             TestExplanation += "\n\nCriteria for test need to be specified";
         }
 
@@ -172,6 +196,13 @@ namespace VMS.TPS.PlanChecks
                 newText.Append(text[i]);
             }
             return newText.ToString();
+        }
+
+        protected enum ResultColorChoices
+        {
+            Pass,
+            Warn,
+            Fail
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

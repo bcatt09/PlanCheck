@@ -19,7 +19,7 @@ namespace VMS.TPS
     class ViewModel : INotifyPropertyChanged
     {
         private ScriptContext _context;                                             //ScriptContext from Aria
-        private ObservableCollection<PlanCheck> _planChecks;                        //list of plan checks and results to be displayed
+        private ObservableCollection<PlanCheckBase> _planChecks;                        //list of plan checks and results to be displayed
         private List<Tuple<ReferencePoint, PlanSetup, string>> _referencePoints;    //list of reference points for the dropdown
         private ObservableCollection<ReferencePointTableEntry> _referencePointTable;//list of reference point info to be displayed
         private string _patientName;                                                //patient name
@@ -33,7 +33,7 @@ namespace VMS.TPS
         private List<Tuple<string, List<string>>> _mroqcTemplates;                  //list of MROQC structure check templates to be displayed in the dropdown
         private Tuple<string, List<string>> _selectedMROQCTemplate;
 
-        public ObservableCollection<PlanCheck> PlanChecks { get { return _planChecks; } set { _planChecks = value; OnPropertyChanged("PlanChecks"); } }
+        public ObservableCollection<PlanCheckBase> PlanChecks { get { return _planChecks; } set { _planChecks = value; OnPropertyChanged("PlanChecks"); } }
         public List<Tuple<ReferencePoint, PlanSetup, string>> ReferencePoints { get { return _referencePoints; } set { _referencePoints = value; OnPropertyChanged("ReferencePoints"); } }
         public ObservableCollection<ReferencePointTableEntry> ReferencePointTable { get { return _referencePointTable; } set { _referencePointTable = value; OnPropertyChanged("ReferencePointTable"); } }
         public string PatientName { get { return _patientName; } set { _patientName = value; OnPropertyChanged("PatientName"); } }
@@ -53,7 +53,7 @@ namespace VMS.TPS
         {
             _context = context;
 
-            PlanChecks = new ObservableCollection<PlanCheck>();
+            PlanChecks = new ObservableCollection<PlanCheckBase>();
             MROQCChecks = new ObservableCollection<MROQCStructureCheck>();
 
             //plan information
@@ -79,7 +79,7 @@ namespace VMS.TPS
         // Run all tests
         private void RunPlanChecks()
         {
-            PlanChecks = new ObservableCollection<PlanCheck>();
+            PlanChecks = new ObservableCollection<PlanCheckBase>();
 
             // Run all plan checks
             PlanChecks.Add(new MachineChecks(_context.PlanSetup));

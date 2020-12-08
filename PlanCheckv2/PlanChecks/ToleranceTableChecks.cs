@@ -7,7 +7,7 @@ using VMS.TPS.Common.Model.API;
 
 namespace VMS.TPS.PlanChecks
 {
-    public class ToleranceTableChecks : PlanCheck
+    public class ToleranceTableChecks : PlanCheckBase
 	{
 		protected override List<string> MachineExemptions => new List<string> { };
 
@@ -51,7 +51,7 @@ namespace VMS.TPS.PlanChecks
 						Result = "Warning";
 						ResultDetails = $"Not all fields use the {tolTable} tolerance table: ";
 						badFields += field.Id + ", ";
-						ResultColor = "Gold";
+						DisplayColor = ResultColorChoices.Warn;
 					}
 				}
 
@@ -63,7 +63,7 @@ namespace VMS.TPS.PlanChecks
 				if (Result == "")
 				{
 					Result = "";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
 			#endregion
@@ -82,7 +82,7 @@ namespace VMS.TPS.PlanChecks
 					{
 						Result = "Warning";
 						ResultDetails = "Not all fields have the same tolerance table";
-						ResultColor = "Gold";
+						DisplayColor = ResultColorChoices.Warn;
 					}
 				}
 
@@ -90,7 +90,7 @@ namespace VMS.TPS.PlanChecks
 				if (Result == "")
 				{
 					Result = "";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
             #endregion
@@ -124,7 +124,7 @@ namespace VMS.TPS.PlanChecks
 							Result = "Warning";
 							setupFieldsResult = "OBI tolerance table not chosen for setup field: ";
 							badSetupFields += $"{field.Id}, ";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
 					else  // not a setup field
@@ -138,7 +138,7 @@ namespace VMS.TPS.PlanChecks
 							Result = "Warning";
 							txFieldsResult = $"Not all fields use the {tolTable} tolerance table: ";
 							badTxFields += $"{field.Id}, ";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
 				}
@@ -156,7 +156,7 @@ namespace VMS.TPS.PlanChecks
 				if (Result == "")
 				{
 					Result = "";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
             #endregion
@@ -180,7 +180,7 @@ namespace VMS.TPS.PlanChecks
 						{
 							Result = "Warning";
 							ResultDetails = "OBI tolerance table chosen for setup field of 21iX machine\n";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 							break;
 						}
 					}
@@ -195,7 +195,7 @@ namespace VMS.TPS.PlanChecks
 							Result = "Warning";
 							ResultDetails = $"Not all fields use the {tolTable} tolerance table: ";
 							badFields += field.Id + ", ";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
 				}
@@ -210,7 +210,7 @@ namespace VMS.TPS.PlanChecks
 				if (Result == "")
 				{
 					Result = "";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
 			#endregion
@@ -243,7 +243,7 @@ namespace VMS.TPS.PlanChecks
 						Result = "Warning";
 						ResultDetails = $"Not all fields use the {tolTable} tolerance table: ";
 						badFields += field.Id + ", ";
-						ResultColor = "Gold";
+						DisplayColor = ResultColorChoices.Warn;
 					}
 				}
 
@@ -257,7 +257,7 @@ namespace VMS.TPS.PlanChecks
 				if (Result == "")
 				{
 					Result = "";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
             #endregion
@@ -274,7 +274,7 @@ namespace VMS.TPS.PlanChecks
 						{
 							Result = "Warning";
 							ResultDetails = "IGRT tolerance table not chosen for setup field";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 							break;
 						}
 					}
@@ -286,7 +286,7 @@ namespace VMS.TPS.PlanChecks
 						{
 							Result = "Warning";
 							ResultDetails = "Not all fields have the same tolerance table";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
 				}
@@ -295,7 +295,7 @@ namespace VMS.TPS.PlanChecks
                 if (Result == "")
 				{
 					Result = "";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
 			#endregion

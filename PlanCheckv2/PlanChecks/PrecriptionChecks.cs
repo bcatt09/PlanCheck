@@ -8,7 +8,7 @@ using VMS.TPS.PlanChecks;
 
 namespace VMS.TPS
 {
-    public class PrecriptionChecks : PlanCheck
+    public class PrecriptionChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
@@ -23,7 +23,7 @@ namespace VMS.TPS
             {
                 Result = "";
                 ResultDetails = "No prescription attached to the plan";
-                ResultColor = "Tomato";
+                DisplayColor = ResultColorChoices.Fail;
 
                 return;
             }
@@ -34,13 +34,13 @@ namespace VMS.TPS
             {
                 Result = "Warning";
                 ResultDetails = $"Plan dose does not match prescription\n\nPrescription:\n{rx.DosePerFraction} x {rx.NumberOfFractions} Fx = {rx.DosePerFraction * rx.NumberOfFractions}\n\nPlan:\n{plan.DosePerFraction} x {plan.NumberOfFractions} Fx = {plan.TotalDose.ToString()}\n\nPrescribed Percentage: {(plan.TreatmentPercentage * 100.0).ToString("0.0")}%\nPlan Normalization: {plan.PlanNormalizationValue.ToString("0.0")}%";
-                ResultColor = "Gold";
+                DisplayColor = ResultColorChoices.Warn;
             }
             else
             {
                 Result = "";
                 ResultDetails = $"{plan.DosePerFraction} x {plan.NumberOfFractions} Fx = {plan.TotalDose}\nPrescribed Percentage: {(plan.TreatmentPercentage * 100.0).ToString("0.0")}%\nPlan Normalization: {plan.PlanNormalizationValue.ToString("0.0")}%";
-                ResultColor = "LimeGreen";
+                DisplayColor = ResultColorChoices.Pass;
             }
         }
     }

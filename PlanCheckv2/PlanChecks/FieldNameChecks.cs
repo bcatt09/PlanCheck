@@ -9,7 +9,7 @@ using VMS.TPS.Common.Model.Types;
 
 namespace VMS.TPS.PlanChecks
 {
-    class FieldNameChecks : PlanCheck
+    class FieldNameChecks : PlanCheckBase
     {
 		protected override List<string> MachineExemptions => new List<string> { };
 
@@ -37,7 +37,7 @@ namespace VMS.TPS.PlanChecks
 						{
 							Result = "Warning";
 							ResultDetails += "Field name mismatch  —  Field: " + field.Id + "  Gantry Angle: " + field.GantryAngleToUser(field.ControlPoints.FirstOrDefault().GantryAngle).ToString() + "\n";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
                     #endregion
@@ -52,7 +52,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += "Field name mismatch  —  Field: " + field.Id + "  Gantry Direction: " + field.GantryDirection + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 
 						}
@@ -62,7 +62,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += "Field name mismatch  —  Field: " + field.Id + "  Gantry Direction: " + field.GantryDirection + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 					}
@@ -79,7 +79,7 @@ namespace VMS.TPS.PlanChecks
 						{
 							Result = "Warning";
 							ResultDetails += "Field name mismatch  —  Field: " + field.Id + "  Pedestal Angle: " + field.PatientSupportAngleToUser(field.ControlPoints.First().PatientSupportAngle).ToString() + "\n";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
                     #endregion
@@ -92,7 +92,7 @@ namespace VMS.TPS.PlanChecks
 			if (ResultDetails == "")
 			{
 				Result = "Pass";
-				ResultColor = "LimeGreen";
+				DisplayColor = ResultColorChoices.Pass;
 			}
 		}
     }

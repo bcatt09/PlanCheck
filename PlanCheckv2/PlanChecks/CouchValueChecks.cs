@@ -7,7 +7,7 @@ using VMS.TPS.Common.Model.API;
 
 namespace VMS.TPS.PlanChecks
 {
-    public class CouchValueChecks : PlanCheck
+    public class CouchValueChecks : PlanCheckBase
 	{
 		protected override List<string> MachineExemptions => new List<string> 
 		{
@@ -39,7 +39,7 @@ namespace VMS.TPS.PlanChecks
 					{
 						Result = "Warning";
 						ResultDetails += "No couch values for " + field.Id.ToString() + ": ";
-						ResultColor = "Gold";
+						DisplayColor = ResultColorChoices.Warn;
 
 						if (field.ControlPoints.First().TableTopLateralPosition.ToString() == "NaN")
 							ResultDetails += "lat, ";
@@ -63,7 +63,7 @@ namespace VMS.TPS.PlanChecks
 					ResultDetails = $"Lat: {(ConvertCouchLatToVarianIECScale(plan.Beams.First().ControlPoints.First().TableTopLateralPosition) / 10.0).ToString("0.0")} cm\n" +
 									$"Long: {(plan.Beams.First().ControlPoints.First().TableTopLongitudinalPosition / 10.0).ToString("0.0")} cm\n" +
 									$"Vert: {(ConvertCouchVertToVarianIECScale(plan.Beams.First().ControlPoints.First().TableTopVerticalPosition) / 10.0).ToString("0.0")} cm";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
             #endregion
@@ -83,7 +83,7 @@ namespace VMS.TPS.PlanChecks
 					{
 						Result = "Warning";
 						ResultDetails += "Couch value incorrect for " + field.Id.ToString() + ": ";
-						ResultColor = "Gold";
+						DisplayColor = ResultColorChoices.Warn;
 
 						if (field.ControlPoints.First().TableTopLateralPosition != 0)
 							ResultDetails += "lat, ";
@@ -111,7 +111,7 @@ namespace VMS.TPS.PlanChecks
 						ResultDetails = $"Lat: {(ConvertCouchLatToVarianIECScale(plan.Beams.First().ControlPoints.First().TableTopLateralPosition) / 10.0).ToString("0.0")} cm\n" +
 										$"Long: {(plan.Beams.First().ControlPoints.First().TableTopLongitudinalPosition / 10.0).ToString("0.0")} cm\n" +
 										$"Vert: {(ConvertCouchVertToVarianIECScale(plan.Beams.First().ControlPoints.First().TableTopVerticalPosition) / 10.0).ToString("0.0")} cm";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
             #endregion
@@ -129,7 +129,7 @@ namespace VMS.TPS.PlanChecks
 					{
 						Result = "Warning";
 						ResultDetails += "Couch value incorrect for " + field.Id.ToString() + ": ";
-						ResultColor = "Gold";
+						DisplayColor = ResultColorChoices.Warn;
 
 						if (field.ControlPoints.First().TableTopLateralPosition != 0)
 							ResultDetails += "lat, ";
@@ -152,7 +152,7 @@ namespace VMS.TPS.PlanChecks
 					ResultDetails = $"Lat: {(ConvertCouchLatToVarianIECScale(plan.Beams.First().ControlPoints.First().TableTopLateralPosition) / 10.0).ToString("0.0")} cm\n" +
 									$"Long: {(plan.Beams.First().ControlPoints.First().TableTopLongitudinalPosition / 10.0).ToString("0.0")} cm\n" +
 									$"Vert: {(ConvertCouchVertToVarianIECScale(plan.Beams.First().ControlPoints.First().TableTopVerticalPosition) / 10.0).ToString("0.0")} cm";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
             #endregion

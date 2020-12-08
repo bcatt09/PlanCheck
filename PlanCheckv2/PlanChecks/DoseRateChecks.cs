@@ -8,7 +8,7 @@ using VMS.TPS.Common.Model.Types;
 
 namespace VMS.TPS.PlanChecks
 {
-    class DoseRateChecks : PlanCheck
+    class DoseRateChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
@@ -42,7 +42,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 						else if (energy == "6X-FFF")
@@ -51,7 +51,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 						else if (energy == "10X-FFF")
@@ -60,7 +60,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 						else if (energy.Contains("E", StringComparison.CurrentCultureIgnoreCase))
@@ -69,7 +69,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 					}
@@ -80,7 +80,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "";
 					ResultDetails = plan.Beams.Where(x => !x.IsSetupField).First().DoseRate.ToString();
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 
 				ResultDetails = ResultDetails.TrimEnd('\n');
@@ -107,7 +107,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 						else if (energy == "6X-FFF")
@@ -116,7 +116,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 						else if (energy == "10X-FFF")
@@ -125,7 +125,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 						else if (energy.Contains("E", StringComparison.CurrentCultureIgnoreCase))
@@ -134,7 +134,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 					}
@@ -145,7 +145,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "";
 					ResultDetails = plan.Beams.Where(x => !x.IsSetupField).First().DoseRate.ToString();
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 
 				ResultDetails = ResultDetails.TrimEnd('\n');
@@ -171,7 +171,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 						else if (energy.Contains("E", StringComparison.CurrentCultureIgnoreCase))
@@ -180,7 +180,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 					}
@@ -191,7 +191,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "";
 					ResultDetails = plan.Beams.Where(x => !x.IsSetupField).First().DoseRate.ToString();
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 
 				ResultDetails = ResultDetails.TrimEnd('\n');
@@ -221,7 +221,7 @@ namespace VMS.TPS.PlanChecks
 								{
 									Result = "Warning";
 									ResultDetails += field.Id + " (IMRT) dose rate set at " + field.DoseRate + "\n";
-									ResultColor = "Gold";
+									DisplayColor = ResultColorChoices.Warn;
 								}
 							}
 							//3D dose rate should be 600
@@ -231,7 +231,7 @@ namespace VMS.TPS.PlanChecks
 								{
 									Result = "Warning";
 									ResultDetails += field.Id + " (3D) dose rate set at " + field.DoseRate + "\n";
-									ResultColor = "Gold";
+									DisplayColor = ResultColorChoices.Warn;
 								}
 							}
 						}
@@ -241,7 +241,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " (electron) dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 					}
@@ -252,7 +252,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "";
 					ResultDetails = plan.Beams.Where(x => !x.IsSetupField).First().DoseRate.ToString();
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 
 				ResultDetails = ResultDetails.TrimEnd('\n');
@@ -281,13 +281,13 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 							else if (field.DoseRate != 400 && field_type.Contains("STATIC", StringComparison.CurrentCultureIgnoreCase))
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 						else if (energy == "10X-FFF")
@@ -296,7 +296,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 						else if (energy.Contains("E", StringComparison.CurrentCultureIgnoreCase))
@@ -305,7 +305,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 						}
 					}
@@ -316,7 +316,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "";
 					ResultDetails = plan.Beams.Where(x => !x.IsSetupField).First().DoseRate.ToString();
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 
 				ResultDetails = ResultDetails.TrimEnd('\n');
@@ -337,7 +337,7 @@ namespace VMS.TPS.PlanChecks
 						{
 							Result = "Warning";
 							ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
 				}
@@ -347,7 +347,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "";
 					ResultDetails = plan.Beams.Where(x => !x.IsSetupField).First().DoseRate.ToString();
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 
 				ResultDetails = ResultDetails.TrimEnd('\n');
@@ -368,7 +368,7 @@ namespace VMS.TPS.PlanChecks
 						{
 							Result = "Warning";
 							ResultDetails += field.Id + " dose rate set at " + field.DoseRate + "\n";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
 				}
@@ -378,7 +378,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "";
 					ResultDetails = plan.Beams.Where(x => !x.IsSetupField).First().DoseRate.ToString();
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 
 				ResultDetails = ResultDetails.TrimEnd('\n');

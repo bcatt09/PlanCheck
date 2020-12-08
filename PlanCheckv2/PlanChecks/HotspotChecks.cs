@@ -7,7 +7,7 @@ using VMS.TPS.Common.Model.API;
 
 namespace VMS.TPS.PlanChecks
 {
-    public class HotspotChecks : PlanCheck
+    public class HotspotChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
@@ -22,7 +22,7 @@ namespace VMS.TPS.PlanChecks
             {
 				Result = "";
 				ResultDetails = $"No target structure selected";
-				ResultColor = "Gold";
+				DisplayColor = ResultColorChoices.Warn;
 
 				return;
 			}
@@ -35,13 +35,13 @@ namespace VMS.TPS.PlanChecks
 
 				Result = "";
 				ResultDetails = inTarget ? $"Hotspot is in {target.Id}" : $"Hotspot is not in {target.Id}";
-				ResultColor = inTarget ? "LimeGreen" : "Gold";
+				DisplayColor = inTarget ? ResultColorChoices.Pass : ResultColorChoices.Warn;
 			}
 			else
 			{
 				Result = "";
 				ResultDetails = "Dose has not been calculated";
-				ResultColor = "Gold";
+				DisplayColor = ResultColorChoices.Warn;
 			}
 		}
     }

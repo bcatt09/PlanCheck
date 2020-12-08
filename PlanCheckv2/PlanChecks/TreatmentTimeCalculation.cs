@@ -7,7 +7,7 @@ using VMS.TPS.Common.Model.API;
 
 namespace VMS.TPS.PlanChecks
 {
-    class TreatmentTimeCalculation : PlanCheck
+    class TreatmentTimeCalculation : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> {
             DepartmentInfo.MachineNames.BAY_TB,
@@ -33,7 +33,7 @@ namespace VMS.TPS.PlanChecks
         {
             DisplayName = "Delivery Time";
             Result = "";
-            ResultColor = "LimeGreen";
+            DisplayColor = ResultColorChoices.Pass;
             TestExplanation = "Calculates the delivery time of the beam for 3D/FiF plans";
 
             var beams = plan.Beams.Where(x => !x.IsSetupField);

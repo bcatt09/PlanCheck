@@ -9,7 +9,7 @@ using VMS.TPS.Common.Model.Types;
 
 namespace VMS.TPS.PlanChecks
 {
-    public class Shifts : PlanCheck
+    public class Shifts : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
@@ -21,7 +21,7 @@ namespace VMS.TPS.PlanChecks
 			TestExplanation = "Displays shifts from Marker Structure or User Origin";
 			Result = "";
 			ResultDetails = "";
-			ResultColor = "LimeGreen";
+			DisplayColor = ResultColorChoices.Pass;
 
 			PatientOrientation orientation = plan.TreatmentOrientation;
 

@@ -8,7 +8,7 @@ using VMS.TPS.Common.Model.API;
 
 namespace VMS.TPS.PlanChecks
 {
-    public class UseGatedChecks : PlanCheck
+    public class UseGatedChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { 
             DepartmentInfo.MachineNames.CEN_EX, 
@@ -43,19 +43,19 @@ namespace VMS.TPS.PlanChecks
                     {
                         Result = "";
                         ResultDetails = "\"Use Gating\" is checked";
-                        ResultColor = "LimeGreen";
+                        DisplayColor = ResultColorChoices.Pass;
                     }
                     else
                     {
                         Result = "Warning";
                         ResultDetails = "Plan has a low number of fractions and looks to contain a 4D image.  Should \"Use Gated\" be checked?";
-                        ResultColor = "Gold";
+                        DisplayColor = ResultColorChoices.Warn;
                     }
                 }
                 else
                 {
                     Result = "Pass";
-                    ResultColor = "LimeGreen";
+                    DisplayColor = ResultColorChoices.Pass;
                 }
             }
             else if (MachineID == DepartmentInfo.MachineNames.LAP_IX ||
@@ -69,19 +69,19 @@ namespace VMS.TPS.PlanChecks
                     {
                         Result = "";
                         ResultDetails = "\"Use Gated\" is checked";
-                        ResultColor = "LimeGreen";
+                        DisplayColor = ResultColorChoices.Pass;
                     }
                     else
                     {
                         Result = "Warning";
                         ResultDetails = "\"Use Gated\" is not checked and the plan appears to be DIBH";
-                        ResultColor = "Gold";
+                        DisplayColor = ResultColorChoices.Warn;
                     }
                 }
                 else
                 {
                     Result = "Pass";
-                    ResultColor = "LimeGreen";
+                    DisplayColor = ResultColorChoices.Pass;
                 }
             }
             else

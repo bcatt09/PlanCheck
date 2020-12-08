@@ -8,7 +8,7 @@ using VMS.TPS.Common.Model.Types;
 
 namespace VMS.TPS.PlanChecks
 {
-    public class PlanApprovalChecks : PlanCheck
+    public class PlanApprovalChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
@@ -21,7 +21,7 @@ namespace VMS.TPS.PlanChecks
             DisplayName = "Plan Approval";
             Result = "";
             ResultDetails = $"Status: {AddSpaces(approvalStatus.ToString())}";
-            ResultColor = "Gold";
+            DisplayColor = ResultColorChoices.Warn;
             TestExplanation = "Displays plan approval\nAlso checks that plan has been reviewed by a physician\nReviewed timestamp is estimated based on target structure or CT image approval";
 
             // Not Approved yet
@@ -57,7 +57,7 @@ namespace VMS.TPS.PlanChecks
                         }
                         else
                         {
-                            ResultColor = "LimeGreen";
+                            DisplayColor = ResultColorChoices.Pass;
                             ResultDetails += $"\nReviewed by: {reviewedUserName} at {reviewedDateTime}";
                         }
                     }
@@ -73,7 +73,7 @@ namespace VMS.TPS.PlanChecks
                     string planningApprovedUserDisplayName = planningApprovedHistoryEntry.UserDisplayName;
                     string planningApprovedDateTime = planningApprovedHistoryEntry.ApprovalDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt");
 
-                    ResultColor = "LimeGreen";
+                    DisplayColor = ResultColorChoices.Pass;
                     ResultDetails += $"\nPlanning Approved by: {planningApprovedUserDisplayName} at {planningApprovedDateTime}";
                 }
                 // Has been Treatment Approved
@@ -84,7 +84,7 @@ namespace VMS.TPS.PlanChecks
                     string treatApprovedUserDisplayName = treatApprovedHistoryEntry.UserDisplayName;
                     string treatApprovedDateTime = treatApprovedHistoryEntry.ApprovalDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt");
 
-                    ResultColor = "LimeGreen";
+                    DisplayColor = ResultColorChoices.Pass;
                     ResultDetails += $"\nPlanning Approved by: {treatApprovedUserDisplayName} at {treatApprovedDateTime}";
                 }
             }

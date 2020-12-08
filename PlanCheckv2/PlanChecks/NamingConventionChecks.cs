@@ -8,7 +8,7 @@ using VMS.TPS.Common.Model.API;
 
 namespace VMS.TPS.PlanChecks
 {
-    class NamingConventionChecks : PlanCheck
+    class NamingConventionChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
@@ -20,7 +20,7 @@ namespace VMS.TPS.PlanChecks
             TestExplanation = "Checks Course, Plan, and Reference Point naming against OneAria conventions";
             Result = "";
             ResultDetails = "";
-            ResultColor = "LimeGreen";
+            DisplayColor = ResultColorChoices.Pass;
 
             var courseIdRegexStrings = Properties.Resources.CourseSiteNames.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => $@"^\d{{1,2}} (?:[RL] )?{x}$");
             var planIdRegexStrings = Properties.Resources.PlanSiteNames.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => $@"^(?:[RL] )?{x}(?: (?:LN|Bst))?_\d[a-z]?\.?$");
@@ -41,7 +41,7 @@ namespace VMS.TPS.PlanChecks
             if (!match)
             {
                 ResultDetails += $"Course ID: {plan.Course.Id} doesn't match OneAria naming conventions\n";
-                ResultColor = "Gold";
+                DisplayColor = ResultColorChoices.Warn;
             }
 
             // Plan ID
@@ -59,7 +59,7 @@ namespace VMS.TPS.PlanChecks
             if (!match)
             {
                 ResultDetails += $"Plan ID: {plan.Id} doesn't match OneAria naming conventions\n";
-                ResultColor = "Gold";
+                DisplayColor = ResultColorChoices.Warn;
             }
 
             // Reference Point ID
@@ -77,7 +77,7 @@ namespace VMS.TPS.PlanChecks
             if (!match)
             {
                 ResultDetails += $"Reference Point: {plan.PrimaryReferencePoint.Id} doesn't match OneAria naming conventions\n";
-                ResultColor = "Gold";
+                DisplayColor = ResultColorChoices.Warn;
             }
 
             // Plan Name
@@ -95,7 +95,7 @@ namespace VMS.TPS.PlanChecks
             if (!match)
             {
                 ResultDetails += $"Plan Name: {(plan.Name == "" ? "Blank name" : plan.Name)} doesn't match OneAria naming conventions\n";
-                ResultColor = "Gold";
+                DisplayColor = ResultColorChoices.Warn;
             }
 
             ResultDetails = ResultDetails.TrimEnd('\n');

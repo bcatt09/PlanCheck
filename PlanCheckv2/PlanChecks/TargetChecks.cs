@@ -8,7 +8,7 @@ using VMS.TPS.Common.Model.API;
 
 namespace VMS.TPS.PlanChecks
 {
-    class TargetChecks : PlanCheck
+    class TargetChecks : PlanCheckBase
 	{
 		protected override List<string> MachineExemptions => new List<string> { };
 
@@ -29,20 +29,20 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "Warning";
 					ResultDetails = $"Plan target ({target.Id}) has " + targetPieces + " separates pieces.  Is this correct?";
-					ResultColor = "Gold";
+					DisplayColor = ResultColorChoices.Warn;
 				}
 				else
 				{
 					Result = "";
 					ResultDetails = target.Id;
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
 			else
 			{
 				Result = "";
 				ResultDetails = "No target structure selected";
-				ResultColor = "Gold";
+				DisplayColor = ResultColorChoices.Warn;
 			}
 		}
     }

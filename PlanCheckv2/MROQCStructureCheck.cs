@@ -32,18 +32,18 @@ namespace VMS.TPS
                 if (!mroqcStructure.IsEmpty && mroqcStructure.HasSegment)
                 {
                     Result = "Pass";
-                    ResultColor = "LimeGreen";
+                    ResultColor = "LightGreen";
                 }
                 else
                 {
                     Result = $"{Structure} is not contoured";
-                    ResultColor = "Tomato";
+                    ResultColor = "Salmon";
                 }
             }
             else
             {
                 Result = $"{Structure} not found in structure set";
-                ResultColor = "Tomato";
+                ResultColor = "Salmon";
             }
         }
 
