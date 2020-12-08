@@ -23,7 +23,7 @@ namespace VMS.TPS
             var logfile = new NLog.Targets.FileTarget("logfile")
             {
                 FileName = GetDefaultLogPath(),
-                Layout = "${date:format=HH\\:mm\\:ss:padding=-10:fixedlength=true} ${gdc:item=Script:padding=-15:fixedlength=true} ${level:uppercase=true:padding=-10:fixedlength=true} ${gdc:item=User:padding=-35:fixedlength=true} ${gdc:item=Patient:padding=-35:fixedlength=true} ${gdc:item=Plan:padding=-35:fixedlength=true} ${message}${onexception:${newline}  ${exception:format=Message,StackTrace:separator=\r\n}}"
+                Layout = "${date:format=HH\\:mm\\:ss:padding=-10:fixedlength=true} ${gdc:item=Script:padding=-20:fixedlength=true} ${level:uppercase=true:padding=-10:fixedlength=true} ${gdc:item=User:padding=-35:fixedlength=true} ${gdc:item=Patient:padding=-35:fixedlength=true} ${gdc:item=Plan:padding=-35:fixedlength=true} ${message}${onexception:${newline}  ${exception:format=Message,StackTrace:separator=\r\n}}"
             };
 
             // Rules for mapping loggers to targets            
@@ -32,7 +32,7 @@ namespace VMS.TPS
             // Apply config           
             LogManager.Configuration = config;
 
-            GlobalDiagnosticsContext.Set("Script", "KCIPlanCheck");
+            GlobalDiagnosticsContext.Set("Script", "KCI Plan Check");
             GlobalDiagnosticsContext.Set("User", $"{context.CurrentUser.Name} ({context.CurrentUser.Id})");
             GlobalDiagnosticsContext.Set("Patient", $"{context.Patient.LastName}, {context.Patient.FirstName} ({context.Patient.Id})");
             GlobalDiagnosticsContext.Set("Plan", $"{context.PlanSetup.Id} ({context.Course.Id})");
