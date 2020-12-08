@@ -30,7 +30,7 @@ namespace VMS.TPS.PlanChecks
 				string tolTable;
 				string badFields = "";
 
-				if (plan.Id.Contains("_5"))
+				if (plan.Id.Contains("_5") || plan.StructureSet.Image.ZRes == 1) // Plan is single fraction (SRS) or has 1 mm slices (likely a brain SRS or SRT)
 					tolTable = "SRS/SRT";
 				else if (plan.Id.Contains("_4"))
 					tolTable = "SBRT";
