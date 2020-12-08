@@ -43,13 +43,13 @@ namespace VMS.TPS.PlanChecks
                 switch (DisplayColor)
                 {
                     case ResultColorChoices.Pass:
-                        return "LightGreen";
+                        return "#C6EFCE";
                     case ResultColorChoices.Warn:
-                        return "Khaki";
+                        return "#FFEB9C";
                     case ResultColorChoices.Fail:
-                        return "Salmon";
+                        return "#FFC7CE";
                     default:
-                        return "LightGreen";
+                        return "#C6EFCE";
                 }
             }
         }
