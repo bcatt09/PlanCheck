@@ -85,6 +85,7 @@ namespace VMS.TPS.Properties {
         ///Thyroid
         ///Vagina
         ///Vulva
+        ///
         ///NPX
         ///PNS
         ///Nasal
@@ -112,7 +113,8 @@ namespace VMS.TPS.Properties {
         ///PostCri
         ///Parotid
         ///SMG
-        ///Mets.
+        ///
+        ///Mets \d\d\d\d-\d\d.
         /// </summary>
         internal static string CourseSiteNames {
             get {
@@ -121,8 +123,7 @@ namespace VMS.TPS.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///Anal
+        ///   Looks up a localized string similar to Anal
         ///Bladder
         ///Brain
         ///Brain PCI
@@ -154,40 +155,45 @@ namespace VMS.TPS.Properties {
         ///ParArtc
         ///Pelvis
         ///Inguinal
-        ///Ovary,
-        ///Panc,
-        ///Pelvis,
-        ///Prost/SV,
-        ///Prost,
-        ///Prost Bed,
-        ///Pelvis,
-        ///Rectum,
-        ///H&amp;N,
-        ///Chest,
-        ///Abdmn,
-        ///Pelvis,
-        ///Arm,
-        ///Leg,
-        ///Scalp,
-        ///Forehead,
-        ///Eye,
-        ///Nose,
-        ///Cheek,
-        ///Lip,
-        ///Chest,
-        ///Back,
-        ///Arm,
-        ///Leg,
-        ///Stomach,
-        ///Thyroid,
-        ///Pelvis,
-        ///Vagina,
-        ///Pelvis,
-        ///Vulva,
-        ///NPX,
-        ///PNS,
-        ///Nasal,
-        /// [rest of string was truncated]&quot;;.
+        ///Ovary
+        ///Panc
+        ///Pelvis
+        ///Prost/SV
+        ///Prost
+        ///Prost Bed
+        ///Pelvis
+        ///Rectum
+        ///H&amp;N
+        ///Chest
+        ///Abdmn
+        ///Pelvis
+        ///Arm
+        ///Leg
+        ///Scalp
+        ///Forehead
+        ///Eye
+        ///Nose
+        ///Cheek
+        ///Lip
+        ///Chest
+        ///Back
+        ///Arm
+        ///Leg
+        ///Stomach
+        ///Thyroid
+        ///Pelvis
+        ///Vagina
+        ///Pelvis
+        ///Vulva
+        ///
+        ///NPX
+        ///PNS
+        ///Nasal
+        ///OPX
+        ///BOT
+        ///Vlcula
+        ///Tonsil
+        ///SoftPlt [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string PlanSiteNames {
             get {

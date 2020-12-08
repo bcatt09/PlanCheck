@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace VMS.TPS
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : UserControl
+	public partial class MainWindow : MetroWindow
 	{
 		public int prevSelectedRow = -1;
 
@@ -48,13 +49,6 @@ namespace VMS.TPS
 				TestsGrid.RowDetailsVisibilityMode = DataGridRowDetailsVisibilityMode.VisibleWhenSelected;
 				prevSelectedRow = dg.SelectedIndex;
 			}
-		}
-
-		private void OptimizerButton_Click(object sender, RoutedEventArgs e)
-		{
-			OptimizationWindow optiWindow = new OptimizationWindow();
-			optiWindow.Show();
-			optiWindow.DataContext = this.DataContext;
 		}
 
         private void MROQC_Button_Click(object sender, RoutedEventArgs e)
