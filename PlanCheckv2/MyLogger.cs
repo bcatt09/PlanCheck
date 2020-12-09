@@ -38,7 +38,7 @@ namespace VMS.TPS
             GlobalDiagnosticsContext.Set("Plan", $"{context.PlanSetup.Id} ({context.Course.Id})");
 
             // Clear the log every day and save yesterday's log in case there were errors that need to be looked into
-            if (DateTime.Now.Day != File.GetLastWriteTime(GetDefaultLogPath()).Day)
+            if (File.Exists(GetDefaultLogPath()) && DateTime.Now.Day != File.GetLastWriteTime(GetDefaultLogPath()).Day)
             {
                 File.Delete(GetOldLogPath());
                 File.Copy(GetDefaultLogPath(), GetOldLogPath());
