@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
 
-namespace VMS.TPS
+namespace PlanCheck
 {
-    public static class MyLogger
+    public static class Log
     {
         private static string LogName = "ESAPIScripts";
         private static string DefaultLogFileName = LogName + ".log";

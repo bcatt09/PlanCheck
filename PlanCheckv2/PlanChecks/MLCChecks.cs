@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using VMS.TPS.Common.Model.API;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
     public class MLCChecks : PlanCheckBase
     {

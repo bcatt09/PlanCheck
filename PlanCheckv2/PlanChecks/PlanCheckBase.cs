@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows;
 using VMS.TPS.Common.Model.API;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
     /// <summary>
     /// Base class for all new plan checks<br/>

@@ -1686,7 +1686,7 @@
             with embedded ${}).
             </summary>
         </member>
-        <member name="M:NLog.Conditions.ConditionLayoutExpression.#ctor(NLog.Layouts.Layout)">
+        <member name="M:NLog.Conditions.ConditionLayoutExpression.#ctor(NLog.Layouts.SimpleLayout)">
             <summary>
             Initializes a new instance of the <see cref="T:NLog.Conditions.ConditionLayoutExpression" /> class.
             </summary>
@@ -1735,11 +1735,12 @@
             Condition literal expression (numeric, <b>LogLevel.XXX</b>, <b>true</b> or <b>false</b>).
             </summary>
         </member>
-        <member name="M:NLog.Conditions.ConditionLiteralExpression.#ctor(System.Object)">
+        <member name="M:NLog.Conditions.ConditionLiteralExpression.#ctor(System.Object,System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:NLog.Conditions.ConditionLiteralExpression" /> class.
             </summary>
             <param name="literalValue">Literal value.</param>
+            <param name="toStringValue">ToString value.</param>
         </member>
         <member name="P:NLog.Conditions.ConditionLiteralExpression.LiteralValue">
             <summary>
@@ -4653,7 +4654,7 @@
         </member>
         <member name="M:NLog.Fluent.Log.Level(NLog.LogLevel,System.String)">
             <summary>
-            Starts building a log event with the specified <see cref="T:NLog.LogLevel" />.
+            Starts building a log event with the specified <see cref="T:System.LogLevel" />.
             </summary>
             <param name="logLevel">The log level.</param>
             <param name="callerFilePath">The full path of the source file that contains the caller. This is the file path at the time of compile.</param>
@@ -11834,6 +11835,11 @@
             Gets or sets whether to render innermost Exception from <see cref="M:System.Exception.GetBaseException"/>
             </summary>
         </member>
+        <member name="P:NLog.LayoutRenderers.ExceptionLayoutRenderer.FlattenException">
+            <summary>
+            Gets or sets whether to collapse exception tree using <see cref="M:System.AggregateException.Flatten"/>
+            </summary>
+        </member>
         <member name="P:NLog.LayoutRenderers.ExceptionLayoutRenderer.Formats">
             <summary>
              Gets the formats of the output of inner exceptions to be rendered in target.
@@ -13796,6 +13802,9 @@
             <summary>
             Should forward slashes be escaped? If true, / will be converted to \/ 
             </summary>
+            <remarks>
+            If not set explicitly then the value of the parent will be used as default.
+            </remarks>
             <docgen category="Transformation Options" order="10"/>
         </member>
         <member name="M:NLog.LayoutRenderers.Wrappers.JsonEncodeLayoutRendererWrapper.RenderInnerAndTransform(NLog.LogEventInfo,System.Text.StringBuilder,System.Int32)">
@@ -14816,8 +14825,11 @@
         </member>
         <member name="P:NLog.Layouts.JsonAttribute.EscapeForwardSlash">
             <summary>
-            Should forward slashes be escaped? If true, / will be converted to \/ 
+            Should forward slashes be escaped? If true, / will be converted to \/
             </summary>
+            <remarks>
+            If not set explicitly then the value of the parent will be used as default.
+            </remarks>
             <docgen category='JSON Attribute Options' order='100' />
         </member>
         <member name="P:NLog.Layouts.JsonAttribute.IncludeEmptyValue">
@@ -14894,6 +14906,9 @@
             <summary>
             Should forward slashes be escaped? If true, / will be converted to \/ 
             </summary>
+            <remarks>
+            If not set explicitly then the value of the parent will be used as default.
+            </remarks>
             <docgen category='JSON Formating' order='10' />
         </member>
         <member name="M:NLog.Layouts.JsonLayout.InitializeLayout">
@@ -16305,6 +16320,11 @@
             </summary>
             <param name="disposing"><c>True</c> to release both managed and unmanaged resources;
             <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="M:NLog.LogFactory.Shutdown">
+            <summary>
+            Dispose all targets, and shutdown logging.
+            </summary>
         </member>
         <member name="M:NLog.LogFactory.GetCandidateConfigFilePaths">
             <summary>
@@ -23537,6 +23557,12 @@
             </summary>
             <docgen category='Parameter Options' order='9' />
         </member>
+        <member name="P:NLog.Targets.DatabaseParameterInfo.AllowDbNull">
+            <summary>
+            Gets or sets whether empty value should translate into DbNull. Requires database column to allow NULL values.
+            </summary>
+            <docgen category='Parameter Options' order='8' />
+        </member>
         <member name="T:NLog.Targets.DatabaseTarget">
             <summary>
             Writes log messages to the database using an ADO.NET provider.
@@ -23836,12 +23862,10 @@
             <param name="logEvent">Current logevent.</param>
             <param name="parameterInfo">Parameter configuration info.</param>
         </member>
-        <member name="M:NLog.Targets.DatabaseTarget.CreateDefaultValue(System.Type)">
+        <member name="M:NLog.Targets.DatabaseTarget.CreateDefaultValue(System.Type,System.Boolean)">
             <summary>
             Create Default Value of Type
             </summary>
-            <param name="dbParameterType"></param>
-            <returns></returns>
         </member>
         <member name="T:NLog.Targets.DateAndSequenceArchive">
             <summary>
@@ -25241,7 +25265,6 @@
             <summary>
             Returns the correct filename to archive
             </summary>
-            <returns></returns>
         </member>
         <member name="M:NLog.Targets.FileTarget.GetArchiveFileNameBasedOnFileSize(System.String,System.Int32,System.Boolean)">
             <summary>
@@ -25251,6 +25274,11 @@
             <param name="upcomingWriteSize">The size in bytes of the next chunk of data to be written in the file.</param>
             <param name="initializedNewFile">File has just been opened.</param>
             <returns>Filename to archive. If <c>null</c>, then nothing to archive.</returns>
+        </member>
+        <member name="M:NLog.Targets.FileTarget.TryFallbackToPreviousLogFileName(System.String,System.Boolean)">
+            <summary>
+            Check if archive operation should check previous filename, because FileAppenderCache tells us current filename no longer exists
+            </summary>
         </member>
         <member name="M:NLog.Targets.FileTarget.GetArchiveFileNameBasedOnTime(System.String,NLog.LogEventInfo,System.DateTime,System.Boolean)">
             <summary>
@@ -28240,6 +28268,8 @@
             <summary>
             Delay the flush until the LogEvent has been confirmed as written
             </summary>
+            <remarks>If not explicitly set, then disabled by default for <see cref="T:NLog.Targets.Wrappers.BufferingTargetWrapper"/> and AsyncTaskTarget
+            </remarks>
             <docgen category='General Options' order='10' />
         </member>
         <member name="P:NLog.Targets.Wrappers.AutoFlushTargetWrapper.FlushOnConditionOnly">

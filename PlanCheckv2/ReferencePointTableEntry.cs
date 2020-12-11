@@ -8,7 +8,7 @@ using System.Windows;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 
-namespace VMS.TPS
+namespace PlanCheck
 {
 	class ReferencePointTableEntry : INotifyPropertyChanged
 	{

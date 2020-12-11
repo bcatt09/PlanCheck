@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
     class TreatmentTimeCalculation : PlanCheckBase
     {

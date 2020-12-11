@@ -8,13 +8,13 @@ using VMS.TPS.Common.Model.Types;
 using VMS.TPS.Common.Model.API;
 using System.Windows;
 using System.Collections.ObjectModel;
-using VMS.TPS.PlanChecks;
+using PlanCheck.Checks;
 using NLog;
 using NLog.Fluent;
 using System.Reflection;
 using System.IO;
 
-namespace VMS.TPS
+namespace PlanCheck
 {
     class ViewModel : INotifyPropertyChanged
     {
@@ -61,7 +61,7 @@ namespace VMS.TPS
             CourseID = context.Course.Id;
             PlanID = context.PlanSetup.Id;
 
-            MyLogger.Initialize(context);
+            Log.Initialize(context);
 
             RunPlanChecks();
 
@@ -73,7 +73,7 @@ namespace VMS.TPS
 
             logger.Info("");
 
-            NLog.LogManager.Shutdown();
+            LogManager.Shutdown();
         }
 
         // Run all tests

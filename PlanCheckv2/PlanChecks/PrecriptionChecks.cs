@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
-using VMS.TPS.PlanChecks;
 
-namespace VMS.TPS
+namespace PlanCheck.Checks
 {
     public class PrecriptionChecks : PlanCheckBase
     {

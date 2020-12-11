@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VMS.TPS.Properties {
+namespace PlanCheck.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
