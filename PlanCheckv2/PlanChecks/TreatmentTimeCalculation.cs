@@ -43,7 +43,7 @@ namespace PlanCheck.Checks
                 // Electron
                 if (beam.EnergyModeDisplayName.ToUpper().Contains("E"))
                 {
-                    Result += $"{beam.Id} = {Math.Round(beam.Meterset.Value / beam.DoseRate, 2)} min\n";
+                    Result += $"{beam.Id} = {Math.Ceiling(beam.Meterset.Value / beam.DoseRate * 100.0) / 100.0} min\n";          // Math.Ceiling( x * 100 ) / 100.0
                 }
                 // Can't calculate for EDW fields right now
                 else if (beam.Wedges.Where(x => x is EnhancedDynamicWedge).Count() > 0)
@@ -53,7 +53,7 @@ namespace PlanCheck.Checks
                 // 3D
                 else if(beam.ControlPoints.Count == 1)
                 {
-                    Result += $"{beam.Id} = {Math.Round(beam.Meterset.Value / beam.DoseRate, 2)} min\n";
+                    Result += $"{beam.Id} = {Math.Ceiling(beam.Meterset.Value / beam.DoseRate * 100.0) / 100.0} min\n";
                 }
 
                 // FiF / IMRT
@@ -78,7 +78,7 @@ namespace PlanCheck.Checks
                         prevPos = point.LeafPositions;
                     }
 
-                    Result += $"{beam.Id} = {Math.Round(beam.Meterset.Value / beam.DoseRate + (totalMaxMovement / 25) / 60, 2)} min\n";
+                    Result += $"{beam.Id} = {Math.Ceiling(beam.Meterset.Value / beam.DoseRate + (totalMaxMovement / 25) / 60 * 100.0) / 100.0} min\n";
                 }
 
             }
