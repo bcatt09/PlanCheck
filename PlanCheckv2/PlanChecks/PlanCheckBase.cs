@@ -43,13 +43,13 @@ namespace PlanCheck.Checks
                 switch (DisplayColor)
                 {
                     case ResultColorChoices.Pass:
-                        return "#C6EFCE";
+                        return "LightGreen";
                     case ResultColorChoices.Warn:
-                        return "#FFEB9C";
+                        return "Khaki";
                     case ResultColorChoices.Fail:
-                        return "#FFC7CE";
+                        return "Salmon";
                     default:
-                        return "#C6EFCE";
+                        return "LightGreen";
                 }
             }
         }
