@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
+using VMS.TPS.Common.Model.Types;
 
 namespace PlanCheck.Checks
 {
@@ -51,7 +52,7 @@ namespace PlanCheck.Checks
                     Result += $"{beam.Id}: Can't calculate times for EDW fields\n";
                 }
                 // 3D
-                else if(beam.ControlPoints.Count == 1)
+                else if(beam.MLCPlanType == MLCPlanType.Static)
                 {
                     Result += $"{beam.Id} = {Math.Ceiling(beam.Meterset.Value / beam.DoseRate * 100.0) / 100.0} min\n";
                 }
@@ -78,7 +79,7 @@ namespace PlanCheck.Checks
                         prevPos = point.LeafPositions;
                     }
 
-                    Result += $"{beam.Id} = {Math.Ceiling(beam.Meterset.Value / beam.DoseRate + (totalMaxMovement / 25) / 60 * 100.0) / 100.0} min\n";
+                    Result += $"{beam.Id} = {Math.Ceiling((beam.Meterset.Value / beam.DoseRate + (totalMaxMovement / 25) / 60) * 100.0) / 100.0} min\n";
                 }
 
             }
