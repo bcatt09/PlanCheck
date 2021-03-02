@@ -23,14 +23,15 @@ namespace PlanCheck.Checks
 			ResultDetails = "";
 			TestExplanation = "Checks that couch values are entered for each field based on department standards";
 
-            #region Macomb/Detroit Groups and Central
+            #region Macomb/Detroit Groups, Central, and Northern
             // Any couch values entered
             if (Department == Department.CLA ||
 				Department == Department.MAC ||
 				Department == Department.MPH ||
 				Department == Department.DET ||
 				Department == Department.FAR ||
-				Department == Department.CEN)
+				Department == Department.CEN ||
+				Department == Department.NOR)
 			{
 				//Check each field to see if couch values are NaN
 				foreach (Beam field in plan.Beams)

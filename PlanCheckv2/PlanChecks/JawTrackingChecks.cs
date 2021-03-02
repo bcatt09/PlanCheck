@@ -120,11 +120,11 @@ namespace PlanCheck.Checks
 					DisplayColor = ResultColorChoices.Warn;
 				}
 			}
-            #endregion
+			#endregion
 
-            #region Flint Group
-            // do not use jaw tracking
-            else if (Department == Department.FLT)
+			#region Flint Group and Northern TrueBeam (for now)
+			// do not use jaw tracking
+			else if (Department == Department.FLT || Department == Department.NOR)
 			{
 				//VMAT plan
 				if ((from s in plan.Beams where s.MLCPlanType == MLCPlanType.VMAT select s).Count() > 0)

@@ -137,7 +137,7 @@ namespace PlanCheck
 			},
 			{ Department.NOR,
 				new DepartmentInfoStruct {
-					Machines = new List<string> { MachineNames.NOR_EX, MachineNames.NOR_IX },
+					Machines = new List<string> { MachineNames.NOR_TB, MachineNames.NOR_IX },
 					CTs = new List<string> { CTNames.NOR },
 					RadOncUserNames = RadOncUserNames.NOR
 				}
@@ -171,6 +171,7 @@ namespace PlanCheck
 			public static readonly string MPH_TB = "TB2681";
 			public static readonly string NOR_EX = "2100ex";
 			public static readonly string NOR_IX = "TRILOGY";
+			public static readonly string NOR_TB = "NOR_TB4780"; 
 			public static readonly string OWO_IX = "21IX-SN3856";
         }
 

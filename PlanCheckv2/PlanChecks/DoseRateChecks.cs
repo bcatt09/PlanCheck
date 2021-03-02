@@ -20,14 +20,15 @@ namespace PlanCheck.Checks
 			ResultDetails = "";
 			TestExplanation = "Checks that all dose rates are set to maximum allowed per department standards";
 
-			#region Macomb Group
+			#region Macomb Group and Northern TrueBeam
 			// Flattened - 600
 			// 6FFF      - 1400
 			// 10FFF     - 2400
 			// Electron  - 1000
 			if (Department == Department.CLA ||
 				Department == Department.MAC ||
-				Department == Department.MPH)
+				Department == Department.MPH ||
+				(Department == Department.NOR && MachineID == DepartmentInfo.MachineNames.NOR_TB))
 			{
 				foreach (Beam field in plan.Beams)
 				{
@@ -323,7 +324,7 @@ namespace PlanCheck.Checks
 			}
             #endregion
 
-            #region Northern
+            #region Northern Trilogy
             // 600 for everything
             else if (Department == Department.NOR)
 			{

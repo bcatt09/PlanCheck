@@ -68,10 +68,12 @@ namespace PlanCheck.Checks
 			}
 			#endregion
 
-			#region Macomb / Clarkston / Central
+			#region Macomb / Clarkston / Central / Northern
 			// Same tolerance table selected for all fields
 			else if (Department == Department.CLA ||
-					 Department == Department.MAC)
+					 Department == Department.MAC ||
+					 Department == Department.CEN ||
+					 Department == Department.NOR)
 			{
 				//Check each field to make sure they're the same
 				foreach (Beam field in plan.Beams)
@@ -165,8 +167,7 @@ namespace PlanCheck.Checks
 			// OBI for setup fields
 			// Same tolerance table selected for all treatment fields
             else if (Department == Department.LAP || 
-					 Department == Department.OWO ||
-					 Department == Department.CEN)
+					 Department == Department.OWO)
 			{
 				string tolTable = "";
 				string badFields = "";
@@ -174,17 +175,17 @@ namespace PlanCheck.Checks
 				//Check each field to make sure they're the same
 				foreach (Beam field in plan.Beams)
 				{
-					if (field.IsSetupField)
-					{
-						if (field.ToleranceTableLabel.Contains("OBI"))
-						{
-							Result = "Warning";
-							ResultDetails = "OBI tolerance table chosen for setup field of 21iX machine\n";
-							DisplayColor = ResultColorChoices.Warn;
-							break;
-						}
-					}
-					else
+					//if (field.IsSetupField)
+					//{
+					//	if (!field.ToleranceTableLabel.Contains("OBI"))
+					//	{
+					//		Result = "Warning";
+					//		ResultDetails = "OBI tolerance table chosen for setup field of 21iX machine\n";
+					//		DisplayColor = ResultColorChoices.Warn;
+					//		break;
+					//	}
+					//}
+					//else
 					{
 						if (tolTable == "")
 							tolTable = field.ToleranceTableLabel;
@@ -261,44 +262,6 @@ namespace PlanCheck.Checks
 				}
 			}
             #endregion
-
-            #region Northern
-            else if (Department == Department.NOR)
-			{
-				//Check each field to make sure they're the same
-				foreach (Beam field in plan.Beams)
-				{
-					if (field.IsSetupField)
-					{
-						if (field.ToleranceTableLabel != "IGRT")
-						{
-							Result = "Warning";
-							ResultDetails = "IGRT tolerance table not chosen for setup field";
-							DisplayColor = ResultColorChoices.Warn;
-							break;
-						}
-					}
-					else
-					{
-						if (ResultDetails == "")
-							ResultDetails = field.ToleranceTableLabel;
-						else if (ResultDetails != field.ToleranceTableLabel)
-						{
-							Result = "Warning";
-							ResultDetails = "Not all fields have the same tolerance table";
-							DisplayColor = ResultColorChoices.Warn;
-						}
-					}
-				}
-
-                //no issues found
-                if (Result == "")
-				{
-					Result = "";
-					DisplayColor = ResultColorChoices.Pass;
-				}
-			}
-			#endregion
 
 			else
 				TestNotImplemented();

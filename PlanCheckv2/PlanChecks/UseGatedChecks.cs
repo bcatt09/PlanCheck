@@ -20,7 +20,8 @@ namespace PlanCheck.Checks
             DepartmentInfo.MachineNames.LAN_IX,
             DepartmentInfo.MachineNames.MAC_IX,
             DepartmentInfo.MachineNames.NOR_EX,
-            DepartmentInfo.MachineNames.NOR_IX
+            DepartmentInfo.MachineNames.NOR_IX,
+            DepartmentInfo.MachineNames.NOR_TB
         };
 
         public UseGatedChecks(PlanSetup plan) : base(plan) { }

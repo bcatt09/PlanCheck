@@ -25,6 +25,7 @@ namespace PlanCheck.Checks
             DepartmentInfo.MachineNames.MPH_TB,
             DepartmentInfo.MachineNames.NOR_EX,
             DepartmentInfo.MachineNames.NOR_IX,
+            DepartmentInfo.MachineNames.NOR_TB,
             DepartmentInfo.MachineNames.OWO_IX
         };
 
