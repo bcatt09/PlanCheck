@@ -13,7 +13,7 @@ namespace PlanCheck.Checks
         protected override List<string> MachineExemptions => new List<string> { };
 
         public NamingConventionChecks(PlanSetup plan) : base(plan) { }
-
+        
         protected override void RunTest(PlanSetup plan)
         {
             DisplayName = "Naming Conventions";
@@ -25,6 +25,36 @@ namespace PlanCheck.Checks
             var courseIdRegexStrings = Properties.Resources.CourseSiteNames.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => $@"^\d{{1,2}} (?:[RL] )?{x}$");
             var planIdRegexStrings = Properties.Resources.PlanSiteNames.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => $@"^(?:[RL] )?{x}(?: (?:LN|Bst))?_\d[a-z]?\.?$");
             var refPointRegexStrings = Properties.Resources.PlanSiteNames.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList().Select(x => $@"^(?:[RL] )?{x}(?: (?:LN|Bst))?$");
+
+            // Plan ID suffix vs Treatment Type
+            if(plan.RTPrescription != null)
+            {
+                var planSuffixTxTypeDict = new Dictionary<string, string>
+                {
+                    { "[Clinical Setup]", "0" },
+                    { "(2D)", "2" },
+                    { "(3D)", "3" },
+                    { "(IMRT)", "1" },
+                    { "(SBRT)", "4" },
+                    { "(SRS)", "5" },
+                    { "(TBI)", "2" },
+                    { "(VMAT)", "1" },
+                    { "{HDR-interstitial", "6" },
+                    { "{HDR-intracavitary", "6" },
+                    { "{HDR-intraluminal", "6" },
+                    { "|MFO|", "7" },
+                    { "|SFO|", "7" }
+                };
+                var fullSuffix = plan.Id.Split('_').Last();
+                var suffix = fullSuffix[0];
+                var txType = plan.RTPrescription.Technique;
+
+                if(planSuffixTxTypeDict[txType] != suffix.ToString())
+                {
+                    ResultDetails += $"Prescribed Technique is {txType} but the plan ID suffix is _{suffix}";
+                    DisplayColor = ResultColorChoices.Warn;
+                }
+            }
 
             // Course ID
             bool match = false;
