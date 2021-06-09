@@ -7,12 +7,12 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SRSCollimator")]
+[assembly: AssemblyTitle("KCI Plan Check")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Port Huron Hospital")]
-[assembly: AssemblyProduct("SRSCollimator")]
-[assembly: AssemblyCopyright("Copyright © Port Huron Hospital 2018")]
+[assembly: AssemblyCompany("McLaren")]
+[assembly: AssemblyProduct("KCI Plan Check")]
+[assembly: AssemblyCopyright("Copyright © McLaren 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

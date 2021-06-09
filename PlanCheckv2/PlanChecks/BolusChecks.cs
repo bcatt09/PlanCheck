@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
-    public class BolusChecks : PlanCheck
+    public class BolusChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
@@ -54,7 +54,7 @@ namespace VMS.TPS.PlanChecks
 						{
 							Result = "Warning";
 							ResultDetails = "Some fields do not have a linked bolus: ";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 						ResultDetails += field.Id + ", ";
 					}
@@ -66,7 +66,7 @@ namespace VMS.TPS.PlanChecks
 						{
 							Result = "Warning";
 							resultDetailsMultiPerFieldLine = "Some fields have more than one bolus linked: ";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 						resultDetailsMultiPerFieldLine += field.Id + ", ";
 					}
@@ -86,7 +86,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								resultDetailsMultiPerPlanLine = $"Multiple bolus structures linked in plan: {bolus}, ";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 							resultDetailsMultiPerPlanLine += field.Boluses.First().Id + ", ";
 						}
@@ -99,14 +99,14 @@ namespace VMS.TPS.PlanChecks
 			{
 				Result = "";
 				ResultDetails = "No bolus in structure set";
-				ResultColor = "LimeGreen";
+				DisplayColor = ResultColorChoices.Pass;
 			}
 			//no issues found
 			else if (Result == "")
 			{
 				Result = "";
 				ResultDetails = $"{bolus} attached to all fields";
-				ResultColor = "LimeGreen";
+				DisplayColor = ResultColorChoices.Pass;
 			}
 
 			//clean up strings
@@ -128,7 +128,7 @@ namespace VMS.TPS.PlanChecks
 			{
 				Result = "Warning";
 				ResultDetails += "\nMultiple bolus structures in the structure set, please ensure that the correct one is used";
-				ResultColor = "Gold";
+				DisplayColor = ResultColorChoices.Warn;
 			}
 		}
     }

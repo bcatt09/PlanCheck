@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
-    public class CTSimChecks : PlanCheck
+    public class CTSimChecks : PlanCheckBase
 	{
 		protected override List<string> MachineExemptions => new List<string> { };
 
@@ -26,14 +26,14 @@ namespace VMS.TPS.PlanChecks
 				Result = "Warning";
 				ResultDetails = $"Patient is being treated on {MachineID}, but the {String.Join(" or ", DepartmentInfo.GetCTIDs(Department))} was not chosen as the imaging device for the series, please check";
 				ResultDetails += $"\nSelected CT: {ct}\n";
-				ResultColor = "Gold";
+				DisplayColor = ResultColorChoices.Warn;
 			}
 
 			if (ResultDetails == "")
 			{
 				Result = "";
 				ResultDetails = ct;
-				ResultColor = "LimeGreen";
+				DisplayColor = ResultColorChoices.Pass;
 			}
 
 			ResultDetails = ResultDetails.TrimEnd('\n');

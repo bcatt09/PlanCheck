@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
-    class IsocenterChecks : PlanCheck
+    class IsocenterChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
@@ -49,13 +49,13 @@ namespace VMS.TPS.PlanChecks
 						{
 							Result = "Warning";
 							ResultDetails += $"Isocenter is shifted to patients right, do you want to use {field.GantryAngleToUser(180)}E?\n";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 						if (field.IsocenterPosition.x - body.CenterPoint.x > 20 && (plan.TreatmentOrientation == PatientOrientation.HeadFirstProne || plan.TreatmentOrientation == PatientOrientation.FeetFirstSupine))
 						{
 							Result = "Warning";
 							ResultDetails += $"Isocenter is shifted to patients left, do you want to use {field.GantryAngleToUser(180)}E?\n";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
 					catch
@@ -69,7 +69,7 @@ namespace VMS.TPS.PlanChecks
 			{
 				Result = "Warning";
 				ResultDetails += $"{isocenters} isocenters detected, please check plan\n";
-				ResultColor = "Gold";
+				DisplayColor = ResultColorChoices.Warn;
 			}
 
 			ResultDetails = ResultDetails.TrimEnd('\n');
@@ -78,7 +78,7 @@ namespace VMS.TPS.PlanChecks
 			if (ResultDetails == "")
 			{
 				Result = "Pass";
-				ResultColor = "LimeGreen";
+				DisplayColor = ResultColorChoices.Pass;
 			}
 		}
     }

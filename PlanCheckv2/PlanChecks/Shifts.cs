@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog.LayoutRenderers.Wrappers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
-    public class Shifts : PlanCheck
+    public class Shifts : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
@@ -20,7 +21,7 @@ namespace VMS.TPS.PlanChecks
 			TestExplanation = "Displays shifts from Marker Structure or User Origin";
 			Result = "";
 			ResultDetails = "";
-			ResultColor = "LimeGreen";
+			DisplayColor = ResultColorChoices.Pass;
 
 			PatientOrientation orientation = plan.TreatmentOrientation;
 
@@ -60,23 +61,42 @@ namespace VMS.TPS.PlanChecks
 				ResultDetails = $"No shifts from {shiftFrom}";
 			else
 			{
+				// Set shift verbiage based on department
+				string pat, sup, inf, ant, post;
+				if (Department == Department.NOR)
+				{
+					pat = "Table";
+					sup = "out";
+					inf = "in";
+					ant = "down";
+					post = "up";
+				}
+				else
+				{
+					pat = "Patient";
+					sup = "superior";
+					inf = "inferior";
+					ant = "anterior";
+					post = "posterior";
+				}
+
 				//x-axis
 				if (shift.x > 0)
-					ResultDetails += $"Patient left: {shift.x.ToString("0.0")} cm\n";
+					ResultDetails += $"{pat} left: {shift.x:0.0} cm\n";
 				else if (shift.x < 0)
-					ResultDetails += $"Patient right: {(-shift.x).ToString("0.0")} cm\n";
+					ResultDetails += $"{pat} right: {-shift.x:0.0} cm\n";
 
 				//z-axis
 				if (shift.z > 0)
-					ResultDetails += $"Patient superior: {shift.z.ToString("0.0")} cm\n";
+					ResultDetails += $"{pat} {sup}: {shift.z:0.0} cm\n";
 				else if (shift.z < 0)
-					ResultDetails += $"Patient inferior: {(-shift.z).ToString("0.0")} cm\n";
+					ResultDetails += $"{pat} {inf}: {-shift.z:0.0} cm\n";
 
 				//y-axis
 				if (shift.y > 0)
-					ResultDetails += $"Patient posterior: {shift.y.ToString("0.0")} cm\n";
+					ResultDetails += $"{pat} {post}: {shift.y:0.0} cm\n";
 				else if (shift.y < 0)
-					ResultDetails += $"Patient anterior: {(-shift.y).ToString("0.0")} cm\n";
+					ResultDetails += $"{pat}  {ant}: {-shift.y:0.0} cm\n";
 
 
 				//remove negatives

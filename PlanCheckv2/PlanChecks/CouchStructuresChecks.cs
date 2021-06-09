@@ -7,9 +7,9 @@ using System.Windows;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
-    public class CouchStructuresChecks : PlanCheck
+    public class CouchStructuresChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string>
 		{
@@ -59,7 +59,7 @@ namespace VMS.TPS.PlanChecks
 					{
 						Result = "Warning";
 						ResultDetails = "Couch structures should not be included for SRS plans";
-						ResultColor = "Gold";
+						DisplayColor = ResultColorChoices.Warn;
 
 						AddCouchStructureInfo(couchName, couchStructures);
 					}
@@ -67,7 +67,7 @@ namespace VMS.TPS.PlanChecks
 					{
 						Result = "";
 						ResultDetails = "No couch structures";
-						ResultColor = "LimeGreen";
+						DisplayColor = ResultColorChoices.Pass;
 					}
 				}
 				//Non SRS plan
@@ -93,7 +93,7 @@ namespace VMS.TPS.PlanChecks
 							if (couchName.Contains("IGRT"))
 							{
 								Result = "";
-								ResultColor = "LimeGreen";
+								DisplayColor = ResultColorChoices.Pass;
 
 								AddCouchStructureInfo(couchName, couchStructures);
 							}
@@ -101,7 +101,7 @@ namespace VMS.TPS.PlanChecks
 							{
 								Result = "Warning";
 								ResultDetails = "IGRT couch structures not inserted, please check that correct couch is inserted";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 
 								AddCouchStructureInfo(couchName, couchStructures);
 							}
@@ -110,7 +110,7 @@ namespace VMS.TPS.PlanChecks
 						{
 							Result = "Warning";
 							ResultDetails = "No couch structures included";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
 					else
@@ -122,7 +122,7 @@ namespace VMS.TPS.PlanChecks
 						}
 						else
 							ResultDetails = "No couch structures included";
-						ResultColor = "LimeGreen";
+						DisplayColor = ResultColorChoices.Pass;
 					}
 				}
 			}
@@ -151,7 +151,7 @@ namespace VMS.TPS.PlanChecks
 					if (couchName.Contains("Flat panel"))
 					{
 						Result = "";
-						ResultColor = "LimeGreen";
+						DisplayColor = ResultColorChoices.Pass;
 
 						AddCouchStructureInfo(couchName, couchStructures);
 					}
@@ -159,7 +159,7 @@ namespace VMS.TPS.PlanChecks
 					{
 						Result = "Warning";
 						ResultDetails = "Flat panel couch structures not inserted, please check that correct couch is inserted";
-						ResultColor = "Gold";
+						DisplayColor = ResultColorChoices.Warn;
 
 						AddCouchStructureInfo(couchName, couchStructures);
 					}
@@ -168,7 +168,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "Warning";
 					ResultDetails = "No couch structures included";
-					ResultColor = "Gold";
+					DisplayColor = ResultColorChoices.Warn;
 				}
 			}
 			#endregion
@@ -182,7 +182,7 @@ namespace VMS.TPS.PlanChecks
 				if (couchStructure)
 				{
 					Result = "";
-					ResultColor = "Gold";
+					DisplayColor = ResultColorChoices.Warn;
 
 					AddCouchStructureInfo(couchName, couchStructures);
 				}
@@ -190,7 +190,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "Warning";
 					ResultDetails = "No couch structures included";
-					ResultColor = "Gold";
+					DisplayColor = ResultColorChoices.Warn;
 				}
 			}
             #endregion
@@ -198,28 +198,46 @@ namespace VMS.TPS.PlanChecks
 			#region Northern
             else if (Department == Department.NOR)
 			{
-				if (couchStructure)
-				{
-					if (couchName == "BrainLab - iBeam Couch")
+				if (MachineID == DepartmentInfo.MachineNames.NOR_TB)
+                {
+					if (couchStructure)
 					{
 						Result = "";
+						DisplayColor = ResultColorChoices.Warn;
+
 						AddCouchStructureInfo(couchName, couchStructures);
 					}
 					else
 					{
-						Result = "Warning";
-						ResultDetails = "BrainLab couch structures not inserted, please check that correct couch is inserted";
-
-						AddCouchStructureInfo(couchName, couchStructures);
+						ResultDetails = "No couch structures included";
+						DisplayColor = ResultColorChoices.Warn;
 					}
 				}
 				else
 				{
+					if (couchStructure)
+					{
+						if (couchName == "BrainLab - iBeam Couch")
+						{
+							Result = "";
+							AddCouchStructureInfo(couchName, couchStructures);
+						}
+						else
+						{
+							Result = "Warning";
+							ResultDetails = "BrainLab couch structures not inserted, please check that correct couch is inserted";
+
+							AddCouchStructureInfo(couchName, couchStructures);
+						}
+					}
+					else
+					{
+						Result = "";
+						ResultDetails = "No couch structures included";
+					}
 					Result = "";
-					ResultDetails = "No couch structures included";
+					DisplayColor = ResultColorChoices.Warn;
 				}
-				Result = "";
-				ResultColor = "Gold";
 			}
 			#endregion
 

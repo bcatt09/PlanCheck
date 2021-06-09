@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
-    public class ToleranceTableChecks : PlanCheck
+    public class ToleranceTableChecks : PlanCheckBase
 	{
 		protected override List<string> MachineExemptions => new List<string> { };
 
@@ -30,7 +30,7 @@ namespace VMS.TPS.PlanChecks
 				string tolTable;
 				string badFields = "";
 
-				if (plan.Id.Contains("_5"))
+				if (plan.Id.Contains("_5") || plan.StructureSet.Image.ZRes == 1) // Plan is single fraction (SRS) or has 1 mm slices (likely a brain SRS or SRT)
 					tolTable = "SRS/SRT";
 				else if (plan.Id.Contains("_4"))
 					tolTable = "SBRT";
@@ -51,7 +51,7 @@ namespace VMS.TPS.PlanChecks
 						Result = "Warning";
 						ResultDetails = $"Not all fields use the {tolTable} tolerance table: ";
 						badFields += field.Id + ", ";
-						ResultColor = "Gold";
+						DisplayColor = ResultColorChoices.Warn;
 					}
 				}
 
@@ -63,15 +63,17 @@ namespace VMS.TPS.PlanChecks
 				if (Result == "")
 				{
 					Result = "";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
 			#endregion
 
-			#region Macomb / Clarkston / Central
+			#region Macomb / Clarkston / Central / Northern
 			// Same tolerance table selected for all fields
 			else if (Department == Department.CLA ||
-					 Department == Department.MAC)
+					 Department == Department.MAC ||
+					 Department == Department.CEN ||
+					 Department == Department.NOR)
 			{
 				//Check each field to make sure they're the same
 				foreach (Beam field in plan.Beams)
@@ -82,7 +84,7 @@ namespace VMS.TPS.PlanChecks
 					{
 						Result = "Warning";
 						ResultDetails = "Not all fields have the same tolerance table";
-						ResultColor = "Gold";
+						DisplayColor = ResultColorChoices.Warn;
 					}
 				}
 
@@ -90,25 +92,27 @@ namespace VMS.TPS.PlanChecks
 				if (Result == "")
 				{
 					Result = "";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
-			#endregion
+            #endregion
 
-			#region Flint
-			// OBI selected for setup fields
-			// SRS/SRT for plans with "_5"
-			// SBRT for plans with "_4"
-			// TrueBeam for all other plans
-			else if (Department == Department.FLT)
+            #region Flint
+
+			// TrueBeam for all plans
+
+            else if (Department == Department.FLT)
 			{
 				string tolTable;
-				string badFields = "";
+				string txFieldsResult = "";
+				string badTxFields = "";
+				string setupFieldsResult = "";
+				string badSetupFields = "";
 
-				if (plan.Id.Contains("_5"))
-					tolTable = "SRS/SRT";
-				else if (plan.Id.Contains("_4"))
-					tolTable = "SBRT";
+				if (plan.Id.Contains("_5")) // SRS Plan
+					tolTable = "TrueBeam";
+				else if (plan.Id.Contains("_4")) // SBRT Plan
+					tolTable = "TrueBeam";
 				else
 					tolTable = "TrueBeam";
 
@@ -117,15 +121,15 @@ namespace VMS.TPS.PlanChecks
 				{
 					if (field.IsSetupField)
 					{
-						if (!field.ToleranceTableLabel.Contains("OBI"))
+						if (!field.ToleranceTableLabel.Contains("TrueBeam"))
 						{
 							Result = "Warning";
-							ResultDetails = "OBI tolerance table not chosen for setup field";
-							ResultColor = "Gold";
-							break;
+							setupFieldsResult = "OBI tolerance table not chosen for setup field: ";
+							badSetupFields += $"{field.Id}, ";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
-					else
+					else  // not a setup field
 					{
 						if (ResultDetails == "")
 							ResultDetails = field.ToleranceTableLabel;
@@ -134,15 +138,19 @@ namespace VMS.TPS.PlanChecks
 						if (field.ToleranceTableLabel != tolTable)
 						{
 							Result = "Warning";
-							ResultDetails = $"Not all fields use the {tolTable} tolerance table: ";
-							badFields += field.Id + ", ";
-							ResultColor = "Gold";
+							txFieldsResult = $"Not all fields use the {tolTable} tolerance table: ";
+							badTxFields += $"{field.Id}, ";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
 				}
 
-
-				ResultDetails += badFields;
+				if (setupFieldsResult != "" || txFieldsResult != "") ResultDetails += "\n";
+				ResultDetails += $"{setupFieldsResult}{badSetupFields}";
+				ResultDetails = ResultDetails.TrimEnd(' ');
+				ResultDetails = ResultDetails.TrimEnd(',');
+				if (setupFieldsResult != "") ResultDetails += "\n";
+				ResultDetails += $"{txFieldsResult}{badTxFields}";
 				ResultDetails = ResultDetails.TrimEnd(' ');
 				ResultDetails = ResultDetails.TrimEnd(',');
 
@@ -150,42 +158,16 @@ namespace VMS.TPS.PlanChecks
 				if (Result == "")
 				{
 					Result = "";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
-			#endregion
+            #endregion
 
-			#region Proton
-			else if (Department == Department.PRO)
-			{
-				string tolTable = "Proton Standard";
-				ResultColor = "Gold";
-				string badFields = "";
-
-				foreach (Beam b in plan.Beams)
-                {
-					if (b.ToleranceTableLabel != tolTable)
-                    {
-						Result = "Warning";
-						ResultDetails = $"Not all fields use the {tolTable} tolerance table: ";
-						badFields += b.Id + ", ";
-						ResultColor = "Gold";
-					}
-					if (Result == "")
-                    {
-						ResultDetails = $"All beams contain Tolerance Table: {tolTable} ";
-						ResultColor = "LimeGreen";
-                    }
-                }
-			}
-			#endregion
-
-			#region Lapeer/Owosso
+            #region Lapeer/Owosso
 			// OBI for setup fields
 			// Same tolerance table selected for all treatment fields
-			else if (Department == Department.LAP ||
-				 Department == Department.OWO ||
-				 Department == Department.CEN)
+            else if (Department == Department.LAP || 
+					 Department == Department.OWO)
 			{
 				string tolTable = "";
 				string badFields = "";
@@ -193,17 +175,17 @@ namespace VMS.TPS.PlanChecks
 				//Check each field to make sure they're the same
 				foreach (Beam field in plan.Beams)
 				{
-					if (field.IsSetupField)
-					{
-						if (field.ToleranceTableLabel.Contains("OBI"))
-						{
-							Result = "Warning";
-							ResultDetails = "OBI tolerance table chosen for setup field of 21iX machine\n";
-							ResultColor = "Gold";
-							break;
-						}
-					}
-					else
+					//if (field.IsSetupField)
+					//{
+					//	if (!field.ToleranceTableLabel.Contains("OBI"))
+					//	{
+					//		Result = "Warning";
+					//		ResultDetails = "OBI tolerance table chosen for setup field of 21iX machine\n";
+					//		DisplayColor = ResultColorChoices.Warn;
+					//		break;
+					//	}
+					//}
+					//else
 					{
 						if (tolTable == "")
 							tolTable = field.ToleranceTableLabel;
@@ -214,7 +196,7 @@ namespace VMS.TPS.PlanChecks
 							Result = "Warning";
 							ResultDetails = $"Not all fields use the {tolTable} tolerance table: ";
 							badFields += field.Id + ", ";
-							ResultColor = "Gold";
+							DisplayColor = ResultColorChoices.Warn;
 						}
 					}
 				}
@@ -229,7 +211,7 @@ namespace VMS.TPS.PlanChecks
 				if (Result == "")
 				{
 					Result = "";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
 			#endregion
@@ -262,7 +244,7 @@ namespace VMS.TPS.PlanChecks
 						Result = "Warning";
 						ResultDetails = $"Not all fields use the {tolTable} tolerance table: ";
 						badFields += field.Id + ", ";
-						ResultColor = "Gold";
+						DisplayColor = ResultColorChoices.Warn;
 					}
 				}
 
@@ -276,48 +258,10 @@ namespace VMS.TPS.PlanChecks
 				if (Result == "")
 				{
 					Result = "";
-					ResultColor = "LimeGreen";
+					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
-			#endregion
-
-			#region Northern
-			else if (Department == Department.NOR)
-			{
-				//Check each field to make sure they're the same
-				foreach (Beam field in plan.Beams)
-				{
-					if (field.IsSetupField)
-					{
-						if (field.ToleranceTableLabel != "IGRT")
-						{
-							Result = "Warning";
-							ResultDetails = "IGRT tolerance table not chosen for setup field";
-							ResultColor = "Gold";
-							break;
-						}
-					}
-					else
-					{
-						if (ResultDetails == "")
-							ResultDetails = field.ToleranceTableLabel;
-						else if (ResultDetails != field.ToleranceTableLabel)
-						{
-							Result = "Warning";
-							ResultDetails = "Not all fields have the same tolerance table";
-							ResultColor = "Gold";
-						}
-					}
-				}
-
-				//no issues found
-				if (Result == "")
-				{
-					Result = "";
-					ResultColor = "LimeGreen";
-				}
-			}
-			#endregion
+            #endregion
 
 			else
 				TestNotImplemented();

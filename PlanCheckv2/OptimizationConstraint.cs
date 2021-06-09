@@ -6,7 +6,7 @@ using System.Text;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 
-namespace VMS.TPS
+namespace PlanCheck.Checks
 {
 	class OptimizationConstraint : INotifyPropertyChanged
 	{

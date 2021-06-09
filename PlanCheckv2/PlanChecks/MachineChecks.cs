@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
-    public class MachineChecks : PlanCheck
+    public class MachineChecks : PlanCheckBase
 	{
 		protected override List<string> MachineExemptions => new List<string> { };
 
@@ -27,7 +27,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "Fail";
 					ResultDetails = $"Patient is being treated on {MachineID} but not all fields use that machine";
-					ResultColor = "Tomato";
+					DisplayColor = ResultColorChoices.Fail;
 				}
 			}
 
@@ -35,7 +35,7 @@ namespace VMS.TPS.PlanChecks
 			{
 				Result = "";
 				ResultDetails = MachineID;
-				ResultColor = "LimeGreen";
+				DisplayColor = ResultColorChoices.Pass;
 			}
 		}
     }

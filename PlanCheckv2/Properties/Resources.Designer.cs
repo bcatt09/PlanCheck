@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VMS.TPS.Properties {
+namespace PlanCheck.Properties {
     using System;
     
     
@@ -19,7 +19,7 @@ namespace VMS.TPS.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -39,7 +39,7 @@ namespace VMS.TPS.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("VMS.TPS.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PlanCheck.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,147 @@ namespace VMS.TPS.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anal
+        ///Bladder
+        ///Brain
+        ///Breast
+        ///Cervix
+        ///Colon
+        ///Endometrial
+        ///Eye
+        ///GE Junction
+        ///Kidney
+        ///Liver
+        ///Lung
+        ///Lymphoma
+        ///Ovary
+        ///Pancreas
+        ///Prostate
+        ///Rectum
+        ///Sarcoma
+        ///Skin
+        ///Stomach
+        ///Testicle
+        ///Thyroid
+        ///Vagina
+        ///Vulva
+        ///
+        ///NPX
+        ///PNS
+        ///Nasal
+        ///OPX
+        ///BOT
+        ///Vlcula
+        ///Tonsil
+        ///SoftPlt
+        ///PharWl
+        ///OC
+        ///FOM
+        ///OralTng
+        ///AlvrRdg
+        ///RMT
+        ///HardPlt
+        ///Lip
+        ///SGL
+        ///Epiglts
+        ///AEFold
+        ///FVC
+        ///LX
+        ///TVC
+        ///HPX
+        ///PiriSns
+        ///PostCri
+        ///Parotid
+        ///SMG
+        ///
+        ///Mets \d\d\d\d-\d\d.
+        /// </summary>
+        internal static string CourseSiteNames {
+            get {
+                return ResourceManager.GetString("CourseSiteNames", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anal
+        ///Bladder
+        ///Brain
+        ///Brain PCI
+        ///Brain WB
+        ///Brst
+        ///ChstWal
+        ///SCV
+        ///Axilla
+        ///IMN
+        ///Pelvis
+        ///Cervix
+        ///Plvs-PA
+        ///ParArtc
+        ///Colon
+        ///Pelvis
+        ///Vagina
+        ///Plvs-PA
+        ///ParArtc
+        ///Esoph
+        ///Eye
+        ///GEJ
+        ///Kidney
+        ///Liver
+        ///Lung
+        ///Neck
+        ///Axilla
+        ///Medstnm
+        ///Hilum
+        ///ParArtc
+        ///Pelvis
+        ///Inguinal
+        ///Ovary
+        ///Panc
+        ///Pelvis
+        ///Prost/SV
+        ///Prost
+        ///Prost Bed
+        ///Pelvis
+        ///Rectum
+        ///H&amp;N
+        ///Chest
+        ///Abdmn
+        ///Pelvis
+        ///Arm
+        ///Leg
+        ///Scalp
+        ///Forehead
+        ///Eye
+        ///Nose
+        ///Cheek
+        ///Lip
+        ///Chest
+        ///Back
+        ///Arm
+        ///Leg
+        ///Stomach
+        ///Thyroid
+        ///Pelvis
+        ///Vagina
+        ///Pelvis
+        ///Vulva
+        ///
+        ///NPX
+        ///PNS
+        ///Nasal
+        ///OPX
+        ///BOT
+        ///Vlcula
+        ///Tonsil
+        ///SoftPlt [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string PlanSiteNames {
+            get {
+                return ResourceManager.GetString("PlanSiteNames", resourceCulture);
             }
         }
     }

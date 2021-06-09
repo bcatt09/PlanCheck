@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,12 +13,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace VMS.TPS
+namespace PlanCheck
 {
     /// <summary>
     /// Interaction logic for MROQCWindow.xaml
     /// </summary>
-    public partial class MROQCWindow : Window
+    public partial class MROQCWindow : MetroWindow
     {
         public MROQCWindow()
         {

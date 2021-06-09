@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
-    public class CalcParametersChecks : PlanCheck
+    public class CalcParametersChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
@@ -19,7 +19,7 @@ namespace VMS.TPS.PlanChecks
 			DisplayName = "Calc Parameters";
 			Result = "";
 			ResultDetails = "";
-			ResultColor = "LimeGreen";
+			DisplayColor = ResultColorChoices.Pass;
 			TestExplanation = "";
 
             bool photon = false;

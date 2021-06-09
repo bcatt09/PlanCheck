@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using VMS.TPS.Common.Model.API;
 
-namespace VMS.TPS
+namespace PlanCheck
 {
     public class MROQCStructureCheck : INotifyPropertyChanged
     {
@@ -32,18 +32,18 @@ namespace VMS.TPS
                 if (!mroqcStructure.IsEmpty && mroqcStructure.HasSegment)
                 {
                     Result = "Pass";
-                    ResultColor = "LimeGreen";
+                    ResultColor = "LightGreen";
                 }
                 else
                 {
                     Result = $"{Structure} is not contoured";
-                    ResultColor = "Tomato";
+                    ResultColor = "Salmon";
                 }
             }
             else
             {
                 Result = $"{Structure} not found in structure set";
-                ResultColor = "Tomato";
+                ResultColor = "Salmon";
             }
         }
 

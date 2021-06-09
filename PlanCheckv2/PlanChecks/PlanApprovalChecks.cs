@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
 using VMS.TPS.Common.Model.Types;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
-    public class PlanApprovalChecks : PlanCheck
+    public class PlanApprovalChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
@@ -21,7 +21,7 @@ namespace VMS.TPS.PlanChecks
             DisplayName = "Plan Approval";
             Result = "";
             ResultDetails = $"Status: {AddSpaces(approvalStatus.ToString())}";
-            ResultColor = "LimeGreen";
+            DisplayColor = ResultColorChoices.Warn;
             TestExplanation = "Displays plan approval\nAlso checks that plan has been reviewed by a physician\nReviewed timestamp is estimated based on target structure or CT image approval";
 
             // Not Approved yet
@@ -34,7 +34,6 @@ namespace VMS.TPS.PlanChecks
                 // Hasn't been "Reviewed"
                 if (plan.ApprovalHistory.Where(x => x.ApprovalStatus == PlanSetupApprovalStatus.Reviewed).Count() < 1)
                 {
-                    ResultColor = "Gold";
                     Result = "Warning";
                     ResultDetails += "Plan has not been \"Reviewed\"\nVerify that a physician has reviewed the plan";
                 }
@@ -53,12 +52,14 @@ namespace VMS.TPS.PlanChecks
                         // Check approval user name against physician list
                         if (!DepartmentInfo.GetRadOncUserNames(Department).Contains(reviewedUserNameMinusDomain))
                         {
-                            ResultColor = "Gold";
                             Result = "Warning";
                             ResultDetails += $"\n\"Reviewed\" by {reviewedUserDisplayName} at {reviewedDateTime}\nVerify that a physician reviewed the plan";
                         }
                         else
+                        {
+                            DisplayColor = ResultColorChoices.Pass;
                             ResultDetails += $"\nReviewed by: {reviewedUserName} at {reviewedDateTime}";
+                        }
                     }
                     // No physician user names have been defined for this site
                     else
@@ -72,6 +73,7 @@ namespace VMS.TPS.PlanChecks
                     string planningApprovedUserDisplayName = planningApprovedHistoryEntry.UserDisplayName;
                     string planningApprovedDateTime = planningApprovedHistoryEntry.ApprovalDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt");
 
+                    DisplayColor = ResultColorChoices.Pass;
                     ResultDetails += $"\nPlanning Approved by: {planningApprovedUserDisplayName} at {planningApprovedDateTime}";
                 }
                 // Has been Treatment Approved
@@ -82,6 +84,7 @@ namespace VMS.TPS.PlanChecks
                     string treatApprovedUserDisplayName = treatApprovedHistoryEntry.UserDisplayName;
                     string treatApprovedDateTime = treatApprovedHistoryEntry.ApprovalDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt");
 
+                    DisplayColor = ResultColorChoices.Pass;
                     ResultDetails += $"\nPlanning Approved by: {treatApprovedUserDisplayName} at {treatApprovedDateTime}";
                 }
             }

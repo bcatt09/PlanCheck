@@ -8,18 +8,18 @@ using VMS.TPS.Common.Model.Types;
 using VMS.TPS.Common.Model.API;
 using System.Windows;
 using System.Collections.ObjectModel;
-using VMS.TPS.PlanChecks;
+using PlanCheck.Checks;
 using NLog;
 using NLog.Fluent;
 using System.Reflection;
 using System.IO;
 
-namespace VMS.TPS
+namespace PlanCheck
 {
     class ViewModel : INotifyPropertyChanged
     {
         private ScriptContext _context;                                             //ScriptContext from Aria
-        private ObservableCollection<PlanCheck> _planChecks;                        //list of plan checks and results to be displayed
+        private ObservableCollection<PlanCheckBase> _planChecks;                        //list of plan checks and results to be displayed
         private List<Tuple<ReferencePoint, PlanSetup, string>> _referencePoints;    //list of reference points for the dropdown
         private ObservableCollection<ReferencePointTableEntry> _referencePointTable;//list of reference point info to be displayed
         private string _patientName;                                                //patient name
@@ -33,7 +33,7 @@ namespace VMS.TPS
         private List<Tuple<string, List<string>>> _mroqcTemplates;                  //list of MROQC structure check templates to be displayed in the dropdown
         private Tuple<string, List<string>> _selectedMROQCTemplate;
 
-        public ObservableCollection<PlanCheck> PlanChecks { get { return _planChecks; } set { _planChecks = value; OnPropertyChanged("PlanChecks"); } }
+        public ObservableCollection<PlanCheckBase> PlanChecks { get { return _planChecks; } set { _planChecks = value; OnPropertyChanged("PlanChecks"); } }
         public List<Tuple<ReferencePoint, PlanSetup, string>> ReferencePoints { get { return _referencePoints; } set { _referencePoints = value; OnPropertyChanged("ReferencePoints"); } }
         public ObservableCollection<ReferencePointTableEntry> ReferencePointTable { get { return _referencePointTable; } set { _referencePointTable = value; OnPropertyChanged("ReferencePointTable"); } }
         public string PatientName { get { return _patientName; } set { _patientName = value; OnPropertyChanged("PatientName"); } }
@@ -53,7 +53,7 @@ namespace VMS.TPS
         {
             _context = context;
 
-            PlanChecks = new ObservableCollection<PlanCheck>();
+            PlanChecks = new ObservableCollection<PlanCheckBase>();
             MROQCChecks = new ObservableCollection<MROQCStructureCheck>();
 
             //plan information
@@ -61,7 +61,7 @@ namespace VMS.TPS
             CourseID = context.Course.Id;
             PlanID = context.PlanSetup.Id;
 
-            MyLogger.Initialize(context);
+            Log.Initialize(context);
 
             RunPlanChecks();
 
@@ -71,15 +71,15 @@ namespace VMS.TPS
             //setup optimization constraints dataset
             //PopulateOptimizationConstraints();
 
-            logger.Info("Completed");
+            logger.Info("");
 
-            NLog.LogManager.Shutdown();
+            LogManager.Shutdown();
         }
 
         // Run all tests
         private void RunPlanChecks()
         {
-            PlanChecks = new ObservableCollection<PlanCheck>();
+            PlanChecks = new ObservableCollection<PlanCheckBase>();
 
             // Run all plan checks
             PlanChecks.Add(new MachineChecks(_context.PlanSetup));
@@ -102,6 +102,8 @@ namespace VMS.TPS
             PlanChecks.Add(new DRRChecks(_context.PlanSetup));
             PlanChecks.Add(new UseGatedChecks(_context.PlanSetup));
             PlanChecks.Add(new MLCChecks(_context.PlanSetup));
+            PlanChecks.Add(new TreatmentTimeCalculation(_context.PlanSetup));
+            PlanChecks.Add(new NamingConventionChecks(_context.PlanSetup));
             PlanChecks.Add(new CalcParametersChecks(_context.PlanSetup));
 
             // Remove any plan checks that were not run

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using VMS.TPS.Common.Model.API;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
-    public class MLCChecks : PlanCheck
+    public class MLCChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string>
         {
@@ -24,7 +24,7 @@ namespace VMS.TPS.PlanChecks
             DisplayName = "MLC Checks";
             Result = "";
             ResultDetails = "";
-            ResultColor = "LimeGreen";
+            DisplayColor = ResultColorChoices.Pass;
             TestExplanation = "Checks that there are no closed leaf pairs parked inside the jaws and calculates MU factor (MUs / cGy per fx)";
 
             var totalMUs = 0.0;
@@ -46,7 +46,7 @@ namespace VMS.TPS.PlanChecks
                 else
                 {
                     Result = "Unknown MLC";
-                    ResultColor = "Tomato";
+                    DisplayColor = ResultColorChoices.Fail;
                     return;
                 }
                 //double[,] closedPairsInField = new double[60,3];
@@ -106,7 +106,7 @@ namespace VMS.TPS.PlanChecks
                 if (closedPairTracking.Select(x => x.MaxMetersetInOnePosition).Max() > 0.15)
                 {
                     Result = "Warning";
-                    ResultColor = "Gold";
+                    DisplayColor = ResultColorChoices.Warn;
                     ResultDetails += $"{field.Id} - Closed leaf pair in field for {Math.Round(closedPairTracking.Select(x => x.MaxMetersetInOnePosition).Max() * 100)}% of MUs\n";
                 }
 

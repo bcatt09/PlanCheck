@@ -3,23 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using VMS.TPS.Common.Model.API;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
-    public class UseGatedChecks : PlanCheck
+    public class UseGatedChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { 
             DepartmentInfo.MachineNames.CEN_EX, 
             DepartmentInfo.MachineNames.CLA_EX, 
             DepartmentInfo.MachineNames.DET_IX, 
-            DepartmentInfo.MachineNames.FAR_IX, 
+            DepartmentInfo.MachineNames.FAR_IX,
+            DepartmentInfo.MachineNames.FLT_BackTB,
+            DepartmentInfo.MachineNames.FLT_FrontTB,
             DepartmentInfo.MachineNames.LAN_IX,
-            DepartmentInfo.MachineNames.LAP_IX,
             DepartmentInfo.MachineNames.MAC_IX,
             DepartmentInfo.MachineNames.NOR_EX,
             DepartmentInfo.MachineNames.NOR_IX,
-            DepartmentInfo.MachineNames.OWO_IX
+            DepartmentInfo.MachineNames.NOR_TB
         };
 
         public UseGatedChecks(PlanSetup plan) : base(plan) { }
@@ -42,19 +44,45 @@ namespace VMS.TPS.PlanChecks
                     {
                         Result = "";
                         ResultDetails = "\"Use Gating\" is checked";
-                        ResultColor = "LimeGreen";
+                        DisplayColor = ResultColorChoices.Pass;
                     }
                     else
                     {
                         Result = "Warning";
                         ResultDetails = "Plan has a low number of fractions and looks to contain a 4D image.  Should \"Use Gated\" be checked?";
-                        ResultColor = "Gold";
+                        DisplayColor = ResultColorChoices.Warn;
                     }
                 }
                 else
                 {
                     Result = "Pass";
-                    ResultColor = "LimeGreen";
+                    DisplayColor = ResultColorChoices.Pass;
+                }
+            }
+            else if (MachineID == DepartmentInfo.MachineNames.LAP_IX ||
+                     MachineID == DepartmentInfo.MachineNames.OWO_IX)
+            {
+                bool DIBH = plan.StructureSet.Image.Series.Comment.ToLower().Contains("dibh");
+
+                if (DIBH)
+                {
+                    if (plan.UseGating)
+                    {
+                        Result = "";
+                        ResultDetails = "\"Use Gated\" is checked";
+                        DisplayColor = ResultColorChoices.Pass;
+                    }
+                    else
+                    {
+                        Result = "Warning";
+                        ResultDetails = "\"Use Gated\" is not checked and the plan appears to be DIBH";
+                        DisplayColor = ResultColorChoices.Warn;
+                    }
+                }
+                else
+                {
+                    Result = "Pass";
+                    DisplayColor = ResultColorChoices.Pass;
                 }
             }
             else

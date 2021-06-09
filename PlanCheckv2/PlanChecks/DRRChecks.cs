@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VMS.TPS.Common.Model.API;
 
-namespace VMS.TPS.PlanChecks
+namespace PlanCheck.Checks
 {
-    public class DRRChecks : PlanCheck
+    public class DRRChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
@@ -19,7 +19,7 @@ namespace VMS.TPS.PlanChecks
 			DisplayName = "DRRs";
 			Result = "Pass";
 			ResultDetails = "";
-			ResultColor = "LimeGreen";
+			DisplayColor = ResultColorChoices.Pass;
 			TestExplanation = "Checks that DRRs are created and attached as a reference for all fields";
 
 			foreach (Beam field in plan.Beams)
@@ -28,7 +28,7 @@ namespace VMS.TPS.PlanChecks
 				{
 					Result = "Warning";
 					ResultDetails += field.Id + " has no reference image\n";
-					ResultColor = "Gold";
+					DisplayColor = ResultColorChoices.Warn;
 				}
 			}
 
