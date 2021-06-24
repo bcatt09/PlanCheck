@@ -9,7 +9,10 @@ namespace PlanCheck.Checks
 {
     public class BolusChecks : PlanCheckBase
     {
-        protected override List<string> MachineExemptions => new List<string> { };
+        protected override List<string> MachineExemptions => new List<string> {
+			DepartmentInfo.MachineNames.PRO_G1,
+			DepartmentInfo.MachineNames.PRO_G2
+		};
 
         public BolusChecks(PlanSetup plan) : base(plan) { }
 

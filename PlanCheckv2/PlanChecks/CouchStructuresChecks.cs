@@ -262,7 +262,7 @@ namespace PlanCheck.Checks
                             {
 								Result = "Warning";
 								ResultDetails += $"Couch found but HU set to {protonCouchHU} not -930\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 
 							// Check if Couch is inside body
@@ -271,14 +271,14 @@ namespace PlanCheck.Checks
 							{
 								Result = "Warning";
 								ResultDetails += $"Portions of Couch may not be in Body structure\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 							
 							if (protonCouchHU != -930 && protonCouchStruct.Equals(protonCouchStruct.And(protonBodyStruct)))
                             {
 								Result = "Pass";
 								ResultDetails += $"Couch structure found inside body with HU of -930";
-								ResultColor = "LimeGreen";
+								DisplayColor = ResultColorChoices.Pass;
 							}
 
                         }
@@ -289,13 +289,13 @@ namespace PlanCheck.Checks
 							{
 								Result = "Warning";
 								ResultDetails += $"Couch structure found inside Body, but no HU assigned\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 							else
                             {
 								Result = "Warning";
 								ResultDetails += $"Couch structure has no Assigned HU and is not inside the Body structure\n";
-								ResultColor = "Gold";
+								DisplayColor = ResultColorChoices.Warn;
 							}
 
 
@@ -306,12 +306,12 @@ namespace PlanCheck.Checks
                     {
 						Result = "Warning";
 						ResultDetails = "No Structure named \"Couch\" included in structure set";
-						ResultColor = "Gold";
+						DisplayColor = ResultColorChoices.Warn; 
 
 					}
 
 					Result = "";
-					ResultColor = "Gold";
+					DisplayColor = ResultColorChoices.Warn;
 
 					AddCouchStructureInfo(couchName, couchStructures);
 				}
@@ -319,7 +319,7 @@ namespace PlanCheck.Checks
 				{
 					Result = "Warning";
 					ResultDetails = "No couch structures included";
-					ResultColor = "Gold";
+					DisplayColor = ResultColorChoices.Warn;
 				}
 			}
 

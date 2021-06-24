@@ -26,7 +26,10 @@ namespace PlanCheck.Checks
             DepartmentInfo.MachineNames.NOR_EX,
             DepartmentInfo.MachineNames.NOR_IX,
             DepartmentInfo.MachineNames.NOR_TB,
-            DepartmentInfo.MachineNames.OWO_IX
+            DepartmentInfo.MachineNames.OWO_IX,
+            DepartmentInfo.MachineNames.PRO_G1,
+            DepartmentInfo.MachineNames.PRO_G2
+
         };
 
         public TreatmentTimeCalculation(PlanSetup plan) : base(plan) { }

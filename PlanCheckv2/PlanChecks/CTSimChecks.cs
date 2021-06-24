@@ -36,6 +36,16 @@ namespace PlanCheck.Checks
 				DisplayColor = ResultColorChoices.Pass;
 			}
 
+			// ATTEMPTING PROTON ADDITIONAL CHECKS
+
+			if (MachineID == DepartmentInfo.MachineNames.PRO_G1 ||MachineID == DepartmentInfo.MachineNames.PRO_G2)  // check for proton (existing criteria is placeholder and won't work)
+			{
+				// Check for corrrect kVp NOT FINDING ANY WAY TO GET kVp Here.
+
+				ResultDetails+=$"\n{plan.StructureSet.Image.ImageType}";
+
+			}
+
 			ResultDetails = ResultDetails.TrimEnd('\n');
 		}
     }
