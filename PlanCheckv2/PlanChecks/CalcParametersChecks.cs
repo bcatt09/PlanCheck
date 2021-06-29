@@ -27,6 +27,13 @@ namespace PlanCheck.Checks
 			bool IMRT = false;
 			bool VMAT = false;
 
+			if(plan.Dose == null)
+            {
+				Result = "Error";
+				ResultDetails = "No dose calculated";
+				DisplayColor = ResultColorChoices.Fail;
+            }
+
 			//get calc options
 			Dictionary<string, string> photonOptions = plan.PhotonCalculationOptions;
 			Dictionary<string, string> electronOptions = plan.ElectronCalculationOptions;

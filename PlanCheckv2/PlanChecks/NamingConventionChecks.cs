@@ -49,9 +49,17 @@ namespace PlanCheck.Checks
                 var suffix = fullSuffix[0];
                 var txType = plan.RTPrescription.Technique;
 
-                if(planSuffixTxTypeDict[txType] != suffix.ToString())
+                if (planSuffixTxTypeDict.ContainsKey(txType))
                 {
-                    ResultDetails += $"Prescribed Technique is {txType} but the plan ID suffix is _{suffix}";
+                    if (planSuffixTxTypeDict[txType] != suffix.ToString())
+                    {
+                        ResultDetails += $"Prescribed Technique is {txType} but the plan ID suffix is _{suffix}";
+                        DisplayColor = ResultColorChoices.Warn;
+                    }
+                }
+                else
+                {
+                    ResultDetails += $"Prescribed Technique {txType} is not supported";
                     DisplayColor = ResultColorChoices.Warn;
                 }
             }
