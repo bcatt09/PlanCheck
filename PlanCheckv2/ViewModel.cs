@@ -87,6 +87,7 @@ namespace PlanCheck
             PlanChecks.Add(new CTSimChecks(_context.PlanSetup));
             PlanChecks.Add(new OrientationChecks(_context.PlanSetup));
             PlanChecks.Add(new TargetChecks(_context.PlanSetup));
+            PlanChecks.Add(new ProtonSpotPositionChecks(_context.PlanSetup));
             PlanChecks.Add(new HotspotChecks(_context.PlanSetup));
             PlanChecks.Add(new PlanApprovalChecks(_context.PlanSetup));
             PlanChecks.Add(new PrecriptionChecks(_context.PlanSetup));

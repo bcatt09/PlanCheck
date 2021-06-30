@@ -184,6 +184,27 @@ namespace PlanCheck
 			public static readonly string OWO_IX = "21IX-SN3856";
         }
 
+		public static List<string> LinearAccelerators = new List<string>
+		{
+			MachineNames.BAY_TB,
+			MachineNames.CEN_EX,
+			MachineNames.CLA_EX,
+			MachineNames.DET_IX,
+			MachineNames.DET_TB,
+			MachineNames.FAR_IX,
+			MachineNames.FLT_BackTB,
+			MachineNames.FLT_FrontTB,
+			MachineNames.LAN_IX,
+			MachineNames.LAP_IX,
+			MachineNames.MAC_IX,
+			MachineNames.MAC_TB,
+			MachineNames.MPH_TB,
+			MachineNames.NOR_EX,
+			MachineNames.NOR_IX,
+			MachineNames.NOR_TB,
+			MachineNames.OWO_IX
+		};
+
 		/// <summary>
 		/// Dictionary of CT names in Aria
 		/// </summary>

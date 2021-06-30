@@ -8,7 +8,7 @@
     <ProjectGuid>{FDF18849-FB31-4826-9CB6-9183D2BE1B1A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>PlanCheck</RootNamespace>
-    <AssemblyName>KCIPlanCheck-Proton.esapi</AssemblyName>
+    <AssemblyName>Proton-KCIPlanCheck.esapi</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -130,6 +130,7 @@
     <Compile Include="PlanChecks\OrientationChecks.cs" />
     <Compile Include="PlanChecks\PlanApprovalChecks.cs" />
     <Compile Include="PlanChecks\PlanCheckBase.cs" />
+    <Compile Include="PlanChecks\ProtonSpotPositionChecks.cs" />
     <Compile Include="PlanChecks\Shifts.cs" />
     <Compile Include="PlanChecks\TargetChecks.cs" />
     <Compile Include="PlanChecks\ToleranceTableChecks.cs" />

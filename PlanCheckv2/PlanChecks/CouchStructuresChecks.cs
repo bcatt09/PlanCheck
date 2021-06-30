@@ -244,11 +244,12 @@ namespace PlanCheck.Checks
 			#region Proton
 			else if (Department == Department.PRO)
 			{
+				int requiredCouchHU = -820; // used to be -930 but method changed
 				if (couchStructure)
 				{
 					// needed
 					//  Structure called couch 
-					//  HUs need to be correct (-930)
+					//  HUs need to be correct (see requiredCouchHU variable)
 					//  Body contains couch
 
 					if (plan.StructureSet.Structures.Where(s => s.Id.ToUpper() == "COUCH").Count()==1)
@@ -258,10 +259,10 @@ namespace PlanCheck.Checks
 
 						if (protonCouchStruct.GetAssignedHU(out double protonCouchHU))
                         {
-                            if (protonCouchHU != -930)
+                            if (protonCouchHU != requiredCouchHU)
                             {
 								Result = "Warning";
-								ResultDetails += $"Couch found but HU set to {protonCouchHU} not -930\n";
+								ResultDetails += $"Couch found but HU set to {protonCouchHU} not {requiredCouchHU}\n";
 								DisplayColor = ResultColorChoices.Warn;
 							}
 
