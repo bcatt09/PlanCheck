@@ -8,13 +8,13 @@ using VMS.TPS.Common.Model.Types;
 
 namespace PlanCheck.Checks
 {
-    class IsocenterChecks : PlanCheckBase
-    {
+    class IsocenterChecks : PlanCheckBasePhoton
+	{
         protected override List<string> MachineExemptions => new List<string> { };
 
         public IsocenterChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
         {
 			DisplayName = "Isocenter";
 			ResultDetails = "";

@@ -107,6 +107,7 @@ namespace PlanCheck
             PlanChecks.Add(new TreatmentTimeCalculation(_context.PlanSetup));
             PlanChecks.Add(new NamingConventionChecks(_context.PlanSetup));
             PlanChecks.Add(new CalcParametersChecks(_context.PlanSetup));
+            PlanChecks.Add(new ProtonGantryAngleCheck(_context.PlanSetup));
 
             // Remove any plan checks that were not run
             foreach (var p in PlanChecks.Where(x => x.MachineExempt).ToList())

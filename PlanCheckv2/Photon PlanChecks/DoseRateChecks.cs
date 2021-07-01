@@ -8,17 +8,13 @@ using VMS.TPS.Common.Model.Types;
 
 namespace PlanCheck.Checks
 {
-    class DoseRateChecks : PlanCheckBase
-    {
-        protected override List<string> MachineExemptions => new List<string> 
-		{
-			DepartmentInfo.MachineNames.PRO_G1,
-			DepartmentInfo.MachineNames.PRO_G2
-		};
+    class DoseRateChecks : PlanCheckBasePhoton
+	{
+        protected override List<string> MachineExemptions => new List<string> { };
 
 		public DoseRateChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
         {
 			DisplayName = "Dose Rate";
 			ResultDetails = "";

@@ -13,7 +13,7 @@ namespace PlanCheck.Checks
 
 		public MachineChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTest(PlanSetup plan)
 		{
 			DisplayName = "Machine";
 			Result = "";

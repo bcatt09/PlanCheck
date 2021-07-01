@@ -16,9 +16,9 @@ namespace PlanCheck
 		/// <param name="dep"></param>
 		/// <returns></returns>
 		public static List<string> GetMachineIDs(Department dep)
-        {
+		{
 			return Departments[dep].Machines;
-        }
+		}
 
 		/// <summary>
 		/// Gets all CT IDs from a department
@@ -26,7 +26,7 @@ namespace PlanCheck
 		/// <param name="dep"></param>
 		/// <returns></returns>
 		public static List<string> GetCTIDs(Department dep)
-        {
+		{
 			return Departments[dep].CTs;
 		}
 
@@ -36,9 +36,9 @@ namespace PlanCheck
 		/// <param name="dep"></param>
 		/// <returns></returns>
 		public static List<string> GetRadOncUserNames(Department dep)
-        {
+		{
 			return Departments[dep].RadOncUserNames;
-        }
+		}
 
 		/// <summary>
 		/// Gets the department that the machine is in.
@@ -47,18 +47,18 @@ namespace PlanCheck
 		/// <param name="machineID"></param>
 		/// <returns></returns>
 		public static Department GetDepartment(string machineID)
-        {
+		{
 			try
-			{ 
-				return Departments.Where(x => x.Value.Machines.Contains(machineID)).Select(x => x.Key).First(); 
+			{
+				return Departments.Where(x => x.Value.Machines.Contains(machineID)).Select(x => x.Key).First();
 			}
 			catch
 			{
 				MessageBox.Show($"Could not find a corresponding department for machine: {machineID}\nPlease ensure that it has been added to the department list", "Unknown Machine", MessageBoxButton.OK, MessageBoxImage.Error);
-				
+
 				return Department.None;
 			}
-        }
+		}
 
 		/// <summary>
 		/// Access to all department specific IDs
@@ -70,7 +70,7 @@ namespace PlanCheck
 					Machines = new List<string> { MachineNames.BAY_TB },
 					CTs = new List<string> { CTNames.BAY },
 					RadOncUserNames = RadOncUserNames.BAY
-				} 
+				}
 			},
 			{ Department.CEN,
 				new DepartmentInfoStruct {
@@ -180,9 +180,61 @@ namespace PlanCheck
 			public static readonly string MPH_TB = "TB2681";
 			public static readonly string NOR_EX = "2100ex";
 			public static readonly string NOR_IX = "TRILOGY";
-			public static readonly string NOR_TB = "NOR_TB4780"; 
+			public static readonly string NOR_TB = "NOR_TB4780";
 			public static readonly string OWO_IX = "21IX-SN3856";
-        }
+		}
+
+		public static List<string> LinearAccelerators = new List<string>
+		{
+			MachineNames.BAY_TB,
+			MachineNames.CEN_EX,
+			MachineNames.CLA_EX,
+			MachineNames.DET_IX,
+			MachineNames.DET_TB,
+			MachineNames.FAR_IX,
+			MachineNames.FLT_BackTB,
+			MachineNames.FLT_FrontTB,
+			MachineNames.LAN_IX,
+			MachineNames.LAP_IX,
+			MachineNames.MAC_IX,
+			MachineNames.MAC_TB,
+			MachineNames.MPH_TB,
+			MachineNames.NOR_EX,
+			MachineNames.NOR_IX,
+			MachineNames.NOR_TB,
+			MachineNames.OWO_IX
+		};
+
+		public static List<string> TrueBeams = new List<string>
+		{
+			MachineNames.BAY_TB,
+			MachineNames.DET_TB,
+			MachineNames.FLT_BackTB,
+			MachineNames.FLT_FrontTB,
+			MachineNames.MAC_TB,
+			MachineNames.MPH_TB,
+			MachineNames.NOR_TB
+		};
+
+		public static List<string> Clinacs = new List<string>
+		{
+			MachineNames.CEN_EX,
+			MachineNames.CLA_EX,
+			MachineNames.DET_IX,
+			MachineNames.FAR_IX,
+			MachineNames.LAN_IX,
+			MachineNames.LAP_IX,
+			MachineNames.MAC_IX,
+			MachineNames.NOR_EX,
+			MachineNames.NOR_IX,
+			MachineNames.OWO_IX
+		};
+
+		public static List<string> ProtonGantries = new List<string>
+		{
+			MachineNames.PRO_G1,
+			MachineNames.PRO_G2
+		};
 
 		public static List<string> LinearAccelerators = new List<string>
 		{
@@ -216,7 +268,7 @@ namespace PlanCheck
 			public static readonly string DET = "DET_ROC CT Sim";
 			public static readonly string FAR = "Farmington CT";
 			public static readonly string FLT = "Philips Big Bore";
-			public static readonly string LAN = "BBCT" ;
+			public static readonly string LAN = "BBCT";
 			public static readonly string LAP = "Philips Big Bore";
 			public static readonly string MAC = "LightSpeed RT16";
 			public static readonly string MPH = "MPH CT Sim";

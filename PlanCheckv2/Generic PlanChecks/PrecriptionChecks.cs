@@ -13,7 +13,7 @@ namespace PlanCheck.Checks
 
         public PrecriptionChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTest(PlanSetup plan)
         {
             DisplayName = "Prescription";
             TestExplanation = "Displays plan dose information from Eclipse and checks it versus the prescription in Aria";

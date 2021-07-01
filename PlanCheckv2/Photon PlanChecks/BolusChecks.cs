@@ -7,7 +7,7 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    public class BolusChecks : PlanCheckBase
+    public class BolusChecks : PlanCheckBasePhoton
     {
         protected override List<string> MachineExemptions => new List<string> {
 			DepartmentInfo.MachineNames.PRO_G1,
@@ -16,7 +16,7 @@ namespace PlanCheck.Checks
 
         public BolusChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
 		{
 			DisplayName = "Bolus";
 			Result = "";

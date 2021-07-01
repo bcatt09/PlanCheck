@@ -13,7 +13,7 @@ namespace PlanCheck.Checks
 
 		public ToleranceTableChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTest(PlanSetup plan)
         {
 			DisplayName = "Tolerance Table";
 			Result = "";

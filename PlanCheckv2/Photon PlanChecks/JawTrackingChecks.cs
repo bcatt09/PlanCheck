@@ -8,8 +8,8 @@ using VMS.TPS.Common.Model.Types;
 
 namespace PlanCheck.Checks
 {
-    public class JawTrackingChecks : PlanCheckBase
-    {
+    public class JawTrackingChecks : PlanCheckBasePhoton
+	{
 		protected override List<string> MachineExemptions => new List<string> {
 			DepartmentInfo.MachineNames.CEN_EX,
 			DepartmentInfo.MachineNames.CLA_EX,
@@ -27,7 +27,7 @@ namespace PlanCheck.Checks
 
 		public JawTrackingChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
         {
 			bool IMRT = false;
 

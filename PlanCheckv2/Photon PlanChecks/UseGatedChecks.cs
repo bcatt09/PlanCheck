@@ -8,7 +8,7 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    public class UseGatedChecks : PlanCheckBase
+    public class UseGatedChecks : PlanCheckBasePhoton
     {
         protected override List<string> MachineExemptions => new List<string> { 
             DepartmentInfo.MachineNames.CEN_EX, 
@@ -28,7 +28,7 @@ namespace PlanCheck.Checks
 
         public UseGatedChecks(PlanSetup plan) : base(plan) { }
         
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
         {
             DisplayName = "\"Use Gated\"?";
             TestExplanation = "Checks to see if \"Use Gated\" should be checked off in plan properties based on department standards";

@@ -14,7 +14,7 @@ namespace PlanCheck.Checks
 
         public PlanApprovalChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTest(PlanSetup plan)
         {
             PlanSetupApprovalStatus approvalStatus = plan.ApprovalStatus;
 

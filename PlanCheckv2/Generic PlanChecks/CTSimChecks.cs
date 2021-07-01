@@ -13,7 +13,7 @@ namespace PlanCheck.Checks
 
 		public CTSimChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTest(PlanSetup plan)
         {
 			DisplayName = "CT Sim";
 			ResultDetails = "";

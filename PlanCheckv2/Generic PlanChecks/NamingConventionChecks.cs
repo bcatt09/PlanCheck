@@ -14,7 +14,7 @@ namespace PlanCheck.Checks
 
         public NamingConventionChecks(PlanSetup plan) : base(plan) { }
         
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTest(PlanSetup plan)
         {
             DisplayName = "Naming Conventions";
             TestExplanation = "Checks Course, Plan, and Reference Point naming against OneAria conventions";
@@ -49,9 +49,17 @@ namespace PlanCheck.Checks
                 var suffix = fullSuffix[0];
                 var txType = plan.RTPrescription.Technique;
 
-                if(planSuffixTxTypeDict[txType] != suffix.ToString())
+                if (planSuffixTxTypeDict.ContainsKey(txType))
                 {
-                    ResultDetails += $"Prescribed Technique is {txType} but the plan ID suffix is _{suffix}";
+                    if (planSuffixTxTypeDict[txType] != suffix.ToString())
+                    {
+                        ResultDetails += $"Prescribed Technique is {txType} but the plan ID suffix is _{suffix}";
+                        DisplayColor = ResultColorChoices.Warn;
+                    }
+                }
+                else
+                {
+                    ResultDetails += $"Prescribed Technique {txType} is not supported";
                     DisplayColor = ResultColorChoices.Warn;
                 }
             }
