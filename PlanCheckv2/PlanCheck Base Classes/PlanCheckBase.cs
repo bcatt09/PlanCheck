@@ -103,7 +103,22 @@ namespace PlanCheck.Checks
             {
                 try
                 {
-                    RunTest(plan);
+                    if(plan is ExternalPlanSetup)
+                    {
+                        if (this is PlanCheckBasePhoton)
+                            (this as PlanCheckBasePhoton).RunTestPhoton(plan as ExternalPlanSetup);
+                        else
+                            MachineExempt = true;
+                    }
+                    else if (plan is IonPlanSetup)
+                    {
+                        if (this is PlanCheckBaseProton)
+                            (this as PlanCheckBaseProton).RunTestProton(plan as IonPlanSetup);
+                        else
+                            MachineExempt = true;
+                    }
+                    else
+                        RunTest(plan);
                 }
                 catch (Exception e)
                 {

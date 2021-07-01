@@ -9,13 +9,13 @@ using VMS.TPS.Common.Model.Types;
 
 namespace PlanCheck.Checks
 {
-    class FieldNameChecks : PlanCheckBase
-    {
+    class FieldNameChecks : PlanCheckBasePhoton
+	{
 		protected override List<string> MachineExemptions => new List<string> { };
 
 		public FieldNameChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
 		{
 			DisplayName = "Field Names";
 			ResultDetails = "";

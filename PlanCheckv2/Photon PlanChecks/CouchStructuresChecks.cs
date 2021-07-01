@@ -9,8 +9,8 @@ using VMS.TPS.Common.Model.Types;
 
 namespace PlanCheck.Checks
 {
-    public class CouchStructuresChecks : PlanCheckBase
-    {
+    public class CouchStructuresChecks : PlanCheckBasePhoton
+	{
         protected override List<string> MachineExemptions => new List<string>
 		{
 			DepartmentInfo.MachineNames.CEN_EX,
@@ -22,7 +22,7 @@ namespace PlanCheck.Checks
 
         public CouchStructuresChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
 		{
 			DisplayName = "Couch Structures";
 			TestExplanation = "Checks that the correct couch structure based on department standards";

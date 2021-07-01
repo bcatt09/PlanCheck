@@ -7,13 +7,13 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    public class MachineChecks : PlanCheckBase
+    public class MachineChecks : PlanCheckBasePhoton
 	{
 		protected override List<string> MachineExemptions => new List<string> { };
 
 		public MachineChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
 		{
 			DisplayName = "Machine";
 			Result = "";

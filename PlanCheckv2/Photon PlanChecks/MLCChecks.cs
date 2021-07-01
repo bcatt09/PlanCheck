@@ -9,13 +9,13 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    public class MLCChecks : PlanCheckBase
+    public class MLCChecks : PlanCheckBasePhoton
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
         public MLCChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
         {
             DisplayName = "MLC Checks";
             Result = "";

@@ -7,13 +7,13 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    public class PrecriptionChecks : PlanCheckBase
+    public class PrecriptionChecks : PlanCheckBasePhoton
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
         public PrecriptionChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
         {
             DisplayName = "Prescription";
             TestExplanation = "Displays plan dose information from Eclipse and checks it versus the prescription in Aria";

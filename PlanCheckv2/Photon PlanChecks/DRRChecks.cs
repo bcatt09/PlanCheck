@@ -8,13 +8,13 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    public class DRRChecks : PlanCheckBase
-    {
+    public class DRRChecks : PlanCheckBasePhoton
+	{
         protected override List<string> MachineExemptions => new List<string> { };
 
         public DRRChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
 		{
 			DisplayName = "DRRs";
 			Result = "Pass";

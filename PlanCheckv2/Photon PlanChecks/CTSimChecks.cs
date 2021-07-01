@@ -7,13 +7,13 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    public class CTSimChecks : PlanCheckBase
+    public class CTSimChecks : PlanCheckBasePhoton
 	{
 		protected override List<string> MachineExemptions => new List<string> { };
 
 		public CTSimChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
         {
 			DisplayName = "CT Sim";
 			ResultDetails = "";

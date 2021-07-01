@@ -7,13 +7,13 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    public class OrientationChecks : PlanCheckBase
-    {
+    public class OrientationChecks : PlanCheckBasePhoton
+	{
         protected override List<string> MachineExemptions => new List<string> { };
 
         public OrientationChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
 		{
 			DisplayName = "Orientation";
 			TestExplanation = "Checks the planned patient orientation against the orientation selected from CT sim";
