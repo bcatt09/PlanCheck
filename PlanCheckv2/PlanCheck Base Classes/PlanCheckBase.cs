@@ -135,7 +135,7 @@ namespace PlanCheck.Checks
         /// Executes test and stores all results
         /// </summary>
         /// <param name="plan">PlanSetup that the test will be run on</param>
-        protected abstract void RunTest(PlanSetup plan);
+        public abstract void RunTest(PlanSetup plan);
 
         /// <summary>
         /// Log that check failed to run

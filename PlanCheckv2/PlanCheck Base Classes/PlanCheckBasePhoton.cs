@@ -11,7 +11,7 @@ namespace PlanCheck.Checks
     {
         public PlanCheckBasePhoton(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTest(PlanSetup plan)
         {
             MachineExemptions.Concat(DepartmentInfo.ProtonGantries);
             RunTestPhoton(plan as ExternalPlanSetup);

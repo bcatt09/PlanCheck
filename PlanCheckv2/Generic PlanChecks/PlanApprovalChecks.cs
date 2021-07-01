@@ -8,13 +8,13 @@ using VMS.TPS.Common.Model.Types;
 
 namespace PlanCheck.Checks
 {
-    public class PlanApprovalChecks : PlanCheckBasePhoton
+    public class PlanApprovalChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
         public PlanApprovalChecks(PlanSetup plan) : base(plan) { }
 
-        public override void RunTestPhoton(ExternalPlanSetup plan)
+        public override void RunTest(PlanSetup plan)
         {
             PlanSetupApprovalStatus approvalStatus = plan.ApprovalStatus;
 

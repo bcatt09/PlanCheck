@@ -9,13 +9,13 @@ using VMS.TPS.Common.Model.Types;
 
 namespace PlanCheck.Checks
 {
-    public class Shifts : PlanCheckBasePhoton
+    public class Shifts : PlanCheckBase
 	{
         protected override List<string> MachineExemptions => new List<string> { };
 
         public Shifts(PlanSetup plan) : base(plan) { }
 
-        public override void RunTestPhoton(ExternalPlanSetup plan)
+        public override void RunTest(PlanSetup plan)
 		{
 			DisplayName = "Patient Shifts";
 			TestExplanation = "Displays shifts from Marker Structure or User Origin";

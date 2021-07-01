@@ -8,13 +8,13 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    class NamingConventionChecks : PlanCheckBasePhoton
+    class NamingConventionChecks : PlanCheckBase
     {
         protected override List<string> MachineExemptions => new List<string> { };
 
         public NamingConventionChecks(PlanSetup plan) : base(plan) { }
         
-        public override void RunTestPhoton(ExternalPlanSetup plan)
+        public override void RunTest(PlanSetup plan)
         {
             DisplayName = "Naming Conventions";
             TestExplanation = "Checks Course, Plan, and Reference Point naming against OneAria conventions";

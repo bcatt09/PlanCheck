@@ -11,7 +11,7 @@ namespace PlanCheck.Checks
     {
         public PlanCheckBaseProton(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTest(PlanSetup plan)
         {
             MachineExemptions.Concat(DepartmentInfo.LinearAccelerators);
             RunTestProton(plan as IonPlanSetup);

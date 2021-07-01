@@ -7,13 +7,13 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    public class HotspotChecks : PlanCheckBasePhoton
+    public class HotspotChecks : PlanCheckBase
 	{
         protected override List<string> MachineExemptions => new List<string> { };
 
         public HotspotChecks(PlanSetup plan) : base(plan) { }
 
-        public override void RunTestPhoton(ExternalPlanSetup plan)
+        public override void RunTest(PlanSetup plan)
 		{
 			DisplayName = "Hotspot";
 			TestExplanation = "Checks to see if the hotspot is inside of the plan target";
