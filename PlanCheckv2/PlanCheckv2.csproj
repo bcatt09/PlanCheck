@@ -138,7 +138,7 @@
     <Compile Include="Generic PlanChecks\PrecriptionChecks.cs" />
     <Compile Include="PlanCheck Base Classes\PlanCheckBaseProton.cs" />
     <Compile Include="PlanCheck Base Classes\PlanCheckBasePhoton.cs" />
-    <Compile Include="Proton PlanChecks\ProtonGantryAngleCheck.cs" />
+    <Compile Include="Proton PlanChecks\ProtonGantryAngleChecks.cs" />
     <Compile Include="Proton PlanChecks\ProtonIsocenterMarkerChecks.cs" />
     <Compile Include="Proton PlanChecks\ProtonSpotPositionChecks.cs" />
     <Compile Include="StringExtensions.cs" />

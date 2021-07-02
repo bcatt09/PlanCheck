@@ -87,7 +87,7 @@ namespace PlanCheck
             PlanChecks.Add(new CTSimChecks(_context.PlanSetup));
             PlanChecks.Add(new OrientationChecks(_context.PlanSetup));
             PlanChecks.Add(new TargetChecks(_context.PlanSetup));
-            PlanChecks.Add(new ProtonGantryAngleCheck(_context.PlanSetup));
+            PlanChecks.Add(new ProtonGantryAngleChecks(_context.PlanSetup));
             PlanChecks.Add(new ProtonSpotPositionChecks(_context.PlanSetup));
             PlanChecks.Add(new ProtonIsocenterMarkerChecks(_context.PlanSetup));
             PlanChecks.Add(new HotspotChecks(_context.PlanSetup));
@@ -107,7 +107,7 @@ namespace PlanCheck
             PlanChecks.Add(new TreatmentTimeCalculation(_context.PlanSetup));
             PlanChecks.Add(new NamingConventionChecks(_context.PlanSetup));
             PlanChecks.Add(new CalcParametersChecks(_context.PlanSetup));
-            PlanChecks.Add(new ProtonGantryAngleCheck(_context.PlanSetup));
+
 
             // Remove any plan checks that were not run
             foreach (var p in PlanChecks.Where(x => x.MachineExempt).ToList())
