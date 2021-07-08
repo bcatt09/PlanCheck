@@ -140,6 +140,7 @@
     <Compile Include="PlanCheck Base Classes\PlanCheckBasePhoton.cs" />
     <Compile Include="Proton PlanChecks\ProtonGantryAngleChecks.cs" />
     <Compile Include="Proton PlanChecks\ProtonIsocenterMarkerChecks.cs" />
+    <Compile Include="Proton PlanChecks\ProtonSnoutCheck.cs" />
     <Compile Include="Proton PlanChecks\ProtonSpotPositionChecks.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Views\MROQCWindow.xaml.cs">
