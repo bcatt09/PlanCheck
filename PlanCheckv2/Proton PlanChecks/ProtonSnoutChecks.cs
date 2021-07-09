@@ -7,11 +7,11 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    public class ProtonSnoutCheck : PlanCheckBaseProton
+    public class ProtonSnoutChecks : PlanCheckBaseProton
     {
         protected override List<string> MachineExemptions => throw new NotImplementedException();
 
-        public ProtonSnoutCheck(PlanSetup plan) : base(plan) { }
+        public ProtonSnoutChecks(PlanSetup plan) : base(plan) { }
 
         private List<string> openFieldSnouts = new List<string> { "S1" };
         private List<string> r40Snouts = new List<string> { "15x15","30x30" };
