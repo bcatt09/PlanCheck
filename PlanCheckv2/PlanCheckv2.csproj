@@ -138,6 +138,7 @@
     <Compile Include="Generic PlanChecks\PrecriptionChecks.cs" />
     <Compile Include="PlanCheck Base Classes\PlanCheckBaseProton.cs" />
     <Compile Include="PlanCheck Base Classes\PlanCheckBasePhoton.cs" />
+    <Compile Include="Proton PlanChecks\ProtonCalculationModelChecks.cs" />
     <Compile Include="Proton PlanChecks\ProtonDRRNameEndChecks.cs" />
     <Compile Include="Proton PlanChecks\ProtonFiducialContourChecks.cs" />
     <Compile Include="Proton PlanChecks\ProtonGantryAngleChecks.cs" />
