@@ -9,7 +9,7 @@ namespace PlanCheck.Checks
 {
     public class ProtonSnoutChecks : PlanCheckBaseProton
     {
-        protected override List<string> MachineExemptions => throw new NotImplementedException();
+        protected override List<string> MachineExemptions => new List<string> { };
 
         public ProtonSnoutChecks(PlanSetup plan) : base(plan) { }
 
@@ -18,6 +18,7 @@ namespace PlanCheck.Checks
 
         public override void RunTestProton(IonPlanSetup plan)
         {
+            DisplayName = "Snout Check";
             Result = "Pass"; // Setting initially to pass then switching it if failure detected
             DisplayColor = ResultColorChoices.Pass;
 
@@ -33,13 +34,13 @@ namespace PlanCheck.Checks
                         rangeShifter = beam.RangeShifters.FirstOrDefault().Id;  // This is here in case there are multiple range shifters in the future.
                         if (r40Snouts.Contains(snout))
                         {
-                            ResultDetails += $"Beam: {beam.Id}: Snout: {snout} RS:{rangeShifter} - OK\n";
+                            ResultDetails += $"Beam: {beam.Id}  Snout: {snout}  RS: {rangeShifter} - OK\n";
                         }
                         else
                         {
                             Result = "Fail";
                             DisplayColor = ResultColorChoices.Fail;
-                            ResultDetails += $"Beam: {beam.Id}: Snout: {snout} RS:{rangeShifter} - Fail\n";
+                            ResultDetails += $"Beam: {beam.Id}  Snout: {snout}  RS: {rangeShifter} - Fail\n";
                         }
 
                     }
@@ -48,13 +49,13 @@ namespace PlanCheck.Checks
                         rangeShifter = "none";
                         if (openFieldSnouts.Contains(snout))
                         {
-                            ResultDetails += $"Beam: {beam.Id}: Snout: {snout} RS:{rangeShifter} - OK\n";
+                            ResultDetails += $"Beam: {beam.Id}  Snout: {snout}  RS: {rangeShifter} - OK\n";
                         }
                         else
                         {
                             Result = "Fail";
                             DisplayColor = ResultColorChoices.Fail;
-                            ResultDetails += $"Beam: {beam.Id}: Snout: {snout} RS:{rangeShifter} - Fail\n";
+                            ResultDetails += $"Beam: {beam.Id}  Snout: {snout}  RS: {rangeShifter} - Fail\n";
                         }
                     }
                 }
