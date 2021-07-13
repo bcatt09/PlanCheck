@@ -27,7 +27,7 @@ namespace PlanCheck.Checks
 
             //var isoStruct = plan.StructureSet.Structures.FirstOrDefault(s => s.Id.ToLower() == "isocenter marker"); (THIS WAS FOR DEBUGGING)
 
-            System.Windows.MessageBox.Show($"Isocount = {isoMarkerCount}");
+            // System.Windows.MessageBox.Show($"Isocount = {isoMarkerCount}");
 
             if (isoMarkerCount==1)
             {
