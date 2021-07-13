@@ -48,7 +48,7 @@ namespace PlanCheck.Checks
 				}
 			}
 
-			if (isContoured && isAssigned)
+			if (!isContoured)
 			{
 				Result = "";
 				ResultDetails = $"There are {numFiducials} contoured fiducials \n {resultTemp.TrimEnd('\n')}";
