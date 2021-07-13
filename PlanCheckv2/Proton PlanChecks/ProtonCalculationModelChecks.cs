@@ -25,7 +25,10 @@ namespace PlanCheck.Checks
 
 			string OptimizationType = plan.GetCalculationModel(CalculationType.ProtonOptimization).ToString();
 
-			string technique = plan.RTPrescription.Technique.Trim('|');
+			//string technique = plan.RTPrescription.Technique.Trim('|');
+
+			string technique = plan.GetOptimizationMode().ToString();
+
 
 			if (string.IsNullOrEmpty(VolumeDoseType) || string.IsNullOrEmpty(OptimizationType) || string.IsNullOrEmpty(technique))
 			{
