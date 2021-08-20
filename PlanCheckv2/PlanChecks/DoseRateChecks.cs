@@ -200,7 +200,7 @@ namespace PlanCheck.Checks
             #endregion
 
 			#region Lansing
-            // IMRT     - 500
+            // IMRT     - 600
             // 3D       - 600
             // Electron - 400
             else if (Department == Department.LAN)
@@ -218,7 +218,7 @@ namespace PlanCheck.Checks
 							//for IMRT fields that have more control points than step and shoot, dose rate should be 500
 							if (field.MLCPlanType == MLCPlanType.DoseDynamic && field.ControlPoints.Count > 18)
 							{
-								if (field.DoseRate != 500)
+								if (field.DoseRate != 600)
 								{
 									Result = "Warning";
 									ResultDetails += field.Id + " (IMRT) dose rate set at " + field.DoseRate + "\n";
