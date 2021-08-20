@@ -9,8 +9,8 @@ using VMS.TPS.Common.Model.Types;
 
 namespace PlanCheck.Checks
 {
-    public class CouchStructuresChecks : PlanCheckBase
-    {
+    public class CouchStructuresChecks : PlanCheckBasePhoton
+	{
         protected override List<string> MachineExemptions => new List<string>
 		{
 			DepartmentInfo.MachineNames.CEN_EX,
@@ -22,7 +22,7 @@ namespace PlanCheck.Checks
 
         public CouchStructuresChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
 		{
 			DisplayName = "Couch Structures";
 			TestExplanation = "Checks that the correct couch structure based on department standards";
@@ -239,10 +239,95 @@ namespace PlanCheck.Checks
 					DisplayColor = ResultColorChoices.Warn;
 				}
 			}
-            #endregion
+			#endregion
 
-            else
-                TestNotImplemented();
+			#region Proton
+			else if (Department == Department.PRO)
+			{
+				int requiredCouchHU = -820; // used to be -930 but method changed
+				if (couchStructure)
+				{
+					// needed
+					//  Structure called couch 
+					//  HUs need to be correct (see requiredCouchHU variable)
+					//  Body contains couch
+
+					if (plan.StructureSet.Structures.Where(s => s.Id.ToUpper() == "COUCH").Count()==1)
+                    {
+						var protonCouchStruct = plan.StructureSet.Structures.FirstOrDefault(s => s.Id.ToUpper() == "COUCH");
+						ResultDetails = "";
+
+						if (protonCouchStruct.GetAssignedHU(out double protonCouchHU))
+                        {
+                            if (protonCouchHU != requiredCouchHU)
+                            {
+								Result = "Warning";
+								ResultDetails += $"Couch found but HU set to {protonCouchHU} not {requiredCouchHU}\n";
+								DisplayColor = ResultColorChoices.Warn;
+							}
+
+							// Check if Couch is inside body
+							var protonBodyStruct = plan.StructureSet.Structures.FirstOrDefault(s => s.DicomType.ToUpper() == "BODY");
+							if (!protonCouchStruct.Equals(protonCouchStruct.And(protonBodyStruct)))
+							{
+								Result = "Warning";
+								ResultDetails += $"Portions of Couch may not be in Body structure\n";
+								DisplayColor = ResultColorChoices.Warn;
+							}
+							
+							if (protonCouchHU != -930 && protonCouchStruct.Equals(protonCouchStruct.And(protonBodyStruct)))
+                            {
+								Result = "Pass";
+								ResultDetails += $"Couch structure found inside body with HU of -930";
+								DisplayColor = ResultColorChoices.Pass;
+							}
+
+                        }
+                        else // No HU assigned to structure called couch
+                        {
+							var protonBodyStruct = plan.StructureSet.Structures.FirstOrDefault(s => s.DicomType.ToUpper() == "BODY");
+							if (protonCouchStruct.Equals(protonCouchStruct.And(protonBodyStruct)))
+							{
+								Result = "Warning";
+								ResultDetails += $"Couch structure found inside Body, but no HU assigned\n";
+								DisplayColor = ResultColorChoices.Warn;
+							}
+							else
+                            {
+								Result = "Warning";
+								ResultDetails += $"Couch structure has no Assigned HU and is not inside the Body structure\n";
+								DisplayColor = ResultColorChoices.Warn;
+							}
+
+
+						}
+					}
+
+					else
+                    {
+						Result = "Warning";
+						ResultDetails = "No Structure named \"Couch\" included in structure set";
+						DisplayColor = ResultColorChoices.Warn; 
+
+					}
+
+					Result = "";
+					DisplayColor = ResultColorChoices.Warn;
+
+					AddCouchStructureInfo(couchName, couchStructures);
+				}
+				else
+				{
+					Result = "Warning";
+					ResultDetails = "No couch structures included";
+					DisplayColor = ResultColorChoices.Warn;
+				}
+			}
+
+
+			#endregion
+			else
+				TestNotImplemented();
 		}
 
 		/// <summary>

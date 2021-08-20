@@ -8,7 +8,7 @@
     <ProjectGuid>{FDF18849-FB31-4826-9CB6-9183D2BE1B1A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>PlanCheck</RootNamespace>
-    <AssemblyName>KCIPlanCheck.esapi</AssemblyName>
+    <AssemblyName>ProtonBeta-KCIPlanCheck.esapi</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -113,29 +113,38 @@
     <Compile Include="DepartmentInfo.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="MROQCStructureCheck.cs" />
-    <Compile Include="PlanChecks\BolusChecks.cs" />
-    <Compile Include="PlanChecks\CalcParametersChecks.cs" />
-    <Compile Include="PlanChecks\CouchStructuresChecks.cs" />
-    <Compile Include="PlanChecks\CouchValueChecks.cs" />
-    <Compile Include="PlanChecks\CTSimChecks.cs" />
-    <Compile Include="PlanChecks\DoseRateChecks.cs" />
-    <Compile Include="PlanChecks\DRRChecks.cs" />
-    <Compile Include="PlanChecks\FieldNameChecks.cs" />
-    <Compile Include="PlanChecks\HotspotChecks.cs" />
-    <Compile Include="PlanChecks\IsocenterChecks.cs" />
-    <Compile Include="PlanChecks\JawTrackingChecks.cs" />
-    <Compile Include="PlanChecks\MachineChecks.cs" />
-    <Compile Include="PlanChecks\MLCChecks.cs" />
-    <Compile Include="PlanChecks\NamingConventionChecks.cs" />
-    <Compile Include="PlanChecks\OrientationChecks.cs" />
-    <Compile Include="PlanChecks\PlanApprovalChecks.cs" />
-    <Compile Include="PlanChecks\PlanCheckBase.cs" />
-    <Compile Include="PlanChecks\Shifts.cs" />
-    <Compile Include="PlanChecks\TargetChecks.cs" />
-    <Compile Include="PlanChecks\ToleranceTableChecks.cs" />
-    <Compile Include="PlanChecks\TreatmentTimeCalculation.cs" />
-    <Compile Include="PlanChecks\UseGatedChecks.cs" />
-    <Compile Include="PlanChecks\PrecriptionChecks.cs" />
+    <Compile Include="Photon PlanChecks\BolusChecks.cs" />
+    <Compile Include="Photon PlanChecks\CalcParametersChecks.cs" />
+    <Compile Include="Photon PlanChecks\CouchStructuresChecks.cs" />
+    <Compile Include="Photon PlanChecks\CouchValueChecks.cs" />
+    <Compile Include="Generic PlanChecks\CTSimChecks.cs" />
+    <Compile Include="Photon PlanChecks\DoseRateChecks.cs" />
+    <Compile Include="Generic PlanChecks\DRRChecks.cs" />
+    <Compile Include="Photon PlanChecks\FieldNameChecks.cs" />
+    <Compile Include="Generic PlanChecks\HotspotChecks.cs" />
+    <Compile Include="Photon PlanChecks\IsocenterChecks.cs" />
+    <Compile Include="Photon PlanChecks\JawTrackingChecks.cs" />
+    <Compile Include="Generic PlanChecks\MachineChecks.cs" />
+    <Compile Include="Photon PlanChecks\MLCChecks.cs" />
+    <Compile Include="Generic PlanChecks\NamingConventionChecks.cs" />
+    <Compile Include="Generic PlanChecks\OrientationChecks.cs" />
+    <Compile Include="Generic PlanChecks\PlanApprovalChecks.cs" />
+    <Compile Include="PlanCheck Base Classes\PlanCheckBase.cs" />
+    <Compile Include="Generic PlanChecks\Shifts.cs" />
+    <Compile Include="Photon PlanChecks\TargetChecks.cs" />
+    <Compile Include="Generic PlanChecks\ToleranceTableChecks.cs" />
+    <Compile Include="Photon PlanChecks\TreatmentTimeCalculation.cs" />
+    <Compile Include="Photon PlanChecks\UseGatedChecks.cs" />
+    <Compile Include="Generic PlanChecks\PrecriptionChecks.cs" />
+    <Compile Include="PlanCheck Base Classes\PlanCheckBaseProton.cs" />
+    <Compile Include="PlanCheck Base Classes\PlanCheckBasePhoton.cs" />
+    <Compile Include="Proton PlanChecks\ProtonCalculationModelChecks.cs" />
+    <Compile Include="Proton PlanChecks\ProtonDRRNameEndChecks.cs" />
+    <Compile Include="Proton PlanChecks\ProtonFiducialContourChecks.cs" />
+    <Compile Include="Proton PlanChecks\ProtonGantryAngleChecks.cs" />
+    <Compile Include="Proton PlanChecks\ProtonIsocenterMarkerChecks.cs" />
+    <Compile Include="Proton PlanChecks\ProtonSnoutChecks.cs" />
+    <Compile Include="Proton PlanChecks\ProtonSpotPositionChecks.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Views\MROQCWindow.xaml.cs">
       <DependentUpon>MROQCWindow.xaml</DependentUpon>

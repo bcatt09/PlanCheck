@@ -16,9 +16,9 @@ namespace PlanCheck
 		/// <param name="dep"></param>
 		/// <returns></returns>
 		public static List<string> GetMachineIDs(Department dep)
-        {
+		{
 			return Departments[dep].Machines;
-        }
+		}
 
 		/// <summary>
 		/// Gets all CT IDs from a department
@@ -26,7 +26,7 @@ namespace PlanCheck
 		/// <param name="dep"></param>
 		/// <returns></returns>
 		public static List<string> GetCTIDs(Department dep)
-        {
+		{
 			return Departments[dep].CTs;
 		}
 
@@ -36,9 +36,9 @@ namespace PlanCheck
 		/// <param name="dep"></param>
 		/// <returns></returns>
 		public static List<string> GetRadOncUserNames(Department dep)
-        {
+		{
 			return Departments[dep].RadOncUserNames;
-        }
+		}
 
 		/// <summary>
 		/// Gets the department that the machine is in.
@@ -47,18 +47,18 @@ namespace PlanCheck
 		/// <param name="machineID"></param>
 		/// <returns></returns>
 		public static Department GetDepartment(string machineID)
-        {
+		{
 			try
-			{ 
-				return Departments.Where(x => x.Value.Machines.Contains(machineID)).Select(x => x.Key).First(); 
+			{
+				return Departments.Where(x => x.Value.Machines.Contains(machineID)).Select(x => x.Key).First();
 			}
 			catch
 			{
 				MessageBox.Show($"Could not find a corresponding department for machine: {machineID}\nPlease ensure that it has been added to the department list", "Unknown Machine", MessageBoxButton.OK, MessageBoxImage.Error);
-				
+
 				return Department.None;
 			}
-        }
+		}
 
 		/// <summary>
 		/// Access to all department specific IDs
@@ -70,7 +70,7 @@ namespace PlanCheck
 					Machines = new List<string> { MachineNames.BAY_TB },
 					CTs = new List<string> { CTNames.BAY },
 					RadOncUserNames = RadOncUserNames.BAY
-				} 
+				}
 			},
 			{ Department.CEN,
 				new DepartmentInfoStruct {
@@ -149,6 +149,13 @@ namespace PlanCheck
 					RadOncUserNames = RadOncUserNames.OWO
 				}
 			},
+			{ Department.PRO,
+				new DepartmentInfoStruct {
+					Machines = new List<string> { MachineNames.PRO_G1, MachineNames.PRO_G2 },
+					CTs = new List<string> { CTNames.PRO },
+					RadOncUserNames = RadOncUserNames.PRO
+				}
+			},
 		};
 
 		/// <summary>
@@ -164,6 +171,8 @@ namespace PlanCheck
 			public static readonly string FAR_IX = "IX_Farmington";
 			public static readonly string FLT_FrontTB = "TrueBeamSN2873";
 			public static readonly string FLT_BackTB = "TrueBeam1030";
+			public static readonly string PRO_G1 = "Proton GR1";
+			public static readonly string PRO_G2 = "Proton GR2";
 			public static readonly string LAN_IX = "ING21IX1";
 			public static readonly string LAP_IX = "21IX-SN3743";
 			public static readonly string MAC_TB = "MAC_TB3568";
@@ -171,9 +180,61 @@ namespace PlanCheck
 			public static readonly string MPH_TB = "TB2681";
 			public static readonly string NOR_EX = "2100ex";
 			public static readonly string NOR_IX = "TRILOGY";
-			public static readonly string NOR_TB = "NOR_TB4780"; 
+			public static readonly string NOR_TB = "NOR_TB4780";
 			public static readonly string OWO_IX = "21IX-SN3856";
-        }
+		}
+
+		public static List<string> LinearAccelerators = new List<string>
+		{
+			MachineNames.BAY_TB,
+			MachineNames.CEN_EX,
+			MachineNames.CLA_EX,
+			MachineNames.DET_IX,
+			MachineNames.DET_TB,
+			MachineNames.FAR_IX,
+			MachineNames.FLT_BackTB,
+			MachineNames.FLT_FrontTB,
+			MachineNames.LAN_IX,
+			MachineNames.LAP_IX,
+			MachineNames.MAC_IX,
+			MachineNames.MAC_TB,
+			MachineNames.MPH_TB,
+			MachineNames.NOR_EX,
+			MachineNames.NOR_IX,
+			MachineNames.NOR_TB,
+			MachineNames.OWO_IX
+		};
+
+		public static List<string> TrueBeams = new List<string>
+		{
+			MachineNames.BAY_TB,
+			MachineNames.DET_TB,
+			MachineNames.FLT_BackTB,
+			MachineNames.FLT_FrontTB,
+			MachineNames.MAC_TB,
+			MachineNames.MPH_TB,
+			MachineNames.NOR_TB
+		};
+
+		public static List<string> Clinacs = new List<string>
+		{
+			MachineNames.CEN_EX,
+			MachineNames.CLA_EX,
+			MachineNames.DET_IX,
+			MachineNames.FAR_IX,
+			MachineNames.LAN_IX,
+			MachineNames.LAP_IX,
+			MachineNames.MAC_IX,
+			MachineNames.NOR_EX,
+			MachineNames.NOR_IX,
+			MachineNames.OWO_IX
+		};
+
+		public static List<string> ProtonGantries = new List<string>
+		{
+			MachineNames.PRO_G1,
+			MachineNames.PRO_G2
+		};
 
 		/// <summary>
 		/// Dictionary of CT names in Aria
@@ -186,13 +247,14 @@ namespace PlanCheck
 			public static readonly string DET = "DET_ROC CT Sim";
 			public static readonly string FAR = "Farmington CT";
 			public static readonly string FLT = "Philips Big Bore";
-			public static readonly string LAN = "BBCT" ;
+			public static readonly string LAN = "BBCT";
 			public static readonly string LAP = "Philips Big Bore";
 			public static readonly string MAC = "LightSpeed RT16";
 			public static readonly string MPH = "MPH CT Sim";
 			public static readonly string NOR = "Oncology";
 			public static readonly string OWO = "Philips Big Bore";
-        }
+			public static readonly string PRO = "Philips Big Bore";
+		}
 
 		/// <summary>
 		/// Dictionary of allowable rad onc user names for plan approval
@@ -206,11 +268,12 @@ namespace PlanCheck
 			public static readonly List<string> FAR = new List<string> { "" };
 			public static readonly List<string> FLT = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar" };
 			public static readonly List<string> LAN = new List<string> { "abhatt1" };
-			public static readonly List<string> LAP = new List<string> { "heshamg", "jackn", "kirand", "ogayar" };
+			public static readonly List<string> LAP = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar" };
 			public static readonly List<string> MAC = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> MPH = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> NOR = new List<string> { "ikaufman", "rhmg27" };
-			public static readonly List<string> OWO = new List<string> { "heshamg", "jackn", "kirand", "ogayar" };
+			public static readonly List<string> OWO = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar" };
+			public static readonly List<string> PRO = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar" };
 		}
 
 		/// <summary>
@@ -230,6 +293,7 @@ namespace PlanCheck
 			public static readonly string MPH = "Port Huron";
 			public static readonly string NOR = "Northern";
 			public static readonly string OWO = "Owosso";
+			public static readonly string PRO = "Proton";
 		}
 
 		/// <summary>
@@ -260,6 +324,7 @@ namespace PlanCheck
 		MPH,
 		NOR,
 		OWO,
+		PRO,
 		None
 	}
 }

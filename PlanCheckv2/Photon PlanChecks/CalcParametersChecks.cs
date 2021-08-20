@@ -8,13 +8,13 @@ using VMS.TPS.Common.Model.Types;
 
 namespace PlanCheck.Checks
 {
-    public class CalcParametersChecks : PlanCheckBase
-    {
+    public class CalcParametersChecks : PlanCheckBasePhoton
+	{
         protected override List<string> MachineExemptions => new List<string> { };
 
         public CalcParametersChecks(PlanSetup plan) : base(plan) { }
 
-		protected override void RunTest(PlanSetup plan)
+		public override void RunTestPhoton(ExternalPlanSetup plan)
 		{
 			DisplayName = "Calc Parameters";
 			Result = "";

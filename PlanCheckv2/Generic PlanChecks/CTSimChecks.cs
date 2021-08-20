@@ -13,7 +13,7 @@ namespace PlanCheck.Checks
 
 		public CTSimChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTest(PlanSetup plan)
         {
 			DisplayName = "CT Sim";
 			ResultDetails = "";
@@ -34,6 +34,16 @@ namespace PlanCheck.Checks
 				Result = "";
 				ResultDetails = ct;
 				DisplayColor = ResultColorChoices.Pass;
+			}
+
+			// ATTEMPTING PROTON ADDITIONAL CHECKS
+
+			if (MachineID == DepartmentInfo.MachineNames.PRO_G1 ||MachineID == DepartmentInfo.MachineNames.PRO_G2)  // check for proton (existing criteria is placeholder and won't work)
+			{
+				// Check for corrrect kVp NOT FINDING ANY WAY TO GET kVp Here.
+
+				ResultDetails+=$"\n{plan.StructureSet.Image.ImageType}";
+
 			}
 
 			ResultDetails = ResultDetails.TrimEnd('\n');

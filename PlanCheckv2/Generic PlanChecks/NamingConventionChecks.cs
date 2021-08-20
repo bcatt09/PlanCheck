@@ -14,7 +14,7 @@ namespace PlanCheck.Checks
 
         public NamingConventionChecks(PlanSetup plan) : base(plan) { }
         
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTest(PlanSetup plan)
         {
             DisplayName = "Naming Conventions";
             TestExplanation = "Checks Course, Plan, and Reference Point naming against OneAria conventions";

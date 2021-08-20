@@ -103,7 +103,22 @@ namespace PlanCheck.Checks
             {
                 try
                 {
-                    RunTest(plan);
+                    if (this is PlanCheckBasePhoton)
+                    {
+                        if (plan is ExternalPlanSetup)
+                             (this as PlanCheckBasePhoton).RunTestPhoton(plan as ExternalPlanSetup);
+                        else
+                            MachineExempt = true;
+                    }
+                    else if (this is PlanCheckBaseProton)
+                    {
+                        if (plan is IonPlanSetup)
+                             (this as PlanCheckBaseProton).RunTestProton(plan as IonPlanSetup);
+                        else
+                            MachineExempt = true;
+                    }
+                    else
+                        RunTest(plan);
                 }
                 catch (Exception e)
                 {
@@ -120,7 +135,7 @@ namespace PlanCheck.Checks
         /// Executes test and stores all results
         /// </summary>
         /// <param name="plan">PlanSetup that the test will be run on</param>
-        protected abstract void RunTest(PlanSetup plan);
+        public abstract void RunTest(PlanSetup plan);
 
         /// <summary>
         /// Log that check failed to run

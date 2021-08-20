@@ -8,7 +8,7 @@ using VMS.TPS.Common.Model.Types;
 
 namespace PlanCheck.Checks
 {
-    class TreatmentTimeCalculation : PlanCheckBase
+    class TreatmentTimeCalculation : PlanCheckBasePhoton
     {
         protected override List<string> MachineExemptions => new List<string> {
             DepartmentInfo.MachineNames.BAY_TB,
@@ -26,12 +26,15 @@ namespace PlanCheck.Checks
             DepartmentInfo.MachineNames.NOR_EX,
             DepartmentInfo.MachineNames.NOR_IX,
             DepartmentInfo.MachineNames.NOR_TB,
-            DepartmentInfo.MachineNames.OWO_IX
+            DepartmentInfo.MachineNames.OWO_IX,
+            DepartmentInfo.MachineNames.PRO_G1,
+            DepartmentInfo.MachineNames.PRO_G2
+
         };
 
         public TreatmentTimeCalculation(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
         {
             DisplayName = "Delivery Time";
             Result = "";

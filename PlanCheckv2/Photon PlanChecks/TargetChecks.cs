@@ -8,13 +8,13 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    class TargetChecks : PlanCheckBase
+    class TargetChecks : PlanCheckBasePhoton
 	{
 		protected override List<string> MachineExemptions => new List<string> { };
 
 		public TargetChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
 		{
 			DisplayName = "Target";
 			TestExplanation = "Checks that there is only one piece to the target structure";

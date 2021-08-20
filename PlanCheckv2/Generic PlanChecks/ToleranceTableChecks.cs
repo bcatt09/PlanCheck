@@ -13,7 +13,7 @@ namespace PlanCheck.Checks
 
 		public ToleranceTableChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTest(PlanSetup plan)
         {
 			DisplayName = "Tolerance Table";
 			Result = "";
@@ -95,13 +95,13 @@ namespace PlanCheck.Checks
 					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
-            #endregion
+			#endregion
 
-            #region Flint
+			#region Flint
 
 			// TrueBeam for all plans
 
-            else if (Department == Department.FLT)
+			else if (Department == Department.FLT)
 			{
 				string tolTable;
 				string txFieldsResult = "";
@@ -161,13 +161,50 @@ namespace PlanCheck.Checks
 					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
-            #endregion
+			#endregion
 
-            #region Lapeer/Owosso
+			#region Proton
+			else if (Department == Department.PRO)
+			{
+				string tolTable = "Proton Standard";
+				string fieldsResult = "";
+				string badFields = "";
+
+				foreach (Beam field in plan.Beams)
+				{
+					if (!field.ToleranceTableLabel.Contains(tolTable))
+					{
+						Result = "Warning";
+						fieldsResult = $"\"{tolTable}\" not chosen for one or more fields:";
+						badFields += $"{field.Id}, ";
+						DisplayColor = ResultColorChoices.Warn;
+					}
+				}
+
+				if (fieldsResult =="") // no errors found
+                {
+					Result = "Pass";
+					DisplayColor = ResultColorChoices.Pass;
+					ResultDetails= $"All fields use tolerance table \"{tolTable}\"";
+                }
+
+				else
+                {
+					Result = "Fail";
+					DisplayColor = ResultColorChoices.Fail;
+					ResultDetails = $"{fieldsResult}\n\n{badFields}";
+                }
+
+			}
+
+
+			#endregion
+
+			#region Lapeer/Owosso
 			// OBI for setup fields
 			// Same tolerance table selected for all treatment fields
-            else if (Department == Department.LAP || 
-					 Department == Department.OWO)
+			else if (Department == Department.LAP ||
+				 Department == Department.OWO)
 			{
 				string tolTable = "";
 				string badFields = "";
@@ -261,7 +298,7 @@ namespace PlanCheck.Checks
 					DisplayColor = ResultColorChoices.Pass;
 				}
 			}
-            #endregion
+			#endregion
 
 			else
 				TestNotImplemented();

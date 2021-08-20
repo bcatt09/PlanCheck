@@ -7,7 +7,7 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-    public class CouchValueChecks : PlanCheckBase
+    public class CouchValueChecks : PlanCheckBasePhoton
 	{
 		protected override List<string> MachineExemptions => new List<string> 
 		{
@@ -17,7 +17,7 @@ namespace PlanCheck.Checks
 
 		public CouchValueChecks(PlanSetup plan) : base(plan) { }
 
-        protected override void RunTest(PlanSetup plan)
+        public override void RunTestPhoton(ExternalPlanSetup plan)
         {
 			DisplayName = "Couch Values";
 			ResultDetails = "";
