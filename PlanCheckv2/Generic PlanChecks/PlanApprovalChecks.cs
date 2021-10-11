@@ -65,7 +65,7 @@ namespace PlanCheck.Checks
                         else
                         {
                             DisplayColor = ResultColorChoices.Pass;
-                            ResultDetails += $"\nReviewed by: {reviewedUserName} at {reviewedDateTime}";
+                            ResultDetails += $"\nReviewed by: {reviewedUserDisplayName} at {reviewedDateTime}";
                         }
                     }
                     // No physician user names have been defined for this site
