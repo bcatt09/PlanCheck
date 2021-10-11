@@ -21,12 +21,18 @@ namespace PlanCheck.Checks
             DisplayName = "Plan Approval";
             Result = "";
             ResultDetails = $"Status: {AddSpaces(approvalStatus.ToString())}";
-            DisplayColor = ResultColorChoices.Warn;
+            DisplayColor = ResultColorChoices.Pass;
             TestExplanation = "Displays plan approval\nAlso checks that plan has been reviewed by a physician\nReviewed timestamp is estimated based on target structure or CT image approval";
 
             // Not Approved yet
             if (approvalStatus != PlanSetupApprovalStatus.ExternallyApproved && approvalStatus != PlanSetupApprovalStatus.PlanningApproved && approvalStatus != PlanSetupApprovalStatus.Reviewed && approvalStatus != PlanSetupApprovalStatus.TreatmentApproved)
-                return;
+            {
+                Result = "NO PLAN APPROVALS";
+                ResultDetails = $"No Plan Approvals Found";
+                DisplayColor = ResultColorChoices.Warn;
+
+            }
+
 
             // Has been Approved or Reviewed
             else
@@ -53,7 +59,8 @@ namespace PlanCheck.Checks
                         if (!DepartmentInfo.GetRadOncUserNames(Department).Contains(reviewedUserNameMinusDomain))
                         {
                             Result = "Warning";
-                            ResultDetails += $"\n\"Reviewed\" by {reviewedUserDisplayName} at {reviewedDateTime}\nVerify that a physician reviewed the plan";
+                            DisplayColor = ResultColorChoices.Warn;
+                            ResultDetails += $"\n\"Reviewed\" by {reviewedUserDisplayName} at {reviewedDateTime}\n Plan Reviewer not on Physician List for Center";
                         }
                         else
                         {
@@ -73,7 +80,6 @@ namespace PlanCheck.Checks
                     string planningApprovedUserDisplayName = planningApprovedHistoryEntry.UserDisplayName;
                     string planningApprovedDateTime = planningApprovedHistoryEntry.ApprovalDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt");
 
-                    DisplayColor = ResultColorChoices.Pass;
                     ResultDetails += $"\nPlanning Approved by: {planningApprovedUserDisplayName} at {planningApprovedDateTime}";
                 }
                 // Has been Treatment Approved
@@ -84,8 +90,7 @@ namespace PlanCheck.Checks
                     string treatApprovedUserDisplayName = treatApprovedHistoryEntry.UserDisplayName;
                     string treatApprovedDateTime = treatApprovedHistoryEntry.ApprovalDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt");
 
-                    DisplayColor = ResultColorChoices.Pass;
-                    ResultDetails += $"\nPlanning Approved by: {treatApprovedUserDisplayName} at {treatApprovedDateTime}";
+                    ResultDetails += $"\nTreatment Approved by: {treatApprovedUserDisplayName} at {treatApprovedDateTime}";
                 }
             }
         }

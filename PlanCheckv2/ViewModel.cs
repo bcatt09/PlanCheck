@@ -94,6 +94,7 @@ namespace PlanCheck
             PlanChecks.Add(new ProtonFiducialContourChecks(_context.PlanSetup));
             PlanChecks.Add(new ProtonCalculationModelChecks(_context.PlanSetup));
             PlanChecks.Add(new ProtonSnoutChecks(_context.PlanSetup));
+            PlanChecks.Add(new PlanUncertaintyCalculationCheck(_context.PlanSetup));
             PlanChecks.Add(new HotspotChecks(_context.PlanSetup));
             PlanChecks.Add(new PlanApprovalChecks(_context.PlanSetup));
             PlanChecks.Add(new PrecriptionChecks(_context.PlanSetup));

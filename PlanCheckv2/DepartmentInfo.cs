@@ -266,14 +266,14 @@ namespace PlanCheck
 			public static readonly List<string> CLA = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> DET = new List<string> { "" };
 			public static readonly List<string> FAR = new List<string> { "" };
-			public static readonly List<string> FLT = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar" };
+			public static readonly List<string> FLT = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar", "tqrs64" };
 			public static readonly List<string> LAN = new List<string> { "abhatt1" };
-			public static readonly List<string> LAP = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar" };
+			public static readonly List<string> LAP = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar", "tqrs64" };
 			public static readonly List<string> MAC = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> MPH = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> NOR = new List<string> { "ikaufman", "rhmg27" };
-			public static readonly List<string> OWO = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar" };
-			public static readonly List<string> PRO = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar" };
+			public static readonly List<string> OWO = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar", "tqrs64" };
+			public static readonly List<string> PRO = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar", "tqrs64" };
 		}
 
 		/// <summary>
