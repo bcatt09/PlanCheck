@@ -173,11 +173,38 @@ namespace PlanCheck.Checks
 			}
 			#endregion
 
-			#region Flint/Detroit/Farmington
+			#region Flint
+			else if (Department == Department.FLT)
+            {
+				if (couchStructure)
+				{
+					if (couchName.Contains("Exact IGRT Couch"))
+                    {
+						Result = "Pass";
+						DisplayColor = ResultColorChoices.Pass;
+						AddCouchStructureInfo(couchName, couchStructures);
+					}
+					else
+                    {
+						Result = "Warning: Check to make sure correct couch structure selected";
+						DisplayColor = ResultColorChoices.Warn;
+						AddCouchStructureInfo(couchName, couchStructures);
+					}
+
+				}
+				else
+				{
+					Result = "Warning";
+					ResultDetails = "No couch structures included";
+					DisplayColor = ResultColorChoices.Warn;
+				}
+			}
+			#endregion
+
+			#region Detroit/Farmington
 			// Just display the couch structures used and make it yellow
-			else if (Department == Department.FLT ||
-					 Department == Department.DET ||
-					 Department == Department.FAR)
+			else if (	Department == Department.DET ||
+						Department == Department.FAR)
 			{
 				if (couchStructure)
 				{
