@@ -37,7 +37,8 @@ namespace PlanCheck.Checks
 
             #region Macomb Group
             // use jaw tracking
-            if (Department == Department.MAC ||
+            if (Department == Department.CLA ||
+				Department == Department.MAC ||
 				Department == Department.MPH)
 			{
 				//VMAT plan

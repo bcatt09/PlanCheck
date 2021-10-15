@@ -33,7 +33,8 @@ namespace PlanCheck.Checks
             DisplayName = "\"Use Gated\"?";
             TestExplanation = "Checks to see if \"Use Gated\" should be checked off in plan properties based on department standards";
 
-            if (MachineID == DepartmentInfo.MachineNames.MPH_TB ||
+            if (MachineID == DepartmentInfo.MachineNames.CLA_TB ||
+                MachineID == DepartmentInfo.MachineNames.MPH_TB ||
                 MachineID == DepartmentInfo.MachineNames.MAC_TB)
             {
                 string planningImageComment = plan.StructureSet.Image.Comment;

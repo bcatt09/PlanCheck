@@ -81,7 +81,7 @@ namespace PlanCheck
 			},
 			{ Department.CLA,
 				new DepartmentInfoStruct {
-					Machines = new List<string> { MachineNames.CLA_EX },
+					Machines = new List<string> { MachineNames.CLA_TB },
 					CTs = new List<string> { CTNames.CLA },
 					RadOncUserNames = RadOncUserNames.CLA
 				}
@@ -166,6 +166,7 @@ namespace PlanCheck
 			public static readonly string BAY_TB = "BAY_TB3384";
 			public static readonly string CEN_EX = "CMCH-21EX";
 			public static readonly string CLA_EX = "21EX";
+			public static readonly string CLA_TB = "CLK_TB5190";
 			public static readonly string DET_IX = "IX_GROC";
 			public static readonly string DET_TB = "GROC_TB1601";
 			public static readonly string FAR_IX = "IX_Farmington";
@@ -189,6 +190,7 @@ namespace PlanCheck
 			MachineNames.BAY_TB,
 			MachineNames.CEN_EX,
 			MachineNames.CLA_EX,
+			MachineNames.CLA_TB,
 			MachineNames.DET_IX,
 			MachineNames.DET_TB,
 			MachineNames.FAR_IX,
@@ -208,6 +210,7 @@ namespace PlanCheck
 		public static List<string> TrueBeams = new List<string>
 		{
 			MachineNames.BAY_TB,
+			MachineNames.CLA_TB,
 			MachineNames.DET_TB,
 			MachineNames.FLT_BackTB,
 			MachineNames.FLT_FrontTB,

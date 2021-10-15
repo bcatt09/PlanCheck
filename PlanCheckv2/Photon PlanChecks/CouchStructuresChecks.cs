@@ -46,11 +46,38 @@ namespace PlanCheck.Checks
 			else
 				couchStructure = false;
 
+            #region QFix Vue
+			if(Department == Department.CLA)
+            {
+				if(!couchStructure)
+                {
+					Result = "Warning";
+					ResultDetails = "No couch structures found";
+					DisplayColor = ResultColorChoices.Warn;
+                }
+                else
+                {
+                    if (couchName.Contains("kVue"))
+                    {
+						Result = "";
+						AddCouchStructureInfo(couchName, couchStructures);
+						DisplayColor = ResultColorChoices.Pass;
+                    }
+					else
+					{
+						Result = "Warning\nQFix Calypso kVue Couch not found\n";
+						AddCouchStructureInfo(couchName, couchStructures);
+						DisplayColor = ResultColorChoices.Warn;
+					}
+                }
+            }
+            #endregion
+
             #region Port Huron
-			// No couch for SRS (1 mm slices) plans
-			// Varian IGRT couch for any other IMRT/VMAT plan
-			// Ignore for 3D plans
-            if (Department == Department.MPH)
+            // No couch for SRS (1 mm slices) plans
+            // Varian IGRT couch for any other IMRT/VMAT plan
+            // Ignore for 3D plans
+            else if (Department == Department.MPH)
 			{
 				//if plan likely an SRS (with 1 mm slices) it should not include a couch
 				if (plan.StructureSet.Image.ZRes == 1)
