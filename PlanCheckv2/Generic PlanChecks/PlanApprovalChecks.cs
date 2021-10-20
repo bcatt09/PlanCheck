@@ -53,6 +53,7 @@ namespace PlanCheck.Checks
                     string reviewedDateTime = reviewedHistoryEntry.ApprovalDateTime.ToString("dddd, MMMM d, yyyy H:mm:ss tt");
                     string reviewedUserNameMinusDomain = reviewedUserName.Substring(reviewedUserName.IndexOf('\\') + 1);
 
+
                     if (DepartmentInfo.GetRadOncUserNames(Department).Count > 0)
                     {
                         // Check approval user name against physician list
@@ -61,6 +62,7 @@ namespace PlanCheck.Checks
                             Result = "Warning";
                             DisplayColor = ResultColorChoices.Warn;
                             ResultDetails += $"\n\"Reviewed\" by {reviewedUserDisplayName} at {reviewedDateTime}\n Plan Reviewer not on Physician List for Center";
+                            //System.Windows.MessageBox.Show($"runmd: {reviewedUserNameMinusDomain}, dept: {Department}");
                         }
                         else
                         {
