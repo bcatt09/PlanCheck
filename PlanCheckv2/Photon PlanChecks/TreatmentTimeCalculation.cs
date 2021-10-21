@@ -14,6 +14,7 @@ namespace PlanCheck.Checks
             DepartmentInfo.MachineNames.BAY_TB,
             DepartmentInfo.MachineNames.CEN_EX,
             DepartmentInfo.MachineNames.CLA_EX,
+            DepartmentInfo.MachineNames.CLA_TB,
             DepartmentInfo.MachineNames.DET_IX,
             DepartmentInfo.MachineNames.DET_TB,
             DepartmentInfo.MachineNames.FAR_IX,
