@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DepartmentInfo.cs" />
+    <Compile Include="Generic PlanChecks\PlanUncertaintyCalculationCheck.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="MROQCStructureCheck.cs" />
     <Compile Include="Photon PlanChecks\BolusChecks.cs" />
