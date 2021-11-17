@@ -39,6 +39,7 @@ namespace PlanCheck.Checks
             // use jaw tracking
             if (Department == Department.CLA ||
 				Department == Department.MAC ||
+				Department == Department.FLT ||
 				Department == Department.MPH)
 			{
 				//VMAT plan
@@ -127,7 +128,7 @@ namespace PlanCheck.Checks
 
 			#region Flint Group and Northern TrueBeam (for now)
 			// do not use jaw tracking
-			else if (Department == Department.FLT || Department == Department.NOR)
+			else if (Department == Department.NOR)
 			{
 				//VMAT plan
 				if ((from s in plan.Beams where s.MLCPlanType == MLCPlanType.VMAT select s).Count() > 0)
