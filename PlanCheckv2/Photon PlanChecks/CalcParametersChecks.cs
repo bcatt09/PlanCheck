@@ -26,6 +26,7 @@ namespace PlanCheck.Checks
 			bool electron = false;
 			bool IMRT = false;
 			bool VMAT = false;
+			bool Stereo = false;
 
 			if(plan.Dose == null)
             {
@@ -37,6 +38,12 @@ namespace PlanCheck.Checks
 			//get calc options
 			Dictionary<string, string> photonOptions = plan.PhotonCalculationOptions;
 			Dictionary<string, string> electronOptions = plan.ElectronCalculationOptions;
+
+			// Get dose resolution
+
+			double doseXres = plan.Dose.XRes;
+			double doseYres = plan.Dose.YRes;
+			double doseZres = plan.Dose.ZRes;
 
 			//loop through beams to see what needs to be displayed
 			foreach (Beam beam in plan.Beams.Where(x => !x.IsSetupField))
@@ -50,6 +57,9 @@ namespace PlanCheck.Checks
 					IMRT = true;
 				else if (beam.MLCPlanType == MLCPlanType.VMAT)
 					VMAT = true;
+
+				if (beam.Technique.Id.Contains("Stereo"))
+					Stereo = true;
 			}
 
 			// Photon Volume Dose Options:
@@ -59,6 +69,38 @@ namespace PlanCheck.Checks
 			// HeterogeneityCorrection
 			if (photon)
 			{
+				// Some warning checks
+				if (!photonOptions["HeterogeneityCorrection"].Contains("ON"))
+                {
+					Result = "Fail";
+					ResultDetails = "! Heterogeneity Correctoin is NOT on, resolve before continuing\n";
+					DisplayColor = ResultColorChoices.Fail;
+				}
+				if (Stereo)
+                {
+					if(Math.Max(Math.Max(doseXres,doseYres),doseZres) > 2)
+                    {
+						Result = "Warning";
+						ResultDetails = "! Stereotactic dose grid resolution > 2mm\n";
+						DisplayColor = ResultColorChoices.Warn;
+					}
+				}
+				if (plan.Id.Contains("_4") || plan.Id.Contains("_5"))
+                {
+                    if (!Stereo)
+                    {
+						Result = "Warning";
+						ResultDetails = "! Stereo technique not selected for _4 or _5 plan\n";
+						DisplayColor = ResultColorChoices.Warn;
+					}
+					if (Math.Max(Math.Max(doseXres, doseYres), doseZres) > 2)
+					{
+						Result = "Warning";
+						ResultDetails = "! Stereotactic dose grid resolution > 2mm\n";
+						DisplayColor = ResultColorChoices.Warn;
+					}
+				}
+
 				ResultDetails += "Volume Dose: " + plan.PhotonCalculationModel.ToString();
 
 				TestExplanation += $"Volume Dose: {plan.PhotonCalculationModel}\n";
@@ -82,8 +124,11 @@ namespace PlanCheck.Checks
 					TestExplanation += String.Join("\n", plan.GetCalculationOptions(plan.GetCalculationModel(CalculationType.PhotonVMATOptimization)).Select(x => $"{AddSpaces(x.Key)}: {x.Value}"));
 				}
 
-				ResultDetails += "\nGrid Size: " + photonOptions["CalculationGridSizeInCM"] + "cm";
+				//ResultDetails += "\nGrid Size: " + photonOptions["CalculationGridSizeInCM"] + "cm";
+				ResultDetails += $"\nGrid Size(mm): X({doseXres}), Y({doseYres}), Z({doseZres})";
 				ResultDetails += "\nHeterogeneity Corrections: " + photonOptions["HeterogeneityCorrection"];
+
+
 			}
 
 			// Electron Volume Dose Options:
