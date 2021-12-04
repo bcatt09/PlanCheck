@@ -112,7 +112,7 @@ namespace PlanCheck
             PlanChecks.Add(new TreatmentTimeCalculation(_context.PlanSetup));
             PlanChecks.Add(new NamingConventionChecks(_context.PlanSetup));
             PlanChecks.Add(new CalcParametersChecks(_context.PlanSetup));
-            PlanChecks.Add(new ProtonPlanNameChecks(_context.PlanSetup));
+            PlanChecks.Add(new ProtonFieldNameChecks(_context.PlanSetup));
 
 
             // Remove any plan checks that were not run

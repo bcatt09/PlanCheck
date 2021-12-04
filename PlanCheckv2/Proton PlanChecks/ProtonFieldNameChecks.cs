@@ -7,11 +7,11 @@ using VMS.TPS.Common.Model.API;
 
 namespace PlanCheck.Checks
 {
-	public class ProtonPlanNameChecks : PlanCheckBaseProton
+	public class ProtonFieldNameChecks : PlanCheckBaseProton
 	{
 		protected override List<string> MachineExemptions => new List<string> { };
 
-		public ProtonPlanNameChecks(PlanSetup plan) : base(plan) { }
+		public ProtonFieldNameChecks(PlanSetup plan) : base(plan) { }
 
 		public override void RunTestProton(IonPlanSetup plan)
 		{
