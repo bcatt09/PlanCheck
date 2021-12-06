@@ -58,7 +58,7 @@ namespace PlanCheck.Checks
 				else if (beam.MLCPlanType == MLCPlanType.VMAT)
 					VMAT = true;
 
-				if (beam.Technique.Id.Contains("Stereo"))
+				if (beam.Technique.Id.Contains("Stereo") || beam.Technique.Id.Contains("SRS"))
 					Stereo = true;
 			}
 
