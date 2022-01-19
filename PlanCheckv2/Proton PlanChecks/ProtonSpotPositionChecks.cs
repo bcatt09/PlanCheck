@@ -20,8 +20,8 @@ namespace PlanCheck.Checks
             IonPlanSetup ionPlan = (IonPlanSetup)plan;
             Result = "Pass"; // for this test set to pass and switch to fail if any spots found outside of limits
 
-            double xLimitSnout30 = 125, yLimitSnout30 = 125;
-            double xLimitSnoutS1 = 125, yLimitSnoutS1 = 125;
+            double xLimitSnout30 = 150, yLimitSnout30 = 150;
+            double xLimitSnoutS1 = 150, yLimitSnoutS1 = 150;
             double xLimitSnout15 = 75, yLimitSnout15 = 75;
             double muLimitPerSpot = 4;
 

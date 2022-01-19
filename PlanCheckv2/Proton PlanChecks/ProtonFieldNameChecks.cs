@@ -92,7 +92,7 @@ namespace PlanCheck.Checks
 
 					FieldName += "G" + Gantry + "C" + Couch;
 
-					if (!FieldName.Equals(field.Id))
+					if (!FieldName.ToLower().Equals(field.Id.ToLower()))
 					{
 						WrongName = true;
 						WrongFieldsNumber++;
