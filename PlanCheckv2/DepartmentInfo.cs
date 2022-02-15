@@ -74,7 +74,7 @@ namespace PlanCheck
 			},
 			{ Department.CEN,
 				new DepartmentInfoStruct {
-					Machines = new List<string> { MachineNames.CEN_EX },
+					Machines = new List<string> { MachineNames.CEN_TB },
 					CTs = new List<string> { CTNames.CEN },
 					RadOncUserNames = RadOncUserNames.CEN
 				}
@@ -109,7 +109,7 @@ namespace PlanCheck
 			},
 			{ Department.LAN,
 				new DepartmentInfoStruct {
-					Machines = new List<string> { MachineNames.LAN_IX },
+					Machines = new List<string> { MachineNames.LAN_IX, MachineNames.LAN_TB },
 					CTs = new List<string> { CTNames.LAN },
 					RadOncUserNames = RadOncUserNames.LAN
 				}
