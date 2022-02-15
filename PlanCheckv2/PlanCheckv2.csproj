@@ -136,7 +136,7 @@
     <Compile Include="Generic PlanChecks\ToleranceTableChecks.cs" />
     <Compile Include="Photon PlanChecks\TreatmentTimeCalculation.cs" />
     <Compile Include="Photon PlanChecks\UseGatedChecks.cs" />
-    <Compile Include="Generic PlanChecks\PrecriptionChecks.cs" />
+    <Compile Include="Generic PlanChecks\PrescriptionChecks.cs" />
     <Compile Include="PlanCheck Base Classes\PlanCheckBaseProton.cs" />
     <Compile Include="PlanCheck Base Classes\PlanCheckBasePhoton.cs" />
     <Compile Include="Proton PlanChecks\ProtonCalculationModelChecks.cs" />
