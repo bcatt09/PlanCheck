@@ -33,6 +33,7 @@ namespace PlanCheck.Checks
             DisplayName = "\"Use Gated\"?";
             TestExplanation = "Checks to see if \"Use Gated\" should be checked off in plan properties based on department standards";
 
+            #region Macomb Group
             if (MachineID == DepartmentInfo.MachineNames.CLA_TB ||
                 MachineID == DepartmentInfo.MachineNames.MPH_TB ||
                 MachineID == DepartmentInfo.MachineNames.MAC_TB)
@@ -62,6 +63,9 @@ namespace PlanCheck.Checks
                     DisplayColor = ResultColorChoices.Pass;
                 }
             }
+            #endregion
+
+            #region Lapeer/Owosso
             else if (MachineID == DepartmentInfo.MachineNames.LAP_IX ||
                      MachineID == DepartmentInfo.MachineNames.OWO_IX)
             {
@@ -88,6 +92,35 @@ namespace PlanCheck.Checks
                     DisplayColor = ResultColorChoices.Pass;
                 }
             }
+            #endregion
+
+            #region Lansing
+            else if (MachineID == DepartmentInfo.MachineNames.LAN_TB)
+            {
+                bool DIBH = plan.StructureSet.Image.Series.Comment.ToLower().Contains("bh");
+
+                if (DIBH)
+                {
+                    if (plan.UseGating)
+                    {
+                        Result = "";
+                        ResultDetails = "\"Use Gated\" is checked";
+                        DisplayColor = ResultColorChoices.Pass;
+                    }
+                    else
+                    {
+                        Result = "Warning";
+                        ResultDetails = "\"Use Gated\" is not checked and the plan appears to be DIBH";
+                        DisplayColor = ResultColorChoices.Warn;
+                    }
+                }
+                else
+                {
+                    Result = "Pass";
+                    DisplayColor = ResultColorChoices.Pass;
+                }
+            }
+            #endregion
             else
                 TestNotImplemented();
         }

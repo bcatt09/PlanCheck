@@ -13,6 +13,7 @@ namespace PlanCheck.Checks
         protected override List<string> MachineExemptions => new List<string> {
             DepartmentInfo.MachineNames.BAY_TB,
             DepartmentInfo.MachineNames.CEN_EX,
+            DepartmentInfo.MachineNames.CEN_TB,
             DepartmentInfo.MachineNames.CLA_EX,
             DepartmentInfo.MachineNames.CLA_TB,
             DepartmentInfo.MachineNames.DET_IX,

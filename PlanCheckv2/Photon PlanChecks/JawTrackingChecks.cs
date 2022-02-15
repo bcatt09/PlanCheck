@@ -35,11 +35,12 @@ namespace PlanCheck.Checks
 			Result = "";
 			TestExplanation = "Checks to see if jaw tracking is enabled for IMRT/VMAT plans";
 
-            #region Macomb Group
+            #region Macomb/Flint/Lansing
             // use jaw tracking
             if (Department == Department.CLA ||
 				Department == Department.MAC ||
 				Department == Department.FLT ||
+				Department == Department.LAN ||
 				Department == Department.MPH)
 			{
 				//VMAT plan
@@ -126,7 +127,7 @@ namespace PlanCheck.Checks
 			}
 			#endregion
 
-			#region Flint Group and Northern TrueBeam (for now)
+			#region Northern
 			// do not use jaw tracking
 			else if (Department == Department.NOR)
 			{
