@@ -249,14 +249,14 @@ namespace PlanCheck
 			public static readonly string CLA = "LightSpeed RT16";
 			public static readonly string DET = "DET_ROC CT Sim";
 			public static readonly string FAR = "Farmington CT";
-			public static readonly string FLT = "Philips Big Bore";
+			public static readonly string FLT = "FLT-BigBore20032";
 			public static readonly string LAN = "BBCT";
-			public static readonly string LAP = "Philips Big Bore";
+			public static readonly string LAP = "FLT-BigBore20032";
 			public static readonly string MAC = "LightSpeed RT16";
 			public static readonly string MPH = "MPH CT Sim";
 			public static readonly string NOR = "Oncology";
-			public static readonly string OWO = "Philips Big Bore";
-			public static readonly string PRO = "Philips Big Bore";
+			public static readonly string OWO = "FLT-BigBore20032";
+			public static readonly string PRO = "FLT-BigBore20032";
 		}
 
 		/// <summary>
