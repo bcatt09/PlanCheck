@@ -74,7 +74,7 @@ namespace PlanCheck
 			},
 			{ Department.CEN,
 				new DepartmentInfoStruct {
-					Machines = new List<string> { MachineNames.CEN_EX },
+					Machines = new List<string> { MachineNames.CEN_TB },
 					CTs = new List<string> { CTNames.CEN },
 					RadOncUserNames = RadOncUserNames.CEN
 				}
@@ -109,7 +109,7 @@ namespace PlanCheck
 			},
 			{ Department.LAN,
 				new DepartmentInfoStruct {
-					Machines = new List<string> { MachineNames.LAN_IX },
+					Machines = new List<string> { MachineNames.LAN_IX, MachineNames.LAN_TB },
 					CTs = new List<string> { CTNames.LAN },
 					RadOncUserNames = RadOncUserNames.LAN
 				}
@@ -165,6 +165,7 @@ namespace PlanCheck
 		{
 			public static readonly string BAY_TB = "BAY_TB3384";
 			public static readonly string CEN_EX = "CMCH-21EX";
+			public static readonly string CEN_TB = "CEN_TB5337";
 			public static readonly string CLA_EX = "21EX";
 			public static readonly string CLA_TB = "CLK_TB5190";
 			public static readonly string DET_IX = "IX_GROC";
@@ -175,6 +176,7 @@ namespace PlanCheck
 			public static readonly string PRO_G1 = "Proton GR1";
 			public static readonly string PRO_G2 = "Proton GR2";
 			public static readonly string LAN_IX = "ING21IX1";
+			public static readonly string LAN_TB = "LAN_TB5333";
 			public static readonly string LAP_IX = "21IX-SN3743";
 			public static readonly string MAC_TB = "MAC_TB3568";
 			public static readonly string MAC_IX = "TRILOGY3789";
@@ -189,6 +191,7 @@ namespace PlanCheck
 		{
 			MachineNames.BAY_TB,
 			MachineNames.CEN_EX,
+			MachineNames.CEN_TB,
 			MachineNames.CLA_EX,
 			MachineNames.CLA_TB,
 			MachineNames.DET_IX,
@@ -197,6 +200,7 @@ namespace PlanCheck
 			MachineNames.FLT_BackTB,
 			MachineNames.FLT_FrontTB,
 			MachineNames.LAN_IX,
+			MachineNames.LAN_TB,
 			MachineNames.LAP_IX,
 			MachineNames.MAC_IX,
 			MachineNames.MAC_TB,
@@ -210,10 +214,12 @@ namespace PlanCheck
 		public static List<string> TrueBeams = new List<string>
 		{
 			MachineNames.BAY_TB,
+			MachineNames.CEN_TB,
 			MachineNames.CLA_TB,
 			MachineNames.DET_TB,
 			MachineNames.FLT_BackTB,
 			MachineNames.FLT_FrontTB,
+			MachineNames.LAN_TB,
 			MachineNames.MAC_TB,
 			MachineNames.MPH_TB,
 			MachineNames.NOR_TB

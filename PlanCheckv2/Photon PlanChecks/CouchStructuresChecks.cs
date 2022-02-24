@@ -16,6 +16,7 @@ namespace PlanCheck.Checks
 			DepartmentInfo.MachineNames.CEN_EX,
 			DepartmentInfo.MachineNames.CLA_EX,
 			DepartmentInfo.MachineNames.LAN_IX,
+			DepartmentInfo.MachineNames.LAN_TB,
 			DepartmentInfo.MachineNames.MAC_IX,
 			DepartmentInfo.MachineNames.MAC_TB
 		};

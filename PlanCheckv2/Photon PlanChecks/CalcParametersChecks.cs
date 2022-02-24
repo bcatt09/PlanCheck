@@ -28,11 +28,12 @@ namespace PlanCheck.Checks
 			bool VMAT = false;
 			bool Stereo = false;
 
-			if(plan.Dose == null)
+			if(!plan.IsDoseValid)
             {
 				Result = "Error";
 				ResultDetails = "No dose calculated";
 				DisplayColor = ResultColorChoices.Fail;
+				return;
             }
 
 			//get calc options

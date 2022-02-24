@@ -118,7 +118,7 @@ namespace PlanCheck.Checks
             #endregion
 
             #region Lansing
-            // Vert <= 50
+            // Vert >= 0
             // Long = 50
             // Lat = 0
             else if (Department == Department.LAN)
@@ -126,7 +126,7 @@ namespace PlanCheck.Checks
 				//Check each field to see if couch values are NaN
 				foreach (Beam field in plan.Beams)
 				{
-					if (field.ControlPoints.First().TableTopLateralPosition != 0 || field.ControlPoints.First().TableTopLongitudinalPosition != 500 || field.ControlPoints.First().TableTopVerticalPosition < -500)
+					if (field.ControlPoints.First().TableTopLateralPosition != 0 || field.ControlPoints.First().TableTopLongitudinalPosition != 500 || field.ControlPoints.First().TableTopVerticalPosition > 0)
 					{
 						Result = "Warning";
 						ResultDetails += "Couch value incorrect for " + field.Id.ToString() + ": ";
