@@ -10,7 +10,14 @@ namespace PlanCheck.Checks
 {
     class NamingConventionChecks : PlanCheckBase
     {
-        protected override List<string> MachineExemptions => new List<string> { };
+        protected override List<string> MachineExemptions => new List<string> {
+            DepartmentInfo.MachineNames.FLT_BackTB,
+            DepartmentInfo.MachineNames.FLT_FrontTB,
+            DepartmentInfo.MachineNames.LAP_IX,
+            DepartmentInfo.MachineNames.OWO_IX,
+            DepartmentInfo.MachineNames.PRO_G1,
+            DepartmentInfo.MachineNames.PRO_G2
+        };
 
         public NamingConventionChecks(PlanSetup plan) : base(plan) { }
         
