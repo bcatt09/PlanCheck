@@ -48,8 +48,10 @@ namespace PlanCheck.Checks
                         return "Khaki";
                     case ResultColorChoices.Fail:
                         return "Salmon";
+                    case ResultColorChoices.TestNotRun:
+                        return "LightGray";
                     default:
-                        return "LightGreen";
+                        return "LightGray";
                 }
             }
         }
@@ -217,7 +219,8 @@ namespace PlanCheck.Checks
         {
             Pass,
             Warn,
-            Fail
+            Fail,
+            TestNotRun
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

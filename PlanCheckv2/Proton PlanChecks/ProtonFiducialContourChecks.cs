@@ -56,9 +56,19 @@ namespace PlanCheck.Checks
 			}
 			else
 			{
-				Result = "";
-				ResultDetails = $"There are {numFiducials} fiducials \n {resultTemp.TrimEnd('\n')}";
-				DisplayColor = ResultColorChoices.Fail;
+				if (numFiducials == 0)
+                {
+					Result = "";
+					ResultDetails = $"There are {numFiducials} fiducials \n {resultTemp.TrimEnd('\n')}";
+					DisplayColor = ResultColorChoices.TestNotRun;
+				}
+				else
+                {
+					Result = "";
+					ResultDetails = $"There are {numFiducials} fiducials \n {resultTemp.TrimEnd('\n')}";
+					DisplayColor = ResultColorChoices.Fail;
+				}
+				
 			}
 
 		}
