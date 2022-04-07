@@ -96,20 +96,20 @@ namespace PlanCheck.Checks
 					{
 						WrongName = true;
 						WrongFieldsNumber++;
-						WrongFields += "Field " + field.Id + " is not correct\n";
+						WrongFields += "Field " + field.Id + " is not correct.  Script suggestion: " + FieldName +"\n";
 					}
 				}
 			}
 
 			if (!WrongName)
 			{
-				Result = "";
+				Result = "FAIL";
 				ResultDetails += $"All Field names are correct";
 				DisplayColor = ResultColorChoices.Pass;
 			}
 			else
 			{
-				Result = "";
+				Result = "FAIL";
 				ResultDetails += $"There are {WrongFieldsNumber} fields named improperly and they are:\n {WrongFields}";
 				DisplayColor = ResultColorChoices.Fail;
 			}
