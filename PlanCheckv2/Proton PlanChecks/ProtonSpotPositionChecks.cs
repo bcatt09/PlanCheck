@@ -15,7 +15,7 @@ namespace PlanCheck.Checks
 
         public override void RunTestProton(IonPlanSetup plan)
         {
-            DisplayName = "Spot Limit Checks";
+            DisplayName = "Spot Position and MU Limit Checks";
             TestExplanation = "This test will ensure spot positions and MU are within allowed limits";
             IonPlanSetup ionPlan = (IonPlanSetup)plan;
             Result = "Pass"; // for this test set to pass and switch to fail if any spots found outside of limits
@@ -81,61 +81,35 @@ namespace PlanCheck.Checks
                             // Check X, Check Y, Check MU
 
                             // Checking X
-                            if (Math.Abs(spot.Position.x) > Math.Abs(maxX)) 
+                            if (Math.Abs(spot.Position.x) > Math.Abs(limitX))
                             {
-                                if (Math.Abs(spot.Position.x) > Math.Abs(limitX))
-                                {
-                                    beamResult = "Fail";
-                                    Result = "Fail";
-                                    DisplayColor = ResultColorChoices.Fail;
-                                    maxX = spot.Position.x;
-                                    xResultDetails = $"Max X: {Math.Round(maxX, 2)}, Layer({icp.NominalBeamEnergy.ToString()})";
-                                }
-                                else
-                                {
-                                    maxX = spot.Position.x;
-                                    xResultDetails = $"Max X: {Math.Round(maxX, 2)}, Layer({icp.NominalBeamEnergy.ToString()})";
-                                }
-
+                                beamResult = "Fail";
+                                Result = "Fail";
+                                DisplayColor = ResultColorChoices.Fail;
+                                maxX = spot.Position.x;
+                                xResultDetails += $"Failed Spot   X Pos: {Math.Round(maxX, 2)},    Layer({icp.NominalBeamEnergy.ToString()})\n";
                             }
 
                             // Checking Y
-                            if (Math.Abs(spot.Position.y) > Math.Abs(maxY))
+                            if (Math.Abs(spot.Position.y) > Math.Abs(limitY))
                             {
-                                if (Math.Abs(spot.Position.y) > Math.Abs(limitY))
-                                {
                                     beamResult = "Fail";
                                     Result = "Fail";
                                     DisplayColor = ResultColorChoices.Fail;
                                     maxY = spot.Position.y;
-                                    yResultDetails = $"Max Y: {Math.Round(maxY, 2)}, Layer({icp.NominalBeamEnergy.ToString()})";
-                                }
-                                else
-                                {
-                                    maxY = spot.Position.y;
-                                    yResultDetails = $"Max Y: {Math.Round(maxY, 2)}, Layer({icp.NominalBeamEnergy.ToString()})";
-                                }
+                                    yResultDetails += $"Failed Spot   Y Pos: {Math.Round(maxY, 2)},    Layer({icp.NominalBeamEnergy.ToString()})\n";
+                             }
 
-                            }
 
                             // Checking MU
                             double spotMU = spot.Weight * spotWeightToMuCoverter;
-                            if (spotMU > maxMu)
+                            if (spotMU > muLimitPerSpot)
                             {
-                                if (spotMU > muLimitPerSpot)
-                                {
                                     beamResult = "Fail";
                                     Result = "Fail";
                                     DisplayColor = ResultColorChoices.Fail;
                                     maxMu = spotMU;
-                                    muResultDetails = $"Max MU: {Math.Round(maxMu, 5)}, Layer({icp.NominalBeamEnergy.ToString()}), Spot: x({Math.Round(spot.Position.x, 2)}),y{Math.Round(spot.Position.y, 2)})";
-
-                                }
-                                else
-                                {
-                                    maxMu = spotMU;
-                                    muResultDetails = $"Max MU: {Math.Round(maxMu, 5)}, Layer({icp.NominalBeamEnergy.ToString()}), Spot: x({Math.Round(spot.Position.x,2)}),y{Math.Round(spot.Position.y,2)})";
-                                }
+                                    muResultDetails = $"Failed Spot MU: {Math.Round(maxMu, 5)},   Layer({icp.NominalBeamEnergy.ToString()}), X({Math.Round(spot.Position.x, 2)}),Y{Math.Round(spot.Position.y, 2)})\n";
                             }
 
                         }
@@ -143,7 +117,7 @@ namespace PlanCheck.Checks
 
                     }
 
-                    ResultDetails += $"\n\t{beamResult} - {beam.Id}: {xResultDetails}, {yResultDetails}, {muResultDetails}";
+                    ResultDetails += $"\n\t{beam.Id}: {beamResult}\n{xResultDetails}, {yResultDetails}, {muResultDetails}";
                 }
 
 
