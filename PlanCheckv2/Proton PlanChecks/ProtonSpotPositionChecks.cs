@@ -117,7 +117,10 @@ namespace PlanCheck.Checks
 
                     }
 
-                    ResultDetails += $"\n\t{beam.Id}: {beamResult}\n{xResultDetails}, {yResultDetails}, {muResultDetails}";
+                    ResultDetails += $"{beam.Id}: {beamResult}\n";
+                    if (xResultDetails != "") { ResultDetails += $"{xResultDetails}, "; }
+                    if (yResultDetails != "") { ResultDetails += $"{yResultDetails}, "; }
+                    if (muResultDetails != "") { ResultDetails += $"{muResultDetails}"; }
                 }
 
 

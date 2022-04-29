@@ -86,6 +86,7 @@ namespace PlanCheck
             PlanChecks.Add(new DoseRateChecks(_context.PlanSetup));
             PlanChecks.Add(new CTSimChecks(_context.PlanSetup));
             PlanChecks.Add(new OrientationChecks(_context.PlanSetup));
+            PlanChecks.Add(new PrecriptionChecks(_context.PlanSetup));
             PlanChecks.Add(new TargetChecks(_context.PlanSetup));
             PlanChecks.Add(new ProtonGantryAngleChecks(_context.PlanSetup));
             PlanChecks.Add(new ProtonSpotPositionChecks(_context.PlanSetup));
@@ -97,7 +98,6 @@ namespace PlanCheck
             PlanChecks.Add(new PlanUncertaintyCalculationCheck(_context.PlanSetup));
             PlanChecks.Add(new HotspotChecks(_context.PlanSetup));
             PlanChecks.Add(new PlanApprovalChecks(_context.PlanSetup));
-            PlanChecks.Add(new PrecriptionChecks(_context.PlanSetup));
             PlanChecks.Add(new IsocenterChecks(_context.PlanSetup));
             PlanChecks.Add(new FieldNameChecks(_context.PlanSetup));
             PlanChecks.Add(new JawTrackingChecks(_context.PlanSetup));

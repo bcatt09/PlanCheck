@@ -25,10 +25,10 @@ namespace PlanCheck.Checks
             double puShift;
             double puCalibrationCurveError;
             int countCalculatedUncertainties = 0;
-            List<int> testResultsList = new List<int>();
+            //List<int> testResultsList = new List<int>();
 
             Result = "TEST NOT RUN";
-            DisplayColor = ResultColorChoices.Warn;
+            DisplayColor = ResultColorChoices.TestNotRun;
             
             if (puCount > 0)
             {
@@ -36,41 +36,39 @@ namespace PlanCheck.Checks
                 {
                     string puString = pu.ToString();
                     string pubus = pu.BeamUncertainties.Count().ToString();
-                    string pucce = pu.CalibrationCurveError.ToString();
-                    string puis = pu.IsocenterShift.ToString();
+                    double pucce = pu.CalibrationCurveError;
                     string puname = pu.DisplayName.ToString();
                     string putype = pu.UncertaintyType.ToString();
                     string pumax = pu.Dose?.DoseMax3D.ToString();
+                    string pusomething = pu.Dose?.
+
+                    //double maxX, maxY, maxZ = 0;
+                    //double minX, minY, minZ = 0;
+
 
                     if (pumax !=null)  // it found dose in there
                     {
                         countCalculatedUncertainties++;
-                        ResultDetails += $"{puname}: dMax: {pumax}\n";
-                        testResultsList.Add(EvaluateUncertainty(pu, plan.Id));
+                        //ResultDetails += $"{puname}: dMax: {pumax}\n";
+                        //testResultsList.Add(EvaluateUncertainty(pu, plan.Id));
                     }
                 }
 
                 // Check how many uncertainties are calculated just make sure it's over 5
-                if (countCalculatedUncertainties < 5)
-                {
-                    testResultsList.Add(0);
-                    ResultDetails += $"Count of calculated plan uncertainties was {countCalculatedUncertainties}\n";
-                }
+                
             }
-            else
+            if (countCalculatedUncertainties < 5)
             {
-                testResultsList.Add(0);
-                ResultDetails += "Count of plan uncertainties was 0\n";
-            }
-            if (testResultsList.Contains(0))
-            {
+                //testResultsList.Add(0);
                 Result = "Warning";
-                DisplayColor = ResultColorChoices.Warn;
+                DisplayColor= ResultColorChoices.Warn;
+                ResultDetails += $"Count of calculated plan uncertainties was {countCalculatedUncertainties}\n";
             }
             else
             {
                 Result = "Pass";
                 DisplayColor = ResultColorChoices.Pass;
+                ResultDetails += $"Count of calculated plan uncertainties was {countCalculatedUncertainties}\n";
             }
 
         }

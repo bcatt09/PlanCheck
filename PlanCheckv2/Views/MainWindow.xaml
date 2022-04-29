@@ -44,7 +44,7 @@
         <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=PatientName}" />
         <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=CourseID}" />
         <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=PlanID}" />
-        <Button Grid.Column="2" Grid.RowSpan="3" Content="MROQC Structure Checks" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="2" Click="MROQC_Button_Click" Height="25" Width="175"/>
+        <Button Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="2" Content="MROQC Structure Checks" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" VerticalContentAlignment="Center" Padding="2" Click="MROQC_Button_Click" Height="25" Width="175"/>
 
         <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.ColumnSpan="3">
             <DataGrid Name="TestsGrid" ItemsSource="{Binding PlanChecks}" SelectedItem="{Binding SelectedRows}" VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="False" AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="False" CanUserReorderColumns="False" MouseLeftButtonUp="dataGridMouseLeftButton" HorizontalScrollBarVisibility="Disabled">

@@ -103,7 +103,7 @@ namespace PlanCheck.Checks
 
 			if (!WrongName)
 			{
-				Result = "FAIL";
+				Result = "Pass";
 				ResultDetails += $"All Field names are correct";
 				DisplayColor = ResultColorChoices.Pass;
 			}

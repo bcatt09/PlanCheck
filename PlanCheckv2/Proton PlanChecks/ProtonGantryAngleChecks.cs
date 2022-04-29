@@ -21,10 +21,10 @@ namespace PlanCheck.Checks
             ResultDetails = $"Gantry angle verification for: {MachineID}\n";
             Result = "Testing";
 
-            List<int> G1CommissionedGantryAngles = new List<int> { 0, 15, 30, 45, 60, 75, 90, 120, 135, 150, 165, 180 };
+            List<int> G1CommissionedGantryAngles = new List<int> { 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180 };
             List<int> G1CommissionedCouchAngles = new List<int> { 0, 180, 270 };
 
-            List<int> G2CommissionedGantryAngles = new List<int> { 0, 15, 30, 45, 60, 75, 90, 120, 135, 150, 165, 180 };
+            List<int> G2CommissionedGantryAngles = new List<int> { 0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180 };
             List<int> G2CommissionedCouchAngles = new List<int> { 0, 180, 270 };
 
 
