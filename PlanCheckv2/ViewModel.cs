@@ -113,7 +113,7 @@ namespace PlanCheck
             PlanChecks.Add(new NamingConventionChecks(_context.PlanSetup));
             PlanChecks.Add(new CalcParametersChecks(_context.PlanSetup));
             PlanChecks.Add(new ProtonFieldNameChecks(_context.PlanSetup));
-
+            PlanChecks.Add(new ProtonTodayChecks(_context.PlanSetup));
 
             // Remove any plan checks that were not run
             foreach (var p in PlanChecks.Where(x => x.MachineExempt).ToList())

@@ -145,6 +145,7 @@
     <Compile Include="Proton PlanChecks\ProtonFieldNameChecks.cs" />
     <Compile Include="Proton PlanChecks\ProtonSnoutChecks.cs" />
     <Compile Include="Proton PlanChecks\ProtonSpotPositionChecks.cs" />
+    <Compile Include="Proton PlanChecks\ProtonTodayChecks.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="Views\MROQCWindow.xaml.cs">
       <DependentUpon>MROQCWindow.xaml</DependentUpon>
