@@ -52,6 +52,10 @@ namespace PlanCheck.Checks
                    rxNotes = plan.RTPrescription.Notes;
 
             int rxFractions = (int)plan.RTPrescription.NumberOfFractions;
+            
+            string rxApprovalStatus = plan.RTPrescription.Status.ToString();
+            string rxLastModifier = plan.RTPrescription.HistoryUserDisplayName;
+
 
             string rxPrimaryTargetVolume = "", rxSecondaryTargetVolumes = "";
             double rxPrimaryTotalDose = 0;
@@ -86,11 +90,20 @@ namespace PlanCheck.Checks
             int planNumberOfFractions = (int)plan.NumberOfFractions;
             double planDosePerFraction = plan.DosePerFraction.Dose;
             double planDose = planNumberOfFractions * planDosePerFraction;
+            string planApprovalStatus = plan.ApprovalStatus.ToString();
             string planID = plan.Id;
             string planTechnique="";
             string planGating = plan.UseGating.ToString();
             string planModalities = "";
             string planEnergies = "";
+
+            string planPhysicianApprover = "NA";
+
+            if (plan.ApprovalStatus == PlanSetupApprovalStatus.Reviewed || plan.ApprovalStatus == PlanSetupApprovalStatus.PlanningApproved || plan.ApprovalStatus == PlanSetupApprovalStatus.TreatmentApproved)
+            {
+                ApprovalHistoryEntry reviewedHistoryEntry = plan.ApprovalHistory.Where(x => x.ApprovalStatus == PlanSetupApprovalStatus.Reviewed).Last();
+                planPhysicianApprover = reviewedHistoryEntry.UserDisplayName;
+            }
 
             // Techniques, Modalities, and Energies
             bool electron = false,
@@ -199,6 +212,8 @@ namespace PlanCheck.Checks
             ResultDetails += $"{headerText}";
 
             ResultDetails += $"{cellFormatter("ID/Name","left")}|{cellFormatter(rxId,"middle")}|{cellFormatter(planID,"right")}\n";
+            ResultDetails += $"{cellFormatter("Status", "left")}|{cellFormatter(rxApprovalStatus, "middle")}|{cellFormatter(planApprovalStatus, "right")}\n";
+            ResultDetails += $"{cellFormatter("User", "left")}|{cellFormatter(rxLastModifier, "middle")}|{cellFormatter(planPhysicianApprover, "right")}\n";
             ResultDetails += $"{cellFormatter("Technique", "left")}|{cellFormatter(rxTechnique, "middle")}|{cellFormatter(planTechnique, "right")}\n";
             ResultDetails += $"{cellFormatter("Modes", "left")}|{cellFormatter(rxModalities, "middle")}|{cellFormatter("coming soon", "right")}\n";
             ResultDetails += $"{cellFormatter("Energies", "left")}|{cellFormatter(rxEnergies, "middle")}|{cellFormatter(planEnergies, "right")}\n";
@@ -243,13 +258,15 @@ namespace PlanCheck.Checks
             double textWidth = textSize.Width;
 
             // Keep line in case formatting messes up to find how wide the culprit text is
-            //if (cellText == "Left Breast") { System.Windows.MessageBox.Show($"{cellText} has {textWidth} width"); }
+            // if (cellText == "Isocenter" || cellText == "LT_HIP_2" || cellText == "PHOTON") { System.Windows.MessageBox.Show($"{cellText} has {textWidth} width"); }
+
+            // THINK THE WIDTH HAS TO BE ABOVE 72.67 and below 75
 
             switch (colLoc)
             {
                 case "left":
                     
-                    if (textWidth <= 75)
+                    if (textWidth <= 72.5)
                     {
                         formattedCellText = cellText.PadRight(cellText.Length + 2, '\t');
                     }
@@ -261,7 +278,7 @@ namespace PlanCheck.Checks
                 case "middle":
                 case "right":
                     formattedCellText = cellText.PadLeft(cellText.Length + 1, '\t');
-                    if (textWidth <= 75)
+                    if (textWidth <= 72.5 && cellText != "Isocenter")
                     {
                         formattedCellText = cellText.PadLeft(cellText.Length + 1, '\t').PadRight(cellText.Length + 3, '\t');
                     }

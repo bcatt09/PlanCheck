@@ -25,7 +25,11 @@ namespace PlanCheck.Checks
             //   - Check for marker structure
             int isoMarkerCount = plan.StructureSet.Structures.Where(s => s.DicomType.ToUpper() == "ISOCENTER").Count();
 
-            //var isoStruct = plan.StructureSet.Structures.FirstOrDefault(s => s.Id.ToLower() == "isocenter marker"); (THIS WAS FOR DEBUGGING)
+            // Variables for tolerances
+
+            double isoToleranceX = 0.05;
+            double isoToleranceY = 0.05;
+            double isoToleranceZ = 0.05;
 
             // System.Windows.MessageBox.Show($"Isocount = {isoMarkerCount}");
 
@@ -38,10 +42,10 @@ namespace PlanCheck.Checks
                 double isoDeltaZ = isoMarker.CenterPoint.z - plan.IonBeams.FirstOrDefault().IsocenterPosition.z;
 
                 
-                if (isoDeltaX<=0.01 && isoDeltaY <= 0.01 && isoDeltaZ <= 0.01)
+                if (isoDeltaX<=isoToleranceX && isoDeltaY <= isoToleranceY && isoDeltaZ <= isoToleranceZ)
                 {
                     Result = "Pass";
-                    ResultDetails = "isocenter marker is present and within 0.01 somethings of beam center in all directions";
+                    ResultDetails = $"isocenter marker is present and within {isoToleranceX}, {isoToleranceY},{isoToleranceZ} (x,y,z) of beam center";
                     DisplayColor = ResultColorChoices.Pass;
                 }
                 else

@@ -66,7 +66,7 @@ namespace PlanCheck.Checks
             #endregion
 
             #region Lapeer/Owosso
-            else if (MachineID == DepartmentInfo.MachineNames.LAP_IX ||
+            else if (MachineID == DepartmentInfo.MachineNames.LAP_TB ||
                      MachineID == DepartmentInfo.MachineNames.OWO_IX)
             {
                 bool DIBH = plan.StructureSet.Image.Series.Comment.ToLower().Contains("dibh");

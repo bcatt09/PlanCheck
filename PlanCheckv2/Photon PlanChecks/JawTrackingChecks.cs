@@ -41,6 +41,7 @@ namespace PlanCheck.Checks
 				Department == Department.MAC ||
 				Department == Department.FLT ||
 				Department == Department.LAN ||
+				Department == Department.LAP ||
 				Department == Department.MPH)
 			{
 				//VMAT plan

@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DepartmentInfo.cs" />
+    <Compile Include="Generic PlanChecks\PlanningRxTargetChecks.cs" />
     <Compile Include="Generic PlanChecks\PlanUncertaintyCalculationCheck.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="MROQCStructureCheck.cs" />

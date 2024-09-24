@@ -40,7 +40,7 @@ namespace PlanCheck.Checks
                     string puname = pu.DisplayName.ToString();
                     string putype = pu.UncertaintyType.ToString();
                     string pumax = pu.Dose?.DoseMax3D.ToString();
-                    string pusomething = pu.Dose?.
+                    //string pusomething = pu.Dose?.
 
                     //double maxX, maxY, maxZ = 0;
                     //double minX, minY, minZ = 0;

@@ -101,7 +101,7 @@ namespace PlanCheck.Checks
 
 			// TrueBeam for all plans
 
-			else if (Department == Department.FLT)
+			else if (Department == Department.FLT || Department == Department.LAP)
 			{
 				string tolTable;
 				string txFieldsResult = "";
@@ -203,11 +203,30 @@ namespace PlanCheck.Checks
 			#region Lapeer/Owosso
 			// OBI for setup fields
 			// Same tolerance table selected for all treatment fields
-			else if (Department == Department.LAP ||
-				 Department == Department.OWO)
+			else if (Department == Department.OWO)
 			{
+				List<string> ttl = new List<string>();
+
+				if (plan.Beams.Where(x => !x.IsSetupField).Where(x => x.EnergyModeDisplayName.Contains("E", StringComparison.CurrentCultureIgnoreCase)).Count() > 0)
+					ttl.Add("Electron");
+				else if (plan.Id.Contains("breast", StringComparison.OrdinalIgnoreCase) || plan.Id.Contains("brst", StringComparison.OrdinalIgnoreCase))
+					{
+					ttl.Add("05 Breast Board");
+					}
+                else
+                {
+					ttl.Add("01 SRS");
+					ttl.Add("02 SBRT");
+					ttl.Add("03 AquaplastMask");
+					ttl.Add("04 Alpha/VacBag");
+					ttl.Add("05 Breast Board");
+					ttl.Add("07 Non-Index");
+				}
+					
+
 				string tolTable = "";
 				string badFields = "";
+
 
 				//Check each field to make sure they're the same
 				foreach (Beam field in plan.Beams)
@@ -233,6 +252,13 @@ namespace PlanCheck.Checks
 							Result = "Warning";
 							ResultDetails = $"Not all fields use the {tolTable} tolerance table: ";
 							badFields += field.Id + ", ";
+							DisplayColor = ResultColorChoices.Warn;
+						}
+						if (!ttl.Contains(field.ToleranceTableLabel))
+                        {
+							Result = "Warning";
+							badFields += field.Id + ", ";
+							ResultDetails += $"Tolerance table {field.ToleranceTableLabel} not in expected tolerance table list";
 							DisplayColor = ResultColorChoices.Warn;
 						}
 					}

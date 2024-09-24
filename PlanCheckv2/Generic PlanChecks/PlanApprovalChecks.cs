@@ -41,6 +41,7 @@ namespace PlanCheck.Checks
                 if (plan.ApprovalHistory.Where(x => x.ApprovalStatus == PlanSetupApprovalStatus.Reviewed).Count() < 1)
                 {
                     Result = "Warning";
+                    DisplayColor = ResultColorChoices.Warn;
                     ResultDetails += "Plan has not been \"Reviewed\"\nVerify that a physician has reviewed the plan";
                 }
                 // Has been Reviewed

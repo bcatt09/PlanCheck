@@ -116,7 +116,7 @@ namespace PlanCheck
 			},
 			{ Department.LAP,
 				new DepartmentInfoStruct {
-					Machines = new List<string> { MachineNames.LAP_IX },
+					Machines = new List<string> { MachineNames.LAP_IX, MachineNames.LAP_TB },
 					CTs = new List<string> { CTNames.LAP },
 					RadOncUserNames = RadOncUserNames.LAP
 				}
@@ -178,6 +178,7 @@ namespace PlanCheck
 			public static readonly string LAN_IX = "ING21IX1";
 			public static readonly string LAN_TB = "LAN_TB5333";
 			public static readonly string LAP_IX = "21IX-SN3743";
+			public static readonly string LAP_TB = "LAP_TB5851";
 			public static readonly string MAC_TB = "MAC_TB3568";
 			public static readonly string MAC_IX = "TRILOGY3789";
 			public static readonly string MPH_TB = "TB2681";
@@ -202,6 +203,7 @@ namespace PlanCheck
 			MachineNames.LAN_IX,
 			MachineNames.LAN_TB,
 			MachineNames.LAP_IX,
+			MachineNames.LAP_TB,
 			MachineNames.MAC_IX,
 			MachineNames.MAC_TB,
 			MachineNames.MPH_TB,
@@ -222,6 +224,7 @@ namespace PlanCheck
 			MachineNames.LAN_TB,
 			MachineNames.MAC_TB,
 			MachineNames.MPH_TB,
+			MachineNames.LAP_TB,
 			MachineNames.NOR_TB
 		};
 
@@ -275,14 +278,14 @@ namespace PlanCheck
 			public static readonly List<string> CLA = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> DET = new List<string> { "" };
 			public static readonly List<string> FAR = new List<string> { "" };
-			public static readonly List<string> FLT = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar", "trqs64" };
+			public static readonly List<string> FLT = new List<string> { "heshamg", "zcpe57", "aprf56", "ogayar", "trqs64" };
 			public static readonly List<string> LAN = new List<string> { "abhatt1" };
 			public static readonly List<string> LAP = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar", "trqs64" };
 			public static readonly List<string> MAC = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> MPH = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
-			public static readonly List<string> NOR = new List<string> { "ikaufman", "rhmg27" };
-			public static readonly List<string> OWO = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar", "trqs64" };
-			public static readonly List<string> PRO = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar", "trqs64" };
+			public static readonly List<string> NOR = new List<string> { "ikaufman", "rhmg27", "zamorap" };
+			public static readonly List<string> OWO = new List<string> { "heshamg", "zcpe57", "aprf56", "ogayar", "trqs64" };
+			public static readonly List<string> PRO = new List<string> { "heshamg", "zcpe57", "aprf56", "ogayar", "trqs64" };
 		}
 
 		/// <summary>
