@@ -48,7 +48,8 @@ namespace PlanCheck.Checks
 				couchStructure = false;
 
             #region QFix Vue
-			if(Department == Department.CLA)
+			if(Department == Department.CLA ||
+                     Department == Department.LAP)
             {
 				if(!couchStructure)
                 {
@@ -158,8 +159,7 @@ namespace PlanCheck.Checks
 
 			# region Lapeer/Owosso
 			// Flat Panel couch for all plans
-            else if (Department == Department.LAP ||
-					 Department == Department.OWO)
+            else if (Department == Department.OWO)
 			{
 				//check to see if VMAT/IMRT
 				foreach (Beam field in plan.Beams)

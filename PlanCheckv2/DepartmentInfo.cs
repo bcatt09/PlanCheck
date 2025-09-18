@@ -278,15 +278,19 @@ namespace PlanCheck
 			public static readonly List<string> CLA = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> DET = new List<string> { "" };
 			public static readonly List<string> FAR = new List<string> { "" };
-			public static readonly List<string> FLT = new List<string> { "heshamg", "zcpe57", "aprf56", "ogayar", "trqs64" };
+			public static readonly List<string> FLT = new List<string> { "heshamg", "rmec21", "eagd63", "ogayar", "trqs64" };
 			public static readonly List<string> LAN = new List<string> { "abhatt1" };
-			public static readonly List<string> LAP = new List<string> { "heshamg", "zcpe57", "kirand", "ogayar", "trqs64" };
+			public static readonly List<string> LAP = new List<string> { "heshamg", "rmec21", "eagd63", "ogayar", "trqs64" };
 			public static readonly List<string> MAC = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> MPH = new List<string> { "afrazier", "sfranklin", "mjohnson5", "zqfh28" };
 			public static readonly List<string> NOR = new List<string> { "ikaufman", "rhmg27", "zamorap" };
-			public static readonly List<string> OWO = new List<string> { "heshamg", "zcpe57", "aprf56", "ogayar", "trqs64" };
-			public static readonly List<string> PRO = new List<string> { "heshamg", "zcpe57", "aprf56", "ogayar", "trqs64" };
+			public static readonly List<string> OWO = new List<string> { "heshamg", "rmec21", "eagd63", "ogayar", "trqs64" };
+			public static readonly List<string> PRO = new List<string> { "heshamg", "rmec21", "eagd63", "ogayar", "trqs64" };
 		}
+		// trqs64=Yeh
+		// eagd63=Spencer
+		// rmec21=Halabi
+		//
 
 		/// <summary>
 		/// Dictionary of department names in Aria
