@@ -31,10 +31,13 @@ namespace PlanCheck.Checks
             double isoToleranceY = 0.05;
             double isoToleranceZ = 0.05;
 
-            // System.Windows.MessageBox.Show($"Isocount = {isoMarkerCount}");
+            // !!!!!!! Need to verify that this is detecting multiple isocenters
 
             if (isoMarkerCount==1)
             {
+                // !!!!!!!! This assumes there's only one plan isocenter which is not always the case. Need to add something in here to handle multiple isos.
+                // !!!!!!!! If there are multiple field isos, there should only be CBCT fields for the isocenter marked by "ISOCENTER"
+
                 isoMarker = plan.StructureSet.Structures.FirstOrDefault(s => s.DicomType.ToUpper() == "ISOCENTER");
 
                 double isoDeltaX = isoMarker.CenterPoint.x - plan.IonBeams.FirstOrDefault().IsocenterPosition.x;
